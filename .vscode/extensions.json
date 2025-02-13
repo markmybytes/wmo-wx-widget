@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "ms-vscode.vscode-typescript-next",
+        "esbenp.prettier-vscode",
+        "digitalbrainstem.javascript-ejs-support",
+        "ms-azuretools.vscode-docker"
+    ]
+}
