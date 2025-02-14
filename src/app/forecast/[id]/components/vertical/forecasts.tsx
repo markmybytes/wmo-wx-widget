@@ -15,7 +15,7 @@ export default async function Forecasts({
 
     return (
       <div className="flex flex-row justify-center items-center m-1 h-20 rounded-border">
-        <span className="text-red-600">{t("Forecast Not Available")}</span>
+        <span className="text-red-600">{t("noForecastAvailable")}</span>
       </div>
     );
   }

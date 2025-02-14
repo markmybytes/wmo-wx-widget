@@ -19,7 +19,8 @@
         "displayedComponent": "Displayed Component",
         "presentWeather": "Present Weather",
         "futureWeather": "Future Weather (Forecast)",
-        "unitSettings": "Unit Setting"
+        "unitSettings": "Unit Setting",
+        "noForecastAvailable": "No Forecast Available"
     },
     "meta": {
         "title": "wmo-wx-widget",

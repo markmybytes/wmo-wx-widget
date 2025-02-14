@@ -15,7 +15,8 @@
         "maxForecastPeriod": "Periodo máximo de previsión",
         "maxForecastPeriodHelp": "La cantidad máxima de previsión en días. Sin embargo, la cantidad real dependerá de la fuente de datos.",
         "generate": "Generar",
-        "emptyCityValidation": "Seleccione primero una ciudad."
+        "emptyCityValidation": "Seleccione primero una ciudad.",
+        "noForecastAvailable": "No hay pronóstico disponible"
     },
     "meta": {
         "title": "wmo-wx-widget",

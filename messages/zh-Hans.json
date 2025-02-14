@@ -19,7 +19,8 @@
         "displayedComponent": "显示部件",
         "presentWeather": "天气实况",
         "futureWeather": "天气预报",
-        "unitSettings": "单位设定"
+        "unitSettings": "单位设定",
+        "noForecastAvailable": "没有可用的预報"
     },
     "meta": {
         "title": "wmo-wx-widget",
