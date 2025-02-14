@@ -11,10 +11,10 @@ export default function Home() {
         <div className="flex flex-col justify-around max-w-96 text-center sm:text-left">
           <a
             className="text-sky-700 text-lg font-bold"
-            href="https://github.com/SuperDumbTM/wmo-wx-widget"
+            href="https://github.com/markmybytes/wmo-wx-widget"
             target="_blank"
           >
-            SuperDumbTM/wmo-wx-widget
+            markmybytes/wmo-wx-widget
           </a>
 
           <p>
