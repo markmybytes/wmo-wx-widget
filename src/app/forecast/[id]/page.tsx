@@ -21,13 +21,14 @@ function parseLocale(locale: string | null | undefined): Locale {
   );
 }
 
-export async function generateMetadata({
-  params,
-  searchParams,
-}: {
-  params: {id: number};
-  searchParams: {locale?: keyof typeof Locale};
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{id: number}>;
+    searchParams: Promise<{locale?: keyof typeof Locale}>;
+  }
+): Promise<Metadata> {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const t = await getTranslations("meta");
   return {
     title: t("titleForecast", {
@@ -38,13 +39,14 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({
-  params,
-  searchParams,
-}: {
-  params: {id: number};
-  searchParams?: {[key: string]: any};
-}) {
+export default async function Page(
+  props: {
+    params: Promise<{id: number}>;
+    searchParams?: Promise<{[key: string]: any}>;
+  }
+) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const locale = parseLocale(searchParams?.locale);
 
   const unit =
