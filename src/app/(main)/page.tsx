@@ -2,7 +2,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-2 sm:p-24">
       <div className="flex flex-col sm:flex-row">
-        <div className="flex flex-shrink-0 justify-center">
+        <div className="flex shrink-0 justify-center">
           <img
             className="w-[100px] h-[100px]"
             src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"

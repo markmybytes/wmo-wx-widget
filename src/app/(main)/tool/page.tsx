@@ -273,7 +273,7 @@ export default function Page() {
                   <div className="flex items-center me-4">
                     <button
                       type="button"
-                      className="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none"
+                      className="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-hidden"
                       onClick={(_) => {
                         let d = parseInt(formData.days);
                         if (d > 1) {
@@ -305,7 +305,7 @@ export default function Page() {
                     />
                     <button
                       type="button"
-                      className="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none"
+                      className="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-hidden"
                       onClick={(_) => {
                         let d = parseInt(formData.days);
                         setFormData({
@@ -387,7 +387,7 @@ export default function Page() {
                     <input
                       type="text"
                       value={outUrl}
-                      className="w-full px-3 py-3 pr-10 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                      className="w-full px-3 py-3 pr-10 text-sm border border-gray-300 rounded-lg focus:outline-hidden focus:border-blue-500"
                       readOnly
                       disabled
                     />
@@ -439,7 +439,7 @@ export default function Page() {
                   </div>
                   <button
                     type="button"
-                    className="px-4 py-3 text-white rounded-lg bg-indigo-600 hover:bg-indigo-500 focus:outline-none"
+                    className="px-4 py-3 text-white rounded-lg bg-indigo-600 hover:bg-indigo-500 focus:outline-hidden"
                     onClick={(_) => {
                       if (formData.city == "") {
                         setOutUrl("");

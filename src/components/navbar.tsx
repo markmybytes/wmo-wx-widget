@@ -91,7 +91,7 @@ export default function Navbar() {
             onClick={(e) => {
               setIsDropdownOpen(!isDropdownOpen);
             }}
-            className="text-gray-700 hover:text-gray-900 focus:outline-none"
+            className="text-gray-700 hover:text-gray-900 focus:outline-hidden"
           >
             <i className="bi bi-translate"></i>
           </button>
