@@ -11,7 +11,8 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 <div align="center">
-  
+
+  [![Tag][tag-shield]][tag-url]
   [![Contributors][contributors-shield]][contributors-url]
   [![Forks][forks-shield]][forks-url]
   [![Stargazers][stars-shield]][stars-url]
@@ -26,7 +27,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/markmybytes/wmo-wx-widget">
-    <img src="https://github.com/user-attachments/assets/95a12440-70ea-4d86-a998-34284361153e" width="80" height="80">
+    <img src="https://github.com/user-attachments/assets/f41d13b1-f0c7-4516-8741-145c28890158" alt="logo" width="80" height="80">
   </a>
 
   <h3 align="center">wmo-wx-widget</h3>
@@ -68,8 +69,9 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ceaeaa42-cc48-4295-a6bc-c31bbaea62ba" alt="project screen shot" width="100%">
+<p align="right">
 
 This project is an alternative to the weather widgets that already exists on the internet.
 
@@ -138,22 +140,20 @@ This is an example of how to list things you need to use the software and how to
 ### Responsive Widget
 
 The widget will adjust itself to accomandate the size of the screen.
-   
-<img src="https://github.com/markmybytes/wmo-wx-widget/assets/71750702/e605d36b-e0a0-46ba-adec-f65fa260679b" width=50% height=50%>
-<img src="https://github.com/markmybytes/wmo-wx-widget/assets/71750702/e26ed814-1744-4179-b2c4-f7c4907d916a" width=50% height=50%>
-<img src="https://github.com/markmybytes/wmo-wx-widget/assets/71750702/30e5ac8b-37b0-485d-9cf3-5b2ccf994894" width=50% height=50%>
+
+<img src="https://github.com/user-attachments/assets/3ccb74ab-6bb4-4166-91db-0be3d70ef746" alt="responsive demo" width="100%" height="100%">
 
 ### Widget Customiser
 
 A configurating tool is provided to configure the location and various display settings.
 
-<img src="https://github.com/user-attachments/assets/f27ad604-f91f-4fb3-bcf2-9e439e30b523" width=40% height=40%>
+<img src="https://github.com/user-attachments/assets/e55c1499-a12e-4966-b796-f27fbb503cf6" alt="widget customiser screen shot" width="45%" height="45%">
 
-### Notion Embedding
+### Embedding
 
-Embedding the widget in note taking app should work like a charm.
+The widget can be embedding to note taking apps like Notion for your travel plans or working plans.
 
-<img src="https://github.com/user-attachments/assets/faedc95d-9255-47ae-b7a8-071fedeb416c" width=25% height=25%>
+<img src="https://github.com/user-attachments/assets/77e54ac9-de75-40d0-85b5-0d3a8672a290" alt="notion embedding screen shot" width="25%" height="25%">
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -161,6 +161,8 @@ Embedding the widget in note taking app should work like a charm.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[tag-url]: https://github.com/markmybytes/wmo-wx-widget/releases
+[tag-shield]: https://img.shields.io/github/v/tag/markmybytes/wmo-wx-widget?style=for-the-badge&label=LATEST&color=%23B1B1B1
 [contributors-shield]: https://img.shields.io/github/contributors/markmybytes/wmo-wx-widget.svg?style=for-the-badge
 [contributors-url]: https://github.com/markmybytes/wmo-wx-widget/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/markmybytes/wmo-wx-widget.svg?style=for-the-badge
