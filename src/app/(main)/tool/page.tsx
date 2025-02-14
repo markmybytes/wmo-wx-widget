@@ -418,7 +418,7 @@ export default function Page() {
                       <span
                         className={`${
                           copied ? "" : "hidden"
-                        } inline-flex items-center`}
+                        } items-center`}
                       >
                         <svg
                           className="w-3.5 h-3.5 text-green-700"
