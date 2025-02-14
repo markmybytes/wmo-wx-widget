@@ -70,7 +70,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/ceaeaa42-cc48-4295-a6bc-c31bbaea62ba" alt="project screen shot" width="100%">
+  <img src="https://github.com/user-attachments/assets/a1a85bf7-5f62-4adf-9431-acb743b342ca" alt="project screen shot" width="100%">
 <p align="right">
 
 This project is an alternative to the weather widgets that already exists on the internet.
