@@ -395,6 +395,10 @@ export default function Page() {
                       type="button"
                       className="absolute inset-y-0 right-0 px-4 rounded-lg text-gray-500 hover:bg-gray-400/20"
                       onClick={(e) => {
+                        if (!outUrl) {
+                          return;
+                        }
+
                         if (!copied) {
                           setTimeout(() => {
                             setCopied(false);
