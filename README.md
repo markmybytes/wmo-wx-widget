@@ -70,7 +70,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/a1a85bf7-5f62-4adf-9431-acb743b342ca" alt="project screen shot" width="100%">
+  <img src="https://github.com/user-attachments/assets/a1a85bf7-5f62-4adf-9431-acb743b342ca" alt="project screen shot">
 <p align="right">
 
 This project is an alternative to the weather widgets that already exists on the internet.
@@ -141,19 +141,19 @@ This is an example of how to list things you need to use the software and how to
 
 The widget will adjust itself to accomandate the size of the screen.
 
-<img src="https://github.com/user-attachments/assets/3ccb74ab-6bb4-4166-91db-0be3d70ef746" alt="responsive demo" width="100%" height="100%">
+<img src="https://github.com/user-attachments/assets/3ccb74ab-6bb4-4166-91db-0be3d70ef746" alt="responsive demo">
 
 ### Widget Customiser
 
 A configurating tool is provided to configure the location and various display settings.
 
-<img src="https://github.com/user-attachments/assets/e55c1499-a12e-4966-b796-f27fbb503cf6" alt="widget customiser screen shot" width="45%" height="45%">
+<img src="https://github.com/user-attachments/assets/e55c1499-a12e-4966-b796-f27fbb503cf6" alt="widget customiser screen shot" width="450">
 
 ### Embedding
 
 The widget can be embedding to note taking apps like Notion for your travel plans or working plans.
 
-<img src="https://github.com/user-attachments/assets/77e54ac9-de75-40d0-85b5-0d3a8672a290" alt="notion embedding screen shot" width="25%" height="25%">
+<img src="https://github.com/user-attachments/assets/77e54ac9-de75-40d0-85b5-0d3a8672a290" alt="notion embedding screen shot" height="550">
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
