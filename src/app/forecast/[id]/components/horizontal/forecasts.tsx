@@ -24,13 +24,13 @@ export default async function Forecasts({
     let _d = new Date(wx.date);
 
     return (
-      <div className="flex flex-col flex-1 h-auto" key={idx}>
+      <div className="flex flex-col flex-1 h-auto dark:text-gray-400" key={idx}>
         <div
           className="flex flex-col justify-center items-center"
           style={{fontSize: "0.75rem"}}
         >
           <span
-            className="text-gray-400"
+            className="text-gray-400 dark:text-gray-500"
             style={{
               whiteSpace: "nowrap",
               overflow: "ellipsis",
@@ -49,7 +49,7 @@ export default async function Forecasts({
         </div>
 
         <div className="flex flex-col lg:flex-row justify-center items-center">
-          <div className="flex justify-between mx-1 min-w-12 text-sky-600">
+          <div className="flex justify-between mx-1 min-w-12 text-sky-600 dark:text-sky-700">
             {forecast.forecasts.data.length >= 7 ? (
               ""
             ) : (
@@ -58,7 +58,7 @@ export default async function Forecasts({
 
             {`${wx.temp.min.val ?? "--"}${wx.temp.min.unit}`}
           </div>
-          <div className="flex justify-between mx-1 min-w-12 text-red-600">
+          <div className="flex justify-between mx-1 min-w-12 text-red-600 dark:text-red-700">
             {forecast.forecasts.data.length >= 7 ? (
               ""
             ) : (

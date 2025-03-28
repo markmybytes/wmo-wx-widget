@@ -5,9 +5,9 @@ export default async function Present({weather}: {weather: PresentWeather}) {
   const t = await getTranslations("weather");
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center dark:text-gray-400">
       <div className="flex">
-        <span className="text-gray-600 max-w-60 overflow-hidden whitespace-nowrap text-ellipsis">
+        <span className="text-gray-600 dark:text-gray-500 max-w-60 overflow-hidden whitespace-nowrap text-ellipsis">
           <i className="bi bi-geo"></i>
           <span className="me-1">{weather.city.name}</span>
         </span>
