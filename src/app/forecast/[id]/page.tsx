@@ -69,7 +69,7 @@ export default async function Page(
 
   return (
     <div
-      className={`flex items-${searchParams?.align || "start"} min-h-screen`}
+      className={`flex items-${searchParams?.align || "start"} min-h-screen dark:bg-[#191919]`}
     >
       <div className="hidden md:block w-full">
         <div

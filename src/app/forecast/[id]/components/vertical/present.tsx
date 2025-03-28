@@ -2,9 +2,9 @@ import {PresentWeather as PresentWeatherData} from "@/libs/wmo/definition";
 
 export default function Present({weather}: {weather: PresentWeatherData}) {
   return (
-    <div className="flex flex-col items-center m-1 rounded-border">
+    <div className="flex flex-col items-center m-1 rounded-border dark:text-gray-400">
       <div className="flex my-1">
-        <span className="text-gray-600">
+        <span className="text-gray-600 dark:text-gray-500">
           <i className="bi bi-geo"></i>
           <span className="me-1">{weather.city.name}</span>
         </span>
