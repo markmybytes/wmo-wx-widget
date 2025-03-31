@@ -1,10 +1,8 @@
 import {
   City,
-  Country,
   FutureWeather,
-  Organisation,
   PresentWeather,
-  WmoCityResponse,
+  WmoCountryResponse,
   WmoForecastResponse,
   WmoPresentWxResponse,
 } from "./definition";
@@ -236,27 +234,26 @@ export function present(
 export async function cities(locale: Locale): Promise<Array<City>> {
   return fetch(`${wmoUrl}/${locale}/json/Country_${locale}.xml`)
     .then((res) => res.json())
-    .then((json: WmoCityResponse) => {
+    .then((json: WmoCountryResponse) => {
       /** @type {Array<City>} */
       let cities_ = [];
 
       for (const [_, country] of Object.entries(json.member)) {
-        let c: Country = {
-          id: country.memId,
-          name: country.memName,
-        };
-        let org: Organisation = {
-          name: country.orgName,
-          logo: country.logo ? wmoUrl + `/images/logo/${country.logo}` : null,
-          url: country.url || null,
-        };
-
         for (const city of country.city || []) {
           cities_.push({
             id: city.cityId,
             name: city.cityName,
-            country: c,
-            organisation: org,
+            country: {
+              id: country.memId,
+              name: country.memName,
+            },
+            organisation: {
+              name: country.orgName,
+              logo: country.logo
+                ? wmoUrl + `/images/logo/${country.logo}`
+                : null,
+              url: country.url || null,
+            },
             latitude: parseFloat(city.cityLatitude),
             longitude: parseFloat(city.cityLongitude),
             forecast: city.forecast === "Y",
