@@ -1,4 +1,4 @@
-import {PresentWeather as PresentWeatherData} from "@/libs/wmo/definition";
+import {PresentWeather as PresentWeatherData} from "@/libs/wmo/types";
 
 export default function Present({weather}: {weather: PresentWeatherData}) {
   return (

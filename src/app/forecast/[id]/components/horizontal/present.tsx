@@ -1,4 +1,4 @@
-import {PresentWeather} from "@/libs/wmo/definition";
+import {PresentWeather} from "@/libs/wmo/types";
 import {getTranslations} from "next-intl/server";
 
 export default async function Present({weather}: {weather: PresentWeather}) {

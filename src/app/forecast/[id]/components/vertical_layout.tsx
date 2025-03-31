@@ -1,4 +1,4 @@
-import {FutureWeather, PresentWeather} from "@/libs/wmo/definition";
+import {FutureWeather, PresentWeather} from "@/libs/wmo/types";
 import {Locale} from "@/libs/wmo/enums";
 import Forecasts from "./vertical/forecasts";
 import Present from "./vertical/present";

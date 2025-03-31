@@ -1,4 +1,4 @@
-import {FutureWeather} from "@/libs/wmo/definition";
+import {FutureWeather} from "@/libs/wmo/types";
 import {Locale} from "@/libs/wmo/enums";
 import * as wmo from "@/libs/wmo/wmo";
 import {getTranslations} from "next-intl/server";
