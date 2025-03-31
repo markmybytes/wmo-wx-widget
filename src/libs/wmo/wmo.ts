@@ -11,7 +11,10 @@ import {
 const wmoUrl = "https://worldweather.wmo.int";
 
 /**
- * Translate WMO locale codes used by to ISO639 codes.
+ * Converts WMO locale codes to ISO639 codes.
+ *
+ * @param locale - The WMO locale code to be converted.
+ * @returns The corresponding ISO639 code.
  */
 export function wmoToIso639(locale: Locale) {
   const mapping = {
@@ -33,20 +36,13 @@ export function wmoToIso639(locale: Locale) {
 }
 
 /**
- * Get the WMO icon URL by icon ID.
+ * Generates the URL for a WMO weather icon based on the icon ID.
  *
- * See: https://worldweather.wmo.int/en/wxicons.html
- *
- * @param id four-digit icon ID
- * @param daynight Whether to display day/night variation icon (if available)
+ * @param id - The four-digit icon ID.
+ * @param daynight - Whether to display the day/night variation icon (if available).
+ * @returns The URL of the weather icon.
  */
 export function wxIconUrl(id: string, daynight: boolean) {
-  // ***** Four Digit Icon Code *****
-  // xxyy
-  // xx: icon ID (see: https://worldweather.wmo.int/en/wxicons.html)
-  // yy: 01 = a or 02 = b
-  //    There a and b version (day and night) for icons which the ID is between 21 to 25.
-
   let iconId = parseInt(id.slice(0, id.length - 2)).toString(); // remove leading zero
   let dn = id.slice(-2);
   if (parseInt(iconId) >= 21 && parseInt(iconId) <= 25) {
@@ -60,7 +56,13 @@ export function wxIconUrl(id: string, daynight: boolean) {
 }
 
 /**
- * Get the forecast data
+ * Fetches the forecast data for a specified city.
+ *
+ * @param cityId - The ID of the city.
+ * @param locale - The locale code.
+ * @param unit - The temperature unit (Celsius or Fahrenheit).
+ * @param days - The number of days for the forecast.
+ * @returns A promise that resolves to the forecast data.
  */
 export async function forecasts(
   cityId: number,
@@ -146,7 +148,12 @@ export async function forecasts(
 }
 
 /**
- * Get the present weather data
+ * Fetches the present weather data for a specified city.
+ *
+ * @param cityId - The ID of the city.
+ * @param locale - The locale code.
+ * @param unit - The temperature unit (Celsius or Fahrenheit).
+ * @returns A promise that resolves to the present weather data.
  */
 export async function present(
   cityId: number,
@@ -231,6 +238,12 @@ export async function present(
     });
 }
 
+/**
+ * Fetches the data of list of countries.
+ *
+ * @param locale - The locale code.
+ * @returns A promise that resolves to an array of countries.
+ */
 export async function countries(locale: Locale): Promise<Array<Country>> {
   return fetch(`${wmoUrl}/${locale}/json/Country_${locale}.xml`)
     .then((res) => res.json())
@@ -260,6 +273,13 @@ export async function countries(locale: Locale): Promise<Array<Country>> {
     });
 }
 
+/**
+ * Fetches the weather data for a specific city.
+ *
+ * @param cityId - The ID of the city.
+ * @param locale - The locale code.
+ * @returns A promise that resolves to the city data.
+ */
 export async function city(cityId: number, locale: Locale) {
   return (await countries(locale))
     .flatMap((c) => c.cities)
