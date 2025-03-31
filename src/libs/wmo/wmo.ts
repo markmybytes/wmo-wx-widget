@@ -114,18 +114,26 @@ export function forecasts(
                 min: {
                   unit: unit,
                   val:
-                    parseInt(
-                      // @ts-ignore
-                      unit == TempUnit.C ? forecast.minTemp : forecast.minTempF,
-                    ) || null,
+                    (unit == TempUnit.C && forecast.minTemp !== "") ||
+                    (unit == TempUnit.F && forecast.minTempF !== "")
+                      ? parseInt(
+                          unit == TempUnit.C
+                            ? forecast.minTemp
+                            : forecast.minTempF,
+                        )
+                      : null,
                 },
                 max: {
                   unit: unit,
                   val:
-                    parseInt(
-                      // @ts-ignore
-                      unit == TempUnit.C ? forecast.maxTemp : forecast.maxTempF,
-                    ) || null,
+                    (unit == TempUnit.C && forecast.maxTemp !== "") ||
+                    (unit == TempUnit.F && forecast.maxTempF !== "")
+                      ? parseInt(
+                          unit == TempUnit.C
+                            ? forecast.maxTemp
+                            : forecast.maxTempF,
+                        )
+                      : null,
                 },
               },
               icon:
