@@ -62,7 +62,7 @@ export function wxIconUrl(id: string, daynight: boolean) {
 /**
  * Get the forecast data
  */
-export function forecasts(
+export async function forecasts(
   cityId: number,
   locale: Locale,
   unit: TempUnit,
@@ -71,23 +71,16 @@ export function forecasts(
   return fetch(`${wmoUrl}/${locale}/json/${cityId}_${locale}.xml`)
     .then(async (res) => {
       try {
-        return (await res.json()) as WmoForecastResponse;
+        return res.json();
       } catch (e) {
         return Promise.reject(new Error("Invalid Locale"));
       }
     })
-    .then(async (json) => {
+    .then((json: WmoForecastResponse) => {
       return {
         country: {
           id: json.city.member.memId,
           name: json.city.member.memName,
-        },
-        organisation: {
-          name: json.city.member.orgName,
-          logo: json.city.member.logo
-            ? wmoUrl + `/images/logo/${json.city.member.logo}`
-            : null,
-          url: json.city.member.url || null,
         },
         city: {
           name: json.city.cityName,
@@ -141,6 +134,13 @@ export function forecasts(
             }))
             .slice(0, Math.max(Math.abs(days), 1)),
         },
+        organisation: {
+          name: json.city.member.orgName,
+          logo: json.city.member.logo
+            ? wmoUrl + `/images/logo/${json.city.member.logo}`
+            : null,
+          url: json.city.member.url || null,
+        },
       };
     });
 }
@@ -148,7 +148,7 @@ export function forecasts(
 /**
  * Get the present weather data
  */
-export function present(
+export async function present(
   cityId: number,
   locale: Locale,
   unit: TempUnit,
@@ -156,12 +156,12 @@ export function present(
   return fetch(`${wmoUrl}/${locale}/json/present.xml`)
     .then(async (res) => {
       try {
-        return (await res.json()) as WmoPresentWxResponse;
+        return res.json();
       } catch (e) {
         return Promise.reject(new Error("Invalid Locale"));
       }
     })
-    .then(async (json) => {
+    .then(async (json: WmoPresentWxResponse) => {
       try {
         var wx = Object.entries(json.present).filter(
           ([_, v]) => v.cityId == cityId,
