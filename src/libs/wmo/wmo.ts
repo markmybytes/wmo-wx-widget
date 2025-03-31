@@ -1,3 +1,4 @@
+import {Locale, TempUnit} from "./enums";
 import {
   City,
   FutureWeather,
@@ -5,8 +6,7 @@ import {
   WmoCountryResponse,
   WmoForecastResponse,
   WmoPresentWxResponse,
-} from "./definition";
-import {Locale, TempUnit} from "./enums";
+} from "./types";
 
 const wmoUrl = "https://worldweather.wmo.int";
 

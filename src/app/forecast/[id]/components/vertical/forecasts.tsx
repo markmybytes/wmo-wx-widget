@@ -1,4 +1,4 @@
-import {FutureWeather} from "@/libs/wmo/definition";
+import {FutureWeather} from "@/libs/wmo/types";
 import {Locale} from "@/libs/wmo/enums";
 import * as wmo from "@/libs/wmo/wmo";
 import {getTranslations} from "next-intl/server";
@@ -24,12 +24,18 @@ export default async function Forecasts({
     let _d = new Date(wx.date);
 
     return (
-      <div className="flex flex-row m-1 dark:text-gray-400 rounded-border" key={idx}>
+      <div
+        className="flex flex-row m-1 dark:text-gray-400 rounded-border"
+        key={idx}
+      >
         <div
           className="flex flex-col justify-center items-center"
           style={{minWidth: "30%"}}
         >
-          <span className="text-gray-400 dark:text-gray-500" style={{fontSize: "0.57rem"}}>
+          <span
+            className="text-gray-400 dark:text-gray-500"
+            style={{fontSize: "0.57rem"}}
+          >
             {_d.toLocaleString(wmo.wmoToIso639(locale), {weekday: "long"})}{" "}
           </span>
           <span>{_d.getDate()}</span>
