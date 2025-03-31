@@ -1,6 +1,6 @@
 import {Locale, TempUnit} from "./enums";
 import {
-  City,
+  Country,
   FutureWeather,
   PresentWeather,
   WmoCountryResponse,
@@ -231,42 +231,37 @@ export async function present(
     });
 }
 
-export async function cities(locale: Locale): Promise<Array<City>> {
+export async function countries(locale: Locale): Promise<Array<Country>> {
   return fetch(`${wmoUrl}/${locale}/json/Country_${locale}.xml`)
     .then((res) => res.json())
     .then((json: WmoCountryResponse) => {
-      /** @type {Array<City>} */
-      let cities_ = [];
-
+      let countries: Array<Country> = [];
       for (const [_, country] of Object.entries(json.member)) {
-        for (const city of country.city || []) {
-          cities_.push({
-            id: city.cityId,
-            name: city.cityName,
-            country: {
-              id: country.memId,
-              name: country.memName,
-            },
-            organisation: {
-              name: country.orgName,
-              logo: country.logo
-                ? wmoUrl + `/images/logo/${country.logo}`
-                : null,
-              url: country.url || null,
-            },
-            latitude: parseFloat(city.cityLatitude),
-            longitude: parseFloat(city.cityLongitude),
-            forecast: city.forecast === "Y",
-            climate: city.climate === "Y",
-            isCapital: city.isCapital,
-          });
-        }
+        countries.push({
+          id: country.memId,
+          name: country.memName,
+          cities: country.city?.map((c) => ({
+            id: c.cityId,
+            name: c.cityName,
+            latitude: parseFloat(c.cityLatitude),
+            longitude: parseFloat(c.cityLongitude),
+            forecast: c.forecast === "Y",
+            climate: c.climate === "Y",
+            isCapital: c.isCapital,
+          })),
+          organisation: {
+            name: country.orgName,
+            logo: country.logo ? wmoUrl + `/images/logo/${country.logo}` : null,
+            url: country.url || null,
+          },
+        });
       }
-
-      return cities_;
+      return countries;
     });
 }
 
 export async function city(cityId: number, locale: Locale) {
-  return (await cities(locale)).find((el) => el.id == cityId);
+  return (await countries(locale))
+    .flatMap((c) => c.cities)
+    .find((el) => el.id == cityId);
 }

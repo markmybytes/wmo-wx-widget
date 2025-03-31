@@ -3,20 +3,22 @@ import {TempUnit} from "./enums";
 export interface City {
   id: number;
   name: string;
-  country: {
-    id: number;
-    name: string;
-  };
-  organisation: {
-    name: string;
-    logo: string | null;
-    url: string | null;
-  };
   latitude: number;
   longitude: number;
   forecast: boolean;
   climate: boolean;
   isCapital: boolean;
+}
+
+export interface Country {
+  id: number;
+  name: string;
+  cities: Array<City>;
+  organisation: {
+    name: string;
+    logo: string | null;
+    url: string | null;
+  };
 }
 
 export interface FutureWeather {
