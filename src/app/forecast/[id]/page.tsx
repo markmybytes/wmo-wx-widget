@@ -55,9 +55,9 @@ export default async function Page(props: {
     TempUnit[searchParams?.unit?.toUpperCase() as keyof typeof TempUnit] ||
     TempUnit["C"];
 
-  const visPresent = (searchParams?.present || "y").toLowerCase() == "y";
+  const showWeather = (searchParams?.present || "y").toLowerCase() == "y";
 
-  const visFuture = (searchParams?.future || "y").toLowerCase() == "y";
+  const showForecast = (searchParams?.future || "y").toLowerCase() == "y";
 
   const [pwx, wx] = await Promise.all([
     wmo.present(params.id, locale, unit),
@@ -75,38 +75,12 @@ export default async function Page(props: {
         searchParams?.align || "start"
       } h-screen dark:bg-[#191919]`}
     >
-      <div className="flex flex-row gap-x-1.5 gap-y-1 w-full h-fit p-1.5">
-        <Weather weather={pwx}></Weather>
-        <Forecast locale={locale} forecast={wx}></Forecast>
+      <div className="flex flex-col md:flex-row gap-x-1.5 gap-y-1 w-full h-fit p-1.5">
+        {showWeather ? <Weather weather={pwx}></Weather> : null}
+        {showForecast ? (
+          <Forecast locale={locale} forecast={wx}></Forecast>
+        ) : null}
       </div>
-
-      {/* <div className="hidden md:block w-full">
-        <div
-          className="flex flex-row justify-around items-center m-1 p-2"
-          style={{border: "1px lightgray solid", borderRadius: "5px"}}
-        >
-          {visPresent ? (
-            <div className={`mx-1 lg:mx-0 w-60 ${visFuture ? "border-r" : ""}`}>
-              <HPresent weather={pwx}></HPresent>
-            </div>
-          ) : null}
-
-          {visFuture ? (
-            <div className="flex flex-1 justify-center">
-              <HForecasts locale={locale} forecast={wx}></HForecasts>
-            </div>
-          ) : null}
-        </div>
-      </div>
-
-      <div className="block md:hidden w-full">
-        <div className="flex flex-col flex-nowrap">
-          {visPresent ? <VPresent weather={pwx}></VPresent> : null}
-          {visFuture ? (
-            <VForecasts locale={locale} forecast={wx}></VForecasts>
-          ) : null}
-        </div>
-      </div> */}
     </main>
   );
 }
