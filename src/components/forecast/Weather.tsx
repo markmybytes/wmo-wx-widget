@@ -5,9 +5,9 @@ export default async function Weather({weather}: {weather: PresentWeather}) {
   const t = await getTranslations("weather");
 
   return (
-    <div className="flex flex-col flex-1 justify-around md:justify-center items-center gap-y-1.5 min-w-54 p-1 dark:text-gray-400 border border-gray-300 dark:border-gray-600 rounded">
+    <div className="flex flex-col flex-1 justify-around md:justify-center items-center gap-y-1.5 min-w-54 p-1 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded">
       <div className="w-full text-center">
-        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-500 truncate">
+        <p className="text-xs sm:text-sm text-gray-500 truncate">
           <i className="bi bi-geo"></i> {weather.city.name}
         </p>
       </div>
@@ -25,7 +25,7 @@ export default async function Weather({weather}: {weather: PresentWeather}) {
           </div>
 
           <div className="w-1/2">
-            <p className="font-bold text-lg sm:text-2xl">
+            <p className="font-bold text-center text-lg sm:text-2xl">
               {`${weather.temp.val || "--"}${weather.temp.unit}`}
             </p>
           </div>

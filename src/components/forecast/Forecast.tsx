@@ -28,12 +28,15 @@ export default async function Forecasts({
         let _d = new Date(wx.date);
 
         return (
-          <div className="flex sm:flex-col items-center grow w-full border sm:border-none border-gray-300 dark:border-gray-600 rounded">
+          <div
+            className="flex sm:flex-col items-center grow w-full border sm:border-none border-gray-300 dark:border-gray-600 rounded"
+            key={idx}
+          >
             <div className="flex flex-col justify-center items-center min-w-3/10 text-xs">
-              <span className="max-w-32 text-gray-400 dark:text-gray-500 truncate">
+              <span className="max-w-32 text-gray-500 dark:text-gray-500 truncate">
                 {_d.toLocaleString(wmo.wmoToIso639(locale), {weekday: "long"})}{" "}
               </span>
-              <span className="dark:text-gray-400">{_d.getDate()}</span>
+              <span className="dark:text-gray-300">{_d.getDate()}</span>
             </div>
 
             <div className="flex justify-center items-center grow my-1">
@@ -64,7 +67,7 @@ export default async function Forecasts({
                 </>
               ) : (
                 <>
-                  <div className="flex justify-around xl:justify-end min-w-13 text-sky-600 dark:text-sky-700">
+                  <div className="flex justify-around xl:justify-end min-w-13 text-sky-600 dark:text-sky-600">
                     <i className="sm:hidden bi bi-thermometer-high"></i>
                     <span>
                       {`${wx.temp.min.val ?? "--"}${wx.temp.min.unit}`}
