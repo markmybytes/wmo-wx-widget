@@ -3,13 +3,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import {Locale, TempUnit} from "@/libs/wmo/enums";
 import * as wmo from "@/libs/wmo/wmo";
 import {Metadata} from "next";
-import {default as HForecasts} from "./components/horizontal/forecasts";
-import {default as HPresent} from "./components/horizontal/present";
-import {default as VForecasts} from "./components/vertical/forecasts";
-import {default as VPresent} from "./components/vertical/present";
-import Weather, {
-  default as PresentWeather,
-} from "@/components/forecast/Weather";
+import Weather from "@/components/forecast/Weather";
 import {getTranslations} from "next-intl/server";
 import Forecast from "@/components/forecast/Forecast";
 
