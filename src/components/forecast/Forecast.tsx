@@ -58,24 +58,28 @@ export default async function Forecasts({
                 <>
                   <div className="flex justify-around min-w-13 text-sky-600 dark:text-sky-700">
                     <i className="bi bi-thermometer-low"></i>
-                    {`${wx.temp.min.val ?? "--"}${wx.temp.min.unit}`}
+                    <span className="grow text-center">
+                      {`${wx.temp.min.val ?? "--"}${wx.temp.min.unit}`}
+                    </span>
                   </div>
                   <div className="flex justify-around min-w-13 text-red-600 dark:text-red-700">
                     <i className="bi bi-thermometer-high"></i>
-                    {`${wx.temp.max.val ?? "--"}${wx.temp.max.unit}`}
+                    <span className="grow text-center">
+                      {`${wx.temp.max.val ?? "--"}${wx.temp.max.unit}`}
+                    </span>
                   </div>
                 </>
               ) : (
                 <>
                   <div className="flex justify-around xl:justify-end min-w-13 text-sky-600 dark:text-sky-600">
                     <i className="sm:hidden bi bi-thermometer-high"></i>
-                    <span>
+                    <span className="grow text-center">
                       {`${wx.temp.min.val ?? "--"}${wx.temp.min.unit}`}
                     </span>
                   </div>
                   <div className="flex justify-around xl:justify-start min-w-13 text-red-600 dark:text-red-700">
                     <i className="sm:hidden bi bi-thermometer-high"></i>
-                    <span>
+                    <span className="grow text-center">
                       {`${wx.temp.max.val ?? "--"}${wx.temp.max.unit}`}
                     </span>
                   </div>
