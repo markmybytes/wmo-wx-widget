@@ -12,7 +12,7 @@ export default async function Weather({weather}: {weather: PresentWeather}) {
         </p>
       </div>
 
-      <div className="flex md:flex-col justify-around items-center gap-1.5">
+      <div className="flex md:flex-col justify-around items-center gap-2">
         <div className="md:w-full flex items-center gap-x-0.5 sm:gap-x-1.5">
           <div className="w-1/2">
             <div className="justify-self-end h-[35px] w-[55px] sm:h-[50px] sm:w-[70px]">
