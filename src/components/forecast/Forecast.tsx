@@ -23,12 +23,12 @@ export default async function Forecasts({
   }
 
   return (
-    <div className="flex flex-col sm:flex-row flex-2 items-center gap-y-1.5 sm:p-1 sm:border border-gray-300 rounded">
+    <div className="flex flex-col sm:flex-row flex-2 items-center gap-y-1.5 sm:p-1 sm:border border-gray-300 dark:border-gray-600 rounded">
       {forecast.forecasts.data.map((wx, idx) => {
         let _d = new Date(wx.date);
 
         return (
-          <div className="flex sm:flex-col items-center grow w-full border sm:border-none border-gray-300 rounded">
+          <div className="flex sm:flex-col items-center grow w-full border sm:border-none border-gray-300 dark:border-gray-600 rounded">
             <div className="flex flex-col justify-center items-center min-w-3/10 text-xs">
               <span className="max-w-32 text-gray-400 dark:text-gray-500 truncate">
                 {_d.toLocaleString(wmo.wmoToIso639(locale), {weekday: "long"})}{" "}
