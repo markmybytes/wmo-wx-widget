@@ -1,50 +1,59 @@
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-2 sm:p-24">
-      <div className="flex flex-col sm:flex-row">
-        <div className="flex shrink-0 justify-center">
-          <img
-            className="w-[100px] h-[100px]"
-            src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
-          ></img>
-        </div>
-        <div className="flex flex-col justify-around max-w-96 text-center sm:text-left">
-          <a
-            className="text-sky-700 text-lg font-bold"
-            href="https://github.com/markmybytes/wmo-wx-widget"
-            target="_blank"
-          >
-            markmybytes/wmo-wx-widget
-          </a>
+    <main className="flex flex-col justify-center items-center gap-y-8 w-full flex-1 px-3 py-8">
+      <a
+        href="https://github.com/markmybytes/wmo-wx-widget"
+        target="_blank"
+        className="flex flex-col gap-y-2 max-w-xl p-6 rounded-lg shadow-md"
+      >
+        <p className="text-gray-500">Source Code/Repository</p>
 
-          <p>
-            A responsive, self-hosted weather widget that provide official
-            weather information around the world.
-          </p>
-        </div>
-      </div>
-      {/* <div className="grid grid-rows-3 grid-flow-col gap-1">
-        <div className="row-span-3">
+        <div className="flex items-center gap-x-1">
           <img
-            className="w-[100px] h-[100px]"
             src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
-          ></img>
+            alt="GitHub Icon"
+            className="w-6 h-6"
+          />
+
+          <p className="font-bold">markmybytes/wmo-wx-widget</p>
         </div>
-        <div className="col-span-2 flex items-center">
-          <a
-            href="https://github.com/SuperDumbTM/wmo-wx-widget"
-            target="_blank"
-          >
-            SuperDumbTM/wmo-wx-widget
-          </a>
-        </div>
-        <div className="row-span-2 col-span-2 flex items-center">
-          <p style={{maxWidth: "300px"}}>
-            A self-hosted responsive weather widget that uses the World
-            Meteorological Organization (WMO) as the data source.
+
+        <p className="mt-4 text-gray-600">
+          A responsive, self-hostable weather widget that provide official
+          weather information around the world.
+        </p>
+      </a>
+
+      <a
+        href="https://worldweather.wmo.int/en/home.html"
+        target="_blank"
+        className="flex flex-col gap-y-2 max-w-xl p-6 rounded-lg shadow-md"
+      >
+        <p className="text-gray-500">Data Source</p>
+        <div className="flex items-center gap-x-1">
+          <img
+            src="https://wmo.int/themes/custom/server_theme/dist/images/logo.svg"
+            alt="WMO Icon"
+            className="w-6 h-6"
+          />
+
+          <p className="font-bold">
+            World Meteorological Organization - World Weather Information
+            Service
           </p>
         </div>
-      </div> */}
+
+        <p className="mt-4 text-gray-600">
+          A global website presents OFFICIAL weather observations, weather
+          forecasts and climatological information for selected cities supplied
+          by National Meteorological & Hydrological Services (NMHSs)
+          worldwide.The NMHSs make official weather observations in their
+          respective countries. Links to their official weather service websites
+          and tourism board/organization are also provided whenever available.
+          Weather icons are shown alongside worded forecasts in this version to
+          facilitate visual inspection.
+        </p>
+      </a>
     </main>
   );
 }
