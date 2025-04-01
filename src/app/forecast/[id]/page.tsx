@@ -7,7 +7,11 @@ import {default as HForecasts} from "./components/horizontal/forecasts";
 import {default as HPresent} from "./components/horizontal/present";
 import {default as VForecasts} from "./components/vertical/forecasts";
 import {default as VPresent} from "./components/vertical/present";
+import Weather, {
+  default as PresentWeather,
+} from "@/components/forecast/Weather";
 import {getTranslations} from "next-intl/server";
+import Forecast from "@/components/forecast/Forecast";
 
 function parseLocale(locale: string | null | undefined): Locale {
   if (!locale) {
@@ -21,12 +25,10 @@ function parseLocale(locale: string | null | undefined): Locale {
   );
 }
 
-export async function generateMetadata(
-  props: {
-    params: Promise<{id: number}>;
-    searchParams: Promise<{locale?: keyof typeof Locale}>;
-  }
-): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Promise<{id: number}>;
+  searchParams: Promise<{locale?: keyof typeof Locale}>;
+}): Promise<Metadata> {
   const searchParams = await props.searchParams;
   const params = await props.params;
   const t = await getTranslations("meta");
@@ -39,12 +41,12 @@ export async function generateMetadata(
   };
 }
 
-export default async function Page(
-  props: {
-    params: Promise<{id: number}>;
-    searchParams?: Promise<{[key: string]: any}>;
-  }
-) {
+export default async function Page(props: {
+  params: Promise<{id: number}>;
+  searchParams?: Promise<{[key: string]: any}>;
+}) {
+  const t = await getTranslations("weather");
+
   const searchParams = await props.searchParams;
   const params = await props.params;
   const locale = parseLocale(searchParams?.locale);
@@ -68,10 +70,17 @@ export default async function Page(
   ]);
 
   return (
-    <div
-      className={`flex items-${searchParams?.align || "start"} min-h-screen dark:bg-[#191919]`}
+    <main
+      className={`flex items-${
+        searchParams?.align || "start"
+      } h-screen dark:bg-[#191919]`}
     >
-      <div className="hidden md:block w-full">
+      <div className="flex flex-row gap-x-1.5 gap-y-1 w-full h-fit p-1.5">
+        <Weather weather={pwx}></Weather>
+        <Forecast locale={locale} forecast={wx}></Forecast>
+      </div>
+
+      {/* <div className="hidden md:block w-full">
         <div
           className="flex flex-row justify-around items-center m-1 p-2"
           style={{border: "1px lightgray solid", borderRadius: "5px"}}
@@ -97,7 +106,7 @@ export default async function Page(
             <VForecasts locale={locale} forecast={wx}></VForecasts>
           ) : null}
         </div>
-      </div>
-    </div>
+      </div> */}
+    </main>
   );
 }
