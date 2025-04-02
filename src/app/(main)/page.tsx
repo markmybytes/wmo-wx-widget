@@ -1,10 +1,10 @@
 export default function Home() {
   return (
-    <main className="flex flex-col justify-center items-center gap-y-8 w-full flex-1 px-3 py-8">
+    <div className="flex flex-col justify-center items-center gap-y-8">
       <a
         href="https://github.com/markmybytes/wmo-wx-widget"
         target="_blank"
-        className="flex flex-col gap-y-2 max-w-xl p-6 rounded-lg shadow-md"
+        className="flex flex-col gap-y-2 max-w-2xl p-6 rounded-lg shadow-md"
       >
         <p className="text-gray-500">Source Code/Repository</p>
 
@@ -27,7 +27,7 @@ export default function Home() {
       <a
         href="https://worldweather.wmo.int/en/home.html"
         target="_blank"
-        className="flex flex-col gap-y-2 max-w-xl p-6 rounded-lg shadow-md"
+        className="flex flex-col gap-y-2 max-w-2xl p-6 rounded-lg shadow-md"
       >
         <p className="text-gray-500">Data Source</p>
         <div className="flex items-center gap-x-1">
@@ -54,6 +54,6 @@ export default function Home() {
           facilitate visual inspection.
         </p>
       </a>
-    </main>
+    </div>
   );
 }
