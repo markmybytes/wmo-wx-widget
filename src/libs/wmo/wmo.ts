@@ -249,7 +249,11 @@ export async function countries(locale: Locale): Promise<Array<Country>> {
     .then((res) => res.json())
     .then((json: WmoCountryResponse) => {
       let countries: Array<Country> = [];
-      for (const [_, country] of Object.entries(json.member)) {
+      for (const [k, country] of Object.entries(json.member)) {
+        if (k == "lang") {
+          continue;
+        }
+
         countries.push({
           id: country.memId,
           name: country.memName,

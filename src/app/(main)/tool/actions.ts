@@ -12,4 +12,5 @@ const getCity = unstable_cache(async (locale: Locale) => {
     }));
   });
 });
+
 export {getCity};

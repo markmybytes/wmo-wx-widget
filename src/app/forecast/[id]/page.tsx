@@ -3,11 +3,9 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import {Locale, TempUnit} from "@/libs/wmo/enums";
 import * as wmo from "@/libs/wmo/wmo";
 import {Metadata} from "next";
-import {default as HForecasts} from "./components/horizontal/forecasts";
-import {default as HPresent} from "./components/horizontal/present";
-import {default as VForecasts} from "./components/vertical/forecasts";
-import {default as VPresent} from "./components/vertical/present";
+import Weather from "@/components/forecast/Weather";
 import {getTranslations} from "next-intl/server";
+import Forecast from "@/components/forecast/Forecast";
 
 function parseLocale(locale: string | null | undefined): Locale {
   if (!locale) {
@@ -21,12 +19,10 @@ function parseLocale(locale: string | null | undefined): Locale {
   );
 }
 
-export async function generateMetadata(
-  props: {
-    params: Promise<{id: number}>;
-    searchParams: Promise<{locale?: keyof typeof Locale}>;
-  }
-): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Promise<{id: number}>;
+  searchParams: Promise<{locale?: keyof typeof Locale}>;
+}): Promise<Metadata> {
   const searchParams = await props.searchParams;
   const params = await props.params;
   const t = await getTranslations("meta");
@@ -39,12 +35,10 @@ export async function generateMetadata(
   };
 }
 
-export default async function Page(
-  props: {
-    params: Promise<{id: number}>;
-    searchParams?: Promise<{[key: string]: any}>;
-  }
-) {
+export default async function Page(props: {
+  params: Promise<{id: number}>;
+  searchParams?: Promise<{[key: string]: any}>;
+}) {
   const searchParams = await props.searchParams;
   const params = await props.params;
   const locale = parseLocale(searchParams?.locale);
@@ -53,11 +47,15 @@ export default async function Page(
     TempUnit[searchParams?.unit?.toUpperCase() as keyof typeof TempUnit] ||
     TempUnit["C"];
 
-  const visPresent = (searchParams?.present || "y").toLowerCase() == "y";
+  const showWeather = ["true", "yes", "1"].includes(
+    (searchParams?.weather || "true").toLowerCase(),
+  );
 
-  const visFuture = (searchParams?.future || "y").toLowerCase() == "y";
+  const showForecast = ["true", "yes", "1"].includes(
+    (searchParams?.forecast || "true").toLowerCase(),
+  );
 
-  const [pwx, wx] = await Promise.all([
+  const [weather, forecast] = await Promise.all([
     wmo.present(params.id, locale, unit),
     wmo.forecasts(
       params.id,
@@ -68,36 +66,17 @@ export default async function Page(
   ]);
 
   return (
-    <div
-      className={`flex items-${searchParams?.align || "start"} min-h-screen dark:bg-[#191919]`}
+    <main
+      className={`flex items-${
+        searchParams?.align || "start"
+      } h-screen dark:bg-[#191919]`}
     >
-      <div className="hidden md:block w-full">
-        <div
-          className="flex flex-row justify-around items-center m-1 p-2"
-          style={{border: "1px lightgray solid", borderRadius: "5px"}}
-        >
-          {visPresent ? (
-            <div className={`mx-1 lg:mx-0 w-60 ${visFuture ? "border-r" : ""}`}>
-              <HPresent weather={pwx}></HPresent>
-            </div>
-          ) : null}
-
-          {visFuture ? (
-            <div className="flex flex-1 justify-center">
-              <HForecasts locale={locale} forecast={wx}></HForecasts>
-            </div>
-          ) : null}
-        </div>
+      <div className="flex flex-col md:flex-row gap-x-1.5 gap-y-1 w-full h-fit p-1.5">
+        {showWeather ? <Weather weather={weather}></Weather> : null}
+        {showForecast ? (
+          <Forecast locale={locale} forecast={forecast}></Forecast>
+        ) : null}
       </div>
-
-      <div className="block md:hidden w-full">
-        <div className="flex flex-col flex-nowrap">
-          {visPresent ? <VPresent weather={pwx}></VPresent> : null}
-          {visFuture ? (
-            <VForecasts locale={locale} forecast={wx}></VForecasts>
-          ) : null}
-        </div>
-      </div>
-    </div>
+    </main>
   );
 }
