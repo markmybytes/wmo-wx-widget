@@ -92,7 +92,7 @@ export default function Page() {
             onChange={(e) => {
               setFormData({...formData, lang: e.target.value});
             }}
-            className="w-full sm:max-w-md sm:text-sm border border-gray-300 rounded-[4px]"
+            className="w-full sm:max-w-md px-1.5 sm:text-sm border border-gray-300 rounded-[4px]"
             style={{height: "38px"}}
           >
             <option value="ar">لعربية</option>
