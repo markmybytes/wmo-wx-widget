@@ -10,7 +10,7 @@ export default async function Forecasts({
   locale: Locale;
   weather: FutureWeather;
 }) {
-  const flength = weather.forecasts.data.length;
+  const flength = weather.forecasts.length;
 
   if (flength == 0) {
     const t = await getTranslations("common");
@@ -24,7 +24,7 @@ export default async function Forecasts({
 
   return (
     <div className="flex flex-col sm:flex-row flex-2 items-center gap-y-1.5 sm:p-1 sm:border border-gray-300 dark:border-gray-600 rounded">
-      {weather.forecasts.data.map((fc, idx) => {
+      {weather.forecasts.map((fc, idx) => {
         let _d = new Date(fc.date);
 
         return (

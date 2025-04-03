@@ -1,14 +1,20 @@
-import {PresentWeather} from "@/libs/wmo/types";
+import {City, PresentWeather} from "@/libs/wmo/types";
 import {getTranslations} from "next-intl/server";
 
-export default async function Weather({weather}: {weather: PresentWeather}) {
+export default async function Weather({
+  city,
+  weather,
+}: {
+  city: City;
+  weather: PresentWeather;
+}) {
   const t = await getTranslations("weather");
 
   return (
     <div className="flex flex-col flex-1 justify-around md:justify-center items-center gap-y-1.5 min-w-54 p-1 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded">
       <div className="w-full text-center">
         <p className="text-xs sm:text-sm text-gray-500 truncate">
-          <i className="bi bi-geo"></i> {weather.city.name}
+          <i className="bi bi-geo"></i> {city.name}
         </p>
       </div>
 

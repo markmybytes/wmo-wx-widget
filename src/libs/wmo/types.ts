@@ -22,47 +22,26 @@ export interface Country {
 }
 
 export interface FutureWeather {
-  country: {
-    id: number;
-    name: string;
-  };
-  organisation: {
-    name: string;
-    logo: string | null;
-    url: string | null;
-  };
-  city: {
-    name: string;
-    stationName: string;
-    latitude: number;
-    longitude: number;
-    isCapital: boolean;
-    timeZone: string;
-    isDST: boolean;
-  };
-  forecasts: {
-    issueAt: Date | null;
-    data: Array<{
-      date: string;
-      description: string;
-      weather: string;
-      temp: {
-        min: {
-          unit: TempUnit;
-          val: number | null;
-        };
-        max: {
-          unit: TempUnit;
-          val: number | null;
-        };
+  issueAt: Date | null;
+  forecasts: Array<{
+    date: string;
+    description: string;
+    weather: string;
+    temp: {
+      min: {
+        unit: TempUnit;
+        val: number | null;
       };
-      icon: string;
-    }>;
-  };
+      max: {
+        unit: TempUnit;
+        val: number | null;
+      };
+    };
+    icon: string;
+  }>;
 }
 
 export interface PresentWeather {
-  city: City;
   issueAt: Date | null;
   temp: {
     unit: TempUnit;
