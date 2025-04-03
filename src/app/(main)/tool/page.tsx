@@ -12,10 +12,7 @@ import {getCity} from "./actions";
 export default function Page() {
   const t = useTranslations("common");
   const usrLocale = useLocale();
-
-  const [language, setLanguage] = useState(
-    {"zh-Hant": "tc", "zh-Hans": "zh"}[usrLocale] || usrLocale,
-  );
+  const locale = {"zh-Hant": "tc", "zh-Hans": "zh"}[usrLocale] || usrLocale;
 
   const [cityOption, setCityOption] = useState<
     Array<{value: string; label: string}>
@@ -36,10 +33,12 @@ export default function Page() {
   const [outUrl, setOutUrl] = useState("");
 
   useEffect(() => {
-    // trigger change event to load the city options
-    document
-      .querySelector("select[name=locale]")
-      ?.dispatchEvent(new Event("change", {bubbles: true}));
+    getCity(
+      Locale[
+        (locale[0].toUpperCase() +
+          locale.slice(1).toLowerCase()) as keyof typeof Locale
+      ],
+    ).then((cities) => setCityOption(cities));
   }, []);
 
   return (
@@ -89,30 +88,9 @@ export default function Page() {
 
           <select
             name="locale"
-            defaultValue={language}
+            defaultValue={locale}
             onChange={(e) => {
               setFormData({...formData, lang: e.target.value});
-              setLanguage(e.target.value);
-
-              if (e.target.value.length != 2) {
-                setCityOption([]);
-                return;
-              }
-
-              getCity(
-                Locale[
-                  (e.target.value[0].toUpperCase() +
-                    e.target.value.slice(1)) as keyof typeof Locale
-                ],
-              )
-                .then((cities) => {
-                  setCityOption(
-                    cities.map((v, i) => {
-                      return {value: v.id.toString(), label: v.name};
-                    }),
-                  );
-                })
-                .catch((_) => []);
             }}
             className="w-full sm:max-w-md sm:text-sm border border-gray-300 rounded-[4px]"
             style={{height: "38px"}}
