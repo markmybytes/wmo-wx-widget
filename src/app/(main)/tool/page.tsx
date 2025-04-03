@@ -187,6 +187,7 @@ export default function Page() {
             </button>
             <input
               type="number"
+              min="1"
               className="w-14 h-11 text-center text-sm border-y border-gray-300"
               value={formData.days}
               onChange={(e) => {
