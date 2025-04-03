@@ -116,8 +116,8 @@ export default function Page() {
 
             <div className="flex gap-x-3">
               {Object.entries({
-                present: t("presentWeather"),
-                future: t("futureWeather"),
+                weather: t("presentWeather"),
+                forecast: t("futureWeather"),
               }).map(([k, text]) => (
                 <label className="flex items-center gap-x-1" key={k}>
                   <input
