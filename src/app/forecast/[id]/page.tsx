@@ -69,7 +69,7 @@ export default async function Page(props: {
     <main
       className={`flex items-${
         searchParams?.align || "start"
-      } h-screen dark:bg-[#191919]`}
+      } min-h-screen dark:bg-[#191919]`}
     >
       <div className="flex flex-col md:flex-row gap-x-1.5 gap-y-1 w-full h-fit p-1.5">
         {showWeather ? <Weather weather={weather}></Weather> : null}
