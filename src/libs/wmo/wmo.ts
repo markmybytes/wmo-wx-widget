@@ -39,20 +39,13 @@ export function wmoToIso639(locale: Locale) {
  * Generates the URL for a WMO weather icon based on the icon ID.
  *
  * @param id - The four-digit icon ID.
- * @param daynight - Whether to display the day/night variation icon (if available).
+ * @param daynightCode - Code that indicate day or night version (if available).
  * @returns The URL of the weather icon.
  */
-export function wxIconUrl(id: string, daynight: boolean) {
-  let iconId = parseInt(id.slice(0, id.length - 2)).toString(); // remove leading zero
-  let dn = id.slice(-2);
-  if (parseInt(iconId) >= 21 && parseInt(iconId) <= 25) {
-    if (daynight) {
-      iconId += dn == "01" ? "a" : "b";
-    } else {
-      iconId += "a";
-    }
-  }
-  return `${wmoUrl}/images/i${iconId}.png`;
+export function wxIconUrl(id: string, daynightCode: string) {
+  return `${wmoUrl}/images/i${parseInt(
+    id.slice(0, id.length - 2),
+  )}${daynightCode}.png`;
 }
 
 /**
@@ -117,7 +110,7 @@ export async function forecasts(
             },
             icon:
               forecast.weatherIcon != 0
-                ? wxIconUrl(forecast.weatherIcon.toString(), false)
+                ? wxIconUrl(forecast.weatherIcon.toString(), "")
                 : "/images/question_mark.png",
           }))
           .slice(0, Math.max(Math.abs(days), 1)),
@@ -185,7 +178,7 @@ export async function present(
         weather: wx.wxdesc,
         icon:
           wx.iconNum !== ""
-            ? wxIconUrl(wx.iconNum, true)
+            ? wxIconUrl(wx.iconNum, wx.daynightcode)
             : "/images/question_mark.png",
         wind:
           wx.wd !== "" && wx.ws !== ""
