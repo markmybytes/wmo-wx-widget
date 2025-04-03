@@ -4,6 +4,9 @@ const withNextIntl = createNextIntlPlugin("./src/libs/i18n.ts");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  env: {
+    appTitle: "wmo-wx-widget",
+  },
   images: {
     remotePatterns: [
       {

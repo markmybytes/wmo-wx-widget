@@ -8,7 +8,7 @@ import "../../public/globals.css";
 const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
-  title: "wmo-wx-widget",
+  title: process.env.appTitle,
   description:
     "A responsive, self-hosted weather widget that provide official weather information around the world.",
 };

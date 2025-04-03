@@ -32,11 +32,14 @@ export async function generateMetadata(props: {
   const params = await props.params;
   const t = await getTranslations("meta");
   return {
-    title: t("titleForecast", {
-      location:
-        (await wmo.city(params.id, parseLocale(searchParams.locale)))?.name ||
-        "N/A",
-    }),
+    title: [
+      t("titleForecast", {
+        location:
+          (await wmo.city(params.id, parseLocale(searchParams.locale)))?.name ||
+          "N/A",
+      }),
+      process.env.appTitle,
+    ].join(" | "),
   };
 }
 
