@@ -70,7 +70,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/a1a85bf7-5f62-4adf-9431-acb743b342ca" alt="project screen shot">
+  <img src="https://github.com/user-attachments/assets/2226ee69-0553-4e17-be31-86db0c82ada7" alt="project screen shot">
 <p align="right">
 
 This project is an alternative to the weather widgets that already exists on the internet.
@@ -141,13 +141,13 @@ This is an example of how to list things you need to use the software and how to
 
 The widget will adjust itself to accomandate the size of the screen.
 
-<img src="https://github.com/user-attachments/assets/3ccb74ab-6bb4-4166-91db-0be3d70ef746" alt="responsive demo">
+<img src="https://github.com/user-attachments/assets/b4df8493-99ff-455d-acd4-e62296369276" alt="responsive demo">
 
 ### Widget Customiser
 
 A configurating tool is provided to configure the location and various display settings.
 
-<img src="https://github.com/user-attachments/assets/e55c1499-a12e-4966-b796-f27fbb503cf6" alt="widget customiser screen shot" width="450">
+<img src="https://github.com/user-attachments/assets/6ce3bc32-5cd8-4441-9f56-8d0f342595b9" alt="widget customiser screen shot" width="450">
 
 ### Embedding
 
