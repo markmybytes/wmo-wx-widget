@@ -80,69 +80,47 @@ export async function forecasts(
     })
     .then((json: WmoForecastResponse) => {
       return {
-        country: {
-          id: json.city.member.memId,
-          name: json.city.member.memName,
-        },
-        city: {
-          name: json.city.cityName,
-          stationName: json.city.stationName,
-          latitude: parseFloat(json.city.cityLatitude),
-          longitude: parseFloat(json.city.cityLongitude),
-          isCapital: json.city.isCapital,
-          timeZone: json.city.timeZone,
-          isDST: json.city.isDST !== "N",
-        },
-        forecasts: {
-          issueAt:
-            json.city.forecast.issueDate != "N/A"
-              ? new Date(json.city.forecast.issueDate + json.city.timeZone)
-              : null,
-          data: json.city.forecast.forecastDay
-            .map((forecast) => ({
-              date: forecast.forecastDate,
-              description: forecast.wxdesc,
-              weather: forecast.weather,
-              temp: {
-                min: {
-                  unit: unit,
-                  val:
-                    (unit == TempUnit.C && forecast.minTemp !== "") ||
-                    (unit == TempUnit.F && forecast.minTempF !== "")
-                      ? parseInt(
-                          unit == TempUnit.C
-                            ? forecast.minTemp
-                            : forecast.minTempF,
-                        )
-                      : null,
-                },
-                max: {
-                  unit: unit,
-                  val:
-                    (unit == TempUnit.C && forecast.maxTemp !== "") ||
-                    (unit == TempUnit.F && forecast.maxTempF !== "")
-                      ? parseInt(
-                          unit == TempUnit.C
-                            ? forecast.maxTemp
-                            : forecast.maxTempF,
-                        )
-                      : null,
-                },
-              },
-              icon:
-                forecast.weatherIcon != 0
-                  ? wxIconUrl(forecast.weatherIcon.toString(), false)
-                  : "/images/question_mark.png",
-            }))
-            .slice(0, Math.max(Math.abs(days), 1)),
-        },
-        organisation: {
-          name: json.city.member.orgName,
-          logo: json.city.member.logo
-            ? wmoUrl + `/images/logo/${json.city.member.logo}`
+        issueAt:
+          json.city.forecast.issueDate != "N/A"
+            ? new Date(json.city.forecast.issueDate + json.city.timeZone)
             : null,
-          url: json.city.member.url || null,
-        },
+        forecasts: json.city.forecast.forecastDay
+          .map((forecast) => ({
+            date: forecast.forecastDate,
+            description: forecast.wxdesc,
+            weather: forecast.weather,
+            temp: {
+              min: {
+                unit: unit,
+                val:
+                  (unit == TempUnit.C && forecast.minTemp !== "") ||
+                  (unit == TempUnit.F && forecast.minTempF !== "")
+                    ? parseInt(
+                        unit == TempUnit.C
+                          ? forecast.minTemp
+                          : forecast.minTempF,
+                      )
+                    : null,
+              },
+              max: {
+                unit: unit,
+                val:
+                  (unit == TempUnit.C && forecast.maxTemp !== "") ||
+                  (unit == TempUnit.F && forecast.maxTempF !== "")
+                    ? parseInt(
+                        unit == TempUnit.C
+                          ? forecast.maxTemp
+                          : forecast.maxTempF,
+                      )
+                    : null,
+              },
+            },
+            icon:
+              forecast.weatherIcon != 0
+                ? wxIconUrl(forecast.weatherIcon.toString(), false)
+                : "/images/question_mark.png",
+          }))
+          .slice(0, Math.max(Math.abs(days), 1)),
       };
     });
 }
@@ -184,7 +162,6 @@ export async function present(
       }
 
       return {
-        city: (await city(cityId, locale))!,
         issueAt: wx.issue
           ? new Date(
               wx.issue.slice(0, 4) as any,

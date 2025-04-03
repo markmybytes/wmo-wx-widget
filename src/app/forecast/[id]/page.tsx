@@ -6,6 +6,7 @@ import {Metadata} from "next";
 import Weather from "@/components/forecast/Weather";
 import {getTranslations} from "next-intl/server";
 import Forecast from "@/components/forecast/Forecast";
+import {notFound} from "next/navigation";
 
 function parseLocale(locale: string | null | undefined): Locale {
   if (!locale) {
@@ -17,6 +18,10 @@ function parseLocale(locale: string | null | undefined): Locale {
         locale.slice(1).toLowerCase()) as keyof typeof Locale
     ] || Locale["En"]
   );
+}
+
+function str2bool(s: string): boolean {
+  return ["true", "yes", "1"].includes(s);
 }
 
 export async function generateMetadata(props: {
@@ -37,44 +42,48 @@ export async function generateMetadata(props: {
 
 export default async function Page(props: {
   params: Promise<{id: number}>;
-  searchParams?: Promise<{[key: string]: any}>;
+  searchParams?: Promise<{[key: string]: string}>;
 }) {
-  const searchParams = await props.searchParams;
-  const params = await props.params;
+  const [params, searchParams] = await Promise.all([
+    props.params,
+    props.searchParams,
+  ]);
+
   const locale = parseLocale(searchParams?.locale);
+
+  const city = await wmo.city(params.id, locale);
+  if (city === undefined) {
+    return notFound();
+  }
 
   const unit =
     TempUnit[searchParams?.unit?.toUpperCase() as keyof typeof TempUnit] ||
     TempUnit["C"];
 
-  const showWeather = ["true", "yes", "1"].includes(
-    (searchParams?.weather || "true").toLowerCase(),
-  );
-
-  const showForecast = ["true", "yes", "1"].includes(
-    (searchParams?.forecast || "true").toLowerCase(),
-  );
-
-  const [weather, forecast] = await Promise.all([
-    wmo.present(params.id, locale, unit),
-    wmo.forecasts(
-      params.id,
-      locale,
-      unit,
-      isNaN(parseInt(searchParams?.days)) ? 5 : parseInt(searchParams!.days),
-    ),
-  ]);
-
   return (
     <main
-      className={`flex items-${
+      className={`flex min-h-screen dark:bg-[#191919] items-${
         searchParams?.align || "start"
-      } min-h-screen dark:bg-[#191919]`}
+      }`}
     >
       <div className="flex flex-col md:flex-row gap-x-1.5 gap-y-1 w-full h-fit p-1.5">
-        {showWeather ? <Weather weather={weather}></Weather> : null}
-        {showForecast ? (
-          <Forecast locale={locale} weather={forecast}></Forecast>
+        {str2bool(searchParams?.weather?.toLowerCase() || "true") ? (
+          <Weather
+            city={city}
+            weather={await wmo.present(params.id, locale, unit)}
+          ></Weather>
+        ) : null}
+
+        {str2bool(searchParams?.forcast?.toLowerCase() || "true") ? (
+          <Forecast
+            locale={locale}
+            weather={await wmo.forecasts(
+              params.id,
+              locale,
+              unit,
+              parseInt(searchParams?.days ?? "5") ?? 5,
+            )}
+          ></Forecast>
         ) : null}
       </div>
     </main>
