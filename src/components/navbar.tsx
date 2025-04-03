@@ -81,7 +81,7 @@ export default function Navbar() {
             className="text-gray-700 hover:text-gray-900"
           >
             <span className="block sm:hidden">
-              <i className="bi bi-eyedropper"></i>
+              <i className="bi bi-eyeglasses"></i>
             </span>
             <span className="hidden sm:block">{t("widgetDemo")}</span>
           </Link>
