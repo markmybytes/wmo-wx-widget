@@ -5,12 +5,12 @@ import {getTranslations} from "next-intl/server";
 
 export default async function Forecasts({
   locale,
-  forecast,
+  weather,
 }: {
   locale: Locale;
-  forecast: FutureWeather;
+  weather: FutureWeather;
 }) {
-  const flength = forecast.forecasts.data.length;
+  const flength = weather.forecasts.data.length;
 
   if (flength == 0) {
     const t = await getTranslations("common");
@@ -24,8 +24,8 @@ export default async function Forecasts({
 
   return (
     <div className="flex flex-col sm:flex-row flex-2 items-center gap-y-1.5 sm:p-1 sm:border border-gray-300 dark:border-gray-600 rounded">
-      {forecast.forecasts.data.map((wx, idx) => {
-        let _d = new Date(wx.date);
+      {weather.forecasts.data.map((fc, idx) => {
+        let _d = new Date(fc.date);
 
         return (
           <div
@@ -42,9 +42,9 @@ export default async function Forecasts({
             <div className="flex justify-center items-center grow my-1">
               <div className="h-[38px] w-[50px]">
                 <img
-                  src={wx.icon!}
+                  src={fc.icon!}
                   className="size-full"
-                  alt={wx.weather ?? ""}
+                  alt={fc.weather ?? ""}
                 />
               </div>
             </div>
@@ -59,13 +59,13 @@ export default async function Forecasts({
                   <div className="flex justify-around min-w-13 text-sky-600 dark:text-sky-700">
                     <i className="bi bi-thermometer-low"></i>
                     <span className="grow text-center">
-                      {`${wx.temp.min.val ?? "--"}${wx.temp.min.unit}`}
+                      {`${fc.temp.min.val ?? "--"}${fc.temp.min.unit}`}
                     </span>
                   </div>
                   <div className="flex justify-around min-w-13 text-red-600 dark:text-red-700">
                     <i className="bi bi-thermometer-high"></i>
                     <span className="grow text-center">
-                      {`${wx.temp.max.val ?? "--"}${wx.temp.max.unit}`}
+                      {`${fc.temp.max.val ?? "--"}${fc.temp.max.unit}`}
                     </span>
                   </div>
                 </>
@@ -74,13 +74,13 @@ export default async function Forecasts({
                   <div className="flex justify-around xl:justify-end min-w-13 text-sky-600 dark:text-sky-600">
                     <i className="sm:hidden bi bi-thermometer-high"></i>
                     <span className="grow text-center">
-                      {`${wx.temp.min.val ?? "--"}${wx.temp.min.unit}`}
+                      {`${fc.temp.min.val ?? "--"}${fc.temp.min.unit}`}
                     </span>
                   </div>
                   <div className="flex justify-around xl:justify-start min-w-13 text-red-600 dark:text-red-700">
                     <i className="sm:hidden bi bi-thermometer-high"></i>
                     <span className="grow text-center">
-                      {`${wx.temp.max.val ?? "--"}${wx.temp.max.unit}`}
+                      {`${fc.temp.max.val ?? "--"}${fc.temp.max.unit}`}
                     </span>
                   </div>
                 </>

@@ -74,7 +74,7 @@ export default async function Page(props: {
       <div className="flex flex-col md:flex-row gap-x-1.5 gap-y-1 w-full h-fit p-1.5">
         {showWeather ? <Weather weather={weather}></Weather> : null}
         {showForecast ? (
-          <Forecast locale={locale} forecast={forecast}></Forecast>
+          <Forecast locale={locale} weather={forecast}></Forecast>
         ) : null}
       </div>
     </main>
