@@ -24,7 +24,7 @@ export default function Page() {
     align: "start",
     city: "",
     days: "5",
-    lang: "",
+    lang: locale,
     unit: "C",
   });
 
@@ -33,12 +33,9 @@ export default function Page() {
   const [outUrl, setOutUrl] = useState("");
 
   useEffect(() => {
-    getCity(
-      Locale[
-        (locale[0].toUpperCase() +
-          locale.slice(1).toLowerCase()) as keyof typeof Locale
-      ],
-    ).then((cities) => setCityOption(cities));
+    getCity(Locale[locale as keyof typeof Locale] || Locale.EN).then((cities) =>
+      setCityOption(cities),
+    );
   }, []);
 
   return (

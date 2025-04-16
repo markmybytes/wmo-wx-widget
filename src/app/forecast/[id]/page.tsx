@@ -10,14 +10,9 @@ import {notFound} from "next/navigation";
 
 function parseLocale(locale: string | null | undefined): Locale {
   if (!locale) {
-    return Locale["En"];
+    return Locale.EN;
   }
-  return (
-    Locale[
-      (locale[0].toUpperCase() +
-        locale.slice(1).toLowerCase()) as keyof typeof Locale
-    ] || Locale["En"]
-  );
+  return Locale[locale.toUpperCase() as keyof typeof Locale] as Locale;
 }
 
 function str2bool(s: string): boolean {
@@ -26,16 +21,17 @@ function str2bool(s: string): boolean {
 
 export async function generateMetadata(props: {
   params: Promise<{id: number}>;
-  searchParams: Promise<{locale?: keyof typeof Locale}>;
+  searchParams: Promise<{lang?: string}>;
 }): Promise<Metadata> {
   const searchParams = await props.searchParams;
   const params = await props.params;
   const t = await getTranslations("meta");
+
   return {
     title: [
       t("titleForecast", {
         location:
-          (await wmo.city(params.id, parseLocale(searchParams.locale)))?.name ||
+          (await wmo.city(params.id, parseLocale(searchParams.lang)))?.name ||
           "N/A",
       }),
       process.env.appTitle,
@@ -52,7 +48,7 @@ export default async function Page(props: {
     props.searchParams,
   ]);
 
-  const locale = parseLocale(searchParams?.locale);
+  const locale = parseLocale(searchParams?.lang);
 
   const city = await wmo.city(params.id, locale);
   if (city === undefined) {

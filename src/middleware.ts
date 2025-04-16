@@ -7,12 +7,12 @@ import {NextResponse} from "next/server";
 export default function intlMiddleware(req: NextRequest) {
   const headers = new Headers(req.headers);
 
-  if (req.nextUrl.searchParams.get("locale") == "tc") {
-    headers.set("x-wx-locale", "zh-Hant");
-  } else if (req.nextUrl.searchParams.get("locale") == "zh") {
-    headers.set("x-wx-locale", "zh-Hans");
+  if (req.nextUrl.searchParams.get("lang") == "tc") {
+    headers.set("x-wx-lang", "zh-Hant");
+  } else if (req.nextUrl.searchParams.get("lang") == "zh") {
+    headers.set("x-wx-lang", "zh-Hans");
   } else {
-    headers.set("x-wx-locale", req.nextUrl.searchParams.get("locale") || "en");
+    headers.set("x-wx-lang", req.nextUrl.searchParams.get("lang") || "en");
   }
 
   return NextResponse.next({
