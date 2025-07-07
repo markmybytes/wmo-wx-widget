@@ -1,15 +1,7 @@
 <a id="readme-top"></a>
 
 
-
 <!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
 <div align="center">
 
   [![Tag][tag-shield]][tag-url]
@@ -22,7 +14,6 @@
 </div>
 
 
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -33,8 +24,7 @@
   <h3 align="center">wmo-wx-widget</h3>
 
   <p align="center">
-    A responsive, self-hosted weather widget that provide official weather information around the world.
-    <br />
+    A responsive, self-hostable weather widget that provide official weather information around the world.
     <br />
     <a href="https://github.com/markmybytes/wmo-wx-widget/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
@@ -43,39 +33,15 @@
 </div>
 
 
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-  </ol>
-</details>
-
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/2226ee69-0553-4e17-be31-86db0c82ada7" alt="project screen shot">
+  <img src="https://github.com/user-attachments/assets/2226ee69-0553-4e17-be31-86db0c82ada7" alt="project screenshot">
 <p align="right">
 
-This project is an alternative to the weather widgets that already exists on the internet.
+An alternative to the weather widgets that already exists on the internet.
 
-The purpose of this project is to provide weather information form a trustworthy source -- World Meteorological Organization, which relay the data from the local weather organisation around the world.
+_wmo-wx-widget_ brings you the weather information form a trustworthy source [World Meteorological Organization](http://wmo.int/about-wmo/overview), which relay the data from the local weather forecast organisation around the world.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -90,38 +56,29 @@ The purpose of this project is to provide weather information form a trustworthy
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
 <!-- GETTING STARTED -->
 ## Getting Started
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+- Node 22 https://nodejs.org/en/download/package-manager
 
-### Installation
+### Setup
 
-#### Setup
+#### Install dependencies
 
-1. Clone the repo
-   ```sh
-   git clone https://github.com/markmybytes/wmo-wx-widget.git
-   ```
-2. Install NPM packages
+- Install NPM packages
    ```sh
    npm install
    ```
 
-#### Deploy
+#### Commands
 
 * Development
    ```sh
    npm run dev
    ```
-* Production
+* Preview
    ```sh
    npm run build && npm run start
    ```
@@ -131,7 +88,6 @@ This is an example of how to list things you need to use the software and how to
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- USAGE EXAMPLES -->
@@ -145,18 +101,17 @@ The widget will adjust itself to accomandate the size of the screen.
 
 ### Widget Customiser
 
-A configurating tool is provided to configure the location and various display settings.
+A configurating tool to configure the location and various display settings.
 
-<img src="https://github.com/user-attachments/assets/6ce3bc32-5cd8-4441-9f56-8d0f342595b9" alt="widget customiser screen shot" width="450">
+<img src="https://github.com/user-attachments/assets/6ce3bc32-5cd8-4441-9f56-8d0f342595b9" alt="widget customiser screenshot" width="450">
 
 ### Embedding
 
 The widget can be embedding to note taking apps like Notion for your travel plans or working plans.
 
-<img src="https://github.com/user-attachments/assets/77e54ac9-de75-40d0-85b5-0d3a8672a290" alt="notion embedding screen shot" height="550">
+<img src="https://github.com/user-attachments/assets/77e54ac9-de75-40d0-85b5-0d3a8672a290" alt="notion embedding screenshot" style="height: 650px">
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
