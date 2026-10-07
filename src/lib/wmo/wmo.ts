@@ -50,7 +50,7 @@ export function wmoToIso639(locale: Locale) {
  * @param daynightCode - Code that indicate day or night version (if available).
  * @returns The URL of the weather icon.
  */
-export function wxIconUrl(id: string, daynightCode: string) {
+function wxIconUrl(id: string, daynightCode: string) {
   return `${wmoUrl}/images/i${parseInt(
     id.slice(0, id.length - 2),
   )}${daynightCode}.png`;
@@ -137,7 +137,7 @@ function toDisplayTemp(celsius: number | "", unit: TempUnit): number | null {
  * @param days - The number of days for the forecast.
  * @returns The forecast data.
  */
-export function mapForecasts(
+function mapForecasts(
   json: WmoForecastResponse,
   unit: TempUnit,
   days: number,
@@ -173,7 +173,7 @@ export function mapForecasts(
  * @param unit - The temperature unit (Celsius or Fahrenheit).
  * @returns The present weather data.
  */
-export function mapPresent(
+function mapPresent(
   json: WmoPresentWxResponse,
   cityId: number,
   unit: TempUnit,
@@ -187,7 +187,7 @@ export function mapPresent(
   return {
     issueAt: parseIssueTime(wx.issue),
     temp: {
-      unit: unit,
+      unit,
       val: toDisplayTemp(wx.temp, unit),
     },
     rh: wx.rh || null,
@@ -217,7 +217,7 @@ export function mapPresent(
  * @param json - The parsed WMO country response.
  * @returns An array of countries.
  */
-export function mapCountries(json: WmoCountryResponse): Array<Country> {
+function mapCountries(json: WmoCountryResponse): Array<Country> {
   const countries: Array<Country> = [];
   for (const [k, country] of Object.entries(json.member)) {
     if (k == "lang") {
