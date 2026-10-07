@@ -3,7 +3,7 @@ import {NextIntlClientProvider} from "next-intl";
 import {getLocale, getMessages} from "next-intl/server";
 import {Inter} from "next/font/google";
 
-import "../../public/globals.css";
+import "./globals.css";
 
 const inter = Inter({subsets: ["latin"]});
 

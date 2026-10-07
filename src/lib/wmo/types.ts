@@ -69,7 +69,7 @@ export type WmoForecastResponse = {
     cityLatitude: string;
     cityLongitude: string;
     cityName: string;
-    climate: any;
+    climate: string;
     forecast: {
       forecastDay: Array<{
         forecastDate: string;

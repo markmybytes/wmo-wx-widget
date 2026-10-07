@@ -1,4 +1,5 @@
-import {City, PresentWeather} from "@/libs/wmo/types";
+import {Icon} from "@iconify/react";
+import {City, PresentWeather} from "@/lib/wmo/types";
 import {getTranslations} from "next-intl/server";
 
 export default async function Weather({
@@ -14,7 +15,13 @@ export default async function Weather({
     <div className="flex flex-col flex-1 justify-around md:justify-center items-center gap-y-1.5 min-w-54 p-1 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded">
       <div className="w-full text-center">
         <p className="text-xs sm:text-sm text-gray-500 truncate">
-          <i className="bi bi-geo"></i> {city.name}
+          <Icon
+            icon="material-symbols:location-on-outline"
+            className="inline"
+            width="1em"
+            height="1em"
+          />{" "}
+          {city.name}
         </p>
       </div>
 
@@ -46,10 +53,21 @@ export default async function Weather({
 
           <div className="flex flex-col sm:flex-row gap-x-2 text-xs sm:text-sm">
             <span>
-              <i className="bi bi-droplet-half"></i> {`${weather.rh || "--"}%`}
+              <Icon
+                icon="material-symbols:water-drop"
+                className="inline"
+                width="1em"
+                height="1em"
+              />{" "}
+              {`${weather.rh || "--"}%`}
             </span>
             <span>
-              <i className="bi bi-wind"></i>{" "}
+              <Icon
+                icon="material-symbols:air"
+                className="inline"
+                width="1em"
+                height="1em"
+              />{" "}
               {weather.wind
                 ? `${weather.wind.direction} ${weather.wind.speed || "--"} m/s`
                 : "--"}

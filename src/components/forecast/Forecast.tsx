@@ -1,6 +1,7 @@
-import {FutureWeather} from "@/libs/wmo/types";
-import {Locale} from "@/libs/wmo/enums";
-import * as wmo from "@/libs/wmo/wmo";
+import {Icon} from "@iconify/react";
+import {FutureWeather} from "@/lib/wmo/types";
+import {Locale} from "@/lib/wmo/enums";
+import * as wmo from "@/lib/wmo/wmo";
 import {getTranslations} from "next-intl/server";
 
 export default async function Forecasts({
@@ -25,7 +26,7 @@ export default async function Forecasts({
   return (
     <div className="flex flex-col sm:flex-row flex-2 items-center gap-y-1.5 sm:p-1 sm:border border-gray-300 dark:border-gray-600 rounded">
       {weather.forecasts.map((fc, idx) => {
-        let _d = new Date(fc.date);
+        const _d = new Date(fc.date);
 
         return (
           <div
@@ -57,13 +58,23 @@ export default async function Forecasts({
               {flength < 8 ? (
                 <>
                   <div className="flex justify-around min-w-13 text-sky-600 dark:text-sky-700">
-                    <i className="bi bi-thermometer-low"></i>
+                    <Icon
+                      icon="material-symbols:device-thermometer"
+                      className="inline"
+                      width="1em"
+                      height="1em"
+                    />
                     <span className="grow text-center">
                       {`${fc.temp.min.val ?? "--"}${fc.temp.min.unit}`}
                     </span>
                   </div>
                   <div className="flex justify-around min-w-13 text-red-600 dark:text-red-700">
-                    <i className="bi bi-thermometer-high"></i>
+                    <Icon
+                      icon="material-symbols:device-thermometer"
+                      className="inline"
+                      width="1em"
+                      height="1em"
+                    />
                     <span className="grow text-center">
                       {`${fc.temp.max.val ?? "--"}${fc.temp.max.unit}`}
                     </span>
@@ -72,13 +83,23 @@ export default async function Forecasts({
               ) : (
                 <>
                   <div className="flex justify-around xl:justify-end min-w-13 text-sky-600 dark:text-sky-600">
-                    <i className="sm:hidden bi bi-thermometer-high"></i>
+                    <Icon
+                      icon="material-symbols:device-thermometer"
+                      className="sm:hidden inline"
+                      width="1em"
+                      height="1em"
+                    />
                     <span className="grow text-center">
                       {`${fc.temp.min.val ?? "--"}${fc.temp.min.unit}`}
                     </span>
                   </div>
                   <div className="flex justify-around xl:justify-start min-w-13 text-red-600 dark:text-red-700">
-                    <i className="sm:hidden bi bi-thermometer-high"></i>
+                    <Icon
+                      icon="material-symbols:device-thermometer"
+                      className="sm:hidden inline"
+                      width="1em"
+                      height="1em"
+                    />
                     <span className="grow text-center">
                       {`${fc.temp.max.val ?? "--"}${fc.temp.max.unit}`}
                     </span>
