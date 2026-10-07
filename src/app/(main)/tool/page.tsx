@@ -160,7 +160,7 @@ export default function Page() {
 
   const [formData, setFormData] = useState({
     weather: true,
-    forecast: true,
+    forcast: true,
     align: "start",
     city: "",
     days: "5",
@@ -291,7 +291,7 @@ export default function Page() {
               <div className="flex gap-x-4">
                 {Object.entries({
                   weather: t("presentWeather"),
-                  forecast: t("futureWeather"),
+                  forcast: t("futureWeather"),
                 }).map(([k, text]) => (
                   <label
                     className="flex items-center gap-x-2 text-sm text-zinc-600"
@@ -303,7 +303,7 @@ export default function Page() {
                       value={k}
                       checked={formData[k as keyof typeof formData] as boolean}
                       onChange={() => {
-                        const key = k as "weather" | "forecast";
+                        const key = k as "weather" | "forcast";
                         setFormData({ ...formData, [key]: !formData[key] });
                       }}
                       className={CHECK_CLASS}
