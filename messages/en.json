@@ -1,7 +1,7 @@
 {
     "common": {
         "widgetCustomiser": "Widget Customiser",
-        "widgetCustomiserHelp": "Customising on how the weather information will be displayed.",
+        "widgetCustomiserHelp": "Customise how the weather information is displayed.",
         "language": "Language",
         "city": "City",
         "displaySettings": "Display Settings",
@@ -13,19 +13,39 @@
         "center": "Center",
         "end": "End",
         "maxForecastPeriod": "Max Forecast Period",
-        "maxForecastPeriodHelp": "The maximum forecast count in days. However, actual amount will be depends on the data source.",
+        "maxForecastPeriodHelp": "The maximum number of forecast days. The actual amount depends on the data source.",
         "generate": "Generate",
-        "emptyCityValidation": "Please seletc a city first.",
+        "emptyCityValidation": "Please select a city first.",
         "displayedComponent": "Displayed Component",
         "presentWeather": "Present Weather",
         "futureWeather": "Future Weather (Forecast)",
-        "unitSettings": "Unit Setting",
-        "noForecastAvailable": "No Forecast Available"
+        "unitSettings": "Unit Settings",
+        "noForecastAvailable": "No Forecast Available",
+        "cityPlaceholder": "Type to search cities…",
+        "cityNoResults": "No matching cities",
+        "clear": "Clear",
+        "copy": "Copy",
+        "copied": "Copied!"
+    },
+    "home": {
+        "heroEyebrow": "Official weather data",
+        "heroTitle": "wmo-wx-widget",
+        "heroDescription": "A responsive, self-hostable weather widget that provides official weather observations and forecasts from the World Meteorological Organization.",
+        "customiserTitle": "Build your widget",
+        "customiserDescription": "Pick a city, tweak display and unit settings, and copy a ready-to-embed URL.",
+        "customiserCta": "Open the customiser",
+        "aboutTitle": "About",
+        "dataSourceLabel": "Data source",
+        "dataSourceName": "WMO World Weather Information Service",
+        "dataSourceDescription": "Official weather observations, forecasts and climatological information for selected cities, supplied by National Meteorological & Hydrological Services worldwide.",
+        "repoLabel": "Source code",
+        "repoName": "markmybytes/wmo-wx-widget",
+        "repoDescription": "Self-host it, read the code, or contribute on GitHub."
     },
     "meta": {
         "title": "wmo-wx-widget",
         "titleForecast": "{location} Weather",
-        "description": "A responsive, self-hosted weather widget that provide official weather information around the world."
+        "description": "A responsive, self-hosted weather widget that provides official weather information from around the world."
     },
     "nav": {
         "home": "Home",

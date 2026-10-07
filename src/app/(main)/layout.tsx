@@ -1,14 +1,14 @@
 import Navbar from "@/components/navbar";
 
-export default async function RootLayout({
+export default function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <>
-      <Navbar></Navbar>
-      <main className="flex flex-col gap-y-2 min-h-screen mx-auto px-4 py-6 sm:w-xl md:w-3xl lg:w-4xl xl:w-5xl">
+      <Navbar />
+      <main className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6">
         {children}
       </main>
     </>
