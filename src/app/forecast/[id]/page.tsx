@@ -17,22 +17,18 @@ function str2bool(s: string): boolean {
   return ["true", "yes", "1"].includes(s);
 }
 
-type WidgetParams = {
+/**
+ * Parses the widget's search params once. `forcast` (sic) is the canonical
+ * embed param.
+ */
+function parseWidgetParams(sp: { [key: string]: string } | undefined): {
   locale: Locale;
   unit: TempUnit;
   days: number;
   align: string;
   weather: boolean;
   forecast: boolean;
-};
-
-/**
- * Parses the widget's search params once. `forcast` (sic) is the canonical
- * embed param.
- */
-function parseWidgetParams(
-  sp: { [key: string]: string } | undefined,
-): WidgetParams {
+} {
   return {
     locale: parseLocale(sp?.lang),
     unit:

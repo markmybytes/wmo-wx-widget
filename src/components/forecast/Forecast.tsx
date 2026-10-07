@@ -4,7 +4,7 @@ import { Locale } from "@/lib/wmo/enums";
 import * as wmo from "@/lib/wmo/wmo";
 import { getTranslations } from "next-intl/server";
 
-export default async function Forecasts({
+export default async function Forecast({
   locale,
   weather,
 }: {
@@ -26,7 +26,7 @@ export default async function Forecasts({
   return (
     <div className="flex flex-col sm:flex-row flex-2 items-center gap-y-1.5 sm:p-1 sm:border border-gray-300 dark:border-gray-600 rounded">
       {weather.forecasts.map((fc) => {
-        const _d = new Date(fc.date);
+        const date = new Date(fc.date);
 
         return (
           <div
@@ -35,11 +35,11 @@ export default async function Forecasts({
           >
             <div className="flex flex-col justify-center items-center min-w-3/10 text-xs">
               <span className="max-w-32 text-gray-500 dark:text-gray-500 truncate">
-                {_d.toLocaleString(wmo.wmoToIso639(locale), {
+                {date.toLocaleString(wmo.wmoToIso639(locale), {
                   weekday: "long",
                 })}{" "}
               </span>
-              <span className="dark:text-gray-300">{_d.getDate()}</span>
+              <span className="dark:text-gray-300">{date.getDate()}</span>
             </div>
 
             <div className="flex justify-center items-center grow my-1">
