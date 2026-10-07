@@ -1,7 +1,5 @@
-import "bootstrap-icons/font/bootstrap-icons.css";
-
-import {Locale, TempUnit} from "@/libs/wmo/enums";
-import * as wmo from "@/libs/wmo/wmo";
+import {Locale, TempUnit} from "@/lib/wmo/enums";
+import * as wmo from "@/lib/wmo/wmo";
 import {Metadata} from "next";
 import Weather from "@/components/forecast/Weather";
 import {getTranslations} from "next-intl/server";

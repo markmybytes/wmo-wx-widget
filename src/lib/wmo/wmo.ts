@@ -140,8 +140,9 @@ export async function present(
       }
     })
     .then(async (json: WmoPresentWxResponse) => {
+      let wx;
       try {
-        var wx = Object.entries(json.present).filter(
+        wx = Object.entries(json.present).filter(
           ([_, v]) => v.cityId == cityId,
         )[0][1];
       } catch (e) {
@@ -157,11 +158,11 @@ export async function present(
       return {
         issueAt: wx.issue
           ? new Date(
-              wx.issue.slice(0, 4) as any,
-              wx.issue.slice(5, 6) as any,
-              wx.issue.slice(7, 8) as any,
-              wx.issue.slice(9, 10) as any,
-              wx.issue.slice(11, 12) as any,
+              Number(wx.issue.slice(0, 4)),
+              Number(wx.issue.slice(5, 6)),
+              Number(wx.issue.slice(7, 8)),
+              Number(wx.issue.slice(9, 10)),
+              Number(wx.issue.slice(11, 12)),
             )
           : null,
         temp: {
@@ -190,18 +191,18 @@ export async function present(
             : null,
         sun: {
           rise: new Date(
-            wx.sundate.slice(0, 4) as any,
-            wx.sundate.slice(5, 6) as any,
-            wx.sundate.slice(7, 8) as any,
-            wx.sunrise.slice(0, 2) as any,
-            wx.sunrise.slice(3, 4) as any,
+            Number(wx.sundate.slice(0, 4)),
+            Number(wx.sundate.slice(5, 6)),
+            Number(wx.sundate.slice(7, 8)),
+            Number(wx.sunrise.slice(0, 2)),
+            Number(wx.sunrise.slice(3, 4)),
           ),
           set: new Date(
-            wx.sundate.slice(0, 4) as any,
-            wx.sundate.slice(5, 6) as any,
-            wx.sundate.slice(7, 8) as any,
-            wx.sunset.slice(0, 2) as any,
-            wx.sunset.slice(3, 4) as any,
+            Number(wx.sundate.slice(0, 4)),
+            Number(wx.sundate.slice(5, 6)),
+            Number(wx.sundate.slice(7, 8)),
+            Number(wx.sunset.slice(0, 2)),
+            Number(wx.sunset.slice(3, 4)),
           ),
         },
       };
@@ -218,7 +219,7 @@ export async function countries(locale: Locale): Promise<Array<Country>> {
   return fetch(`${wmoUrl}/${locale}/json/Country_${locale}.xml`)
     .then((res) => res.json())
     .then((json: WmoCountryResponse) => {
-      let countries: Array<Country> = [];
+      const countries: Array<Country> = [];
       for (const [k, country] of Object.entries(json.member)) {
         if (k == "lang") {
           continue;
