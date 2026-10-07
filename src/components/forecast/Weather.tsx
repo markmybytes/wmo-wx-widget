@@ -39,7 +39,7 @@ export default async function Weather({
 
           <div className="w-1/2">
             <p className="font-bold text-center text-lg sm:text-2xl">
-              {`${weather.temp.val || "--"}${weather.temp.unit}`}
+              {`${weather.temp.val ?? "--"}${weather.temp.unit}`}
             </p>
           </div>
         </div>

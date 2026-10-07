@@ -25,13 +25,13 @@ export default async function Forecasts({
 
   return (
     <div className="flex flex-col sm:flex-row flex-2 items-center gap-y-1.5 sm:p-1 sm:border border-gray-300 dark:border-gray-600 rounded">
-      {weather.forecasts.map((fc, idx) => {
+      {weather.forecasts.map((fc) => {
         const _d = new Date(fc.date);
 
         return (
           <div
             className="flex sm:flex-col items-center grow w-full border sm:border-none border-gray-300 dark:border-gray-600 rounded"
-            key={idx}
+            key={fc.date}
           >
             <div className="flex flex-col justify-center items-center min-w-3/10 text-xs">
               <span className="max-w-32 text-gray-500 dark:text-gray-500 truncate">
