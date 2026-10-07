@@ -28,12 +28,10 @@
     "copied": "Copied!"
   },
   "home": {
-    "heroEyebrow": "Official weather data",
-    "heroTitle": "wmo-wx-widget",
-    "heroDescription": "A responsive, self-hostable weather widget that provides official weather observations and forecasts from the World Meteorological Organization.",
+    "heroTitle": "A weather widget, powered by official WMO data",
+    "heroDescription": "wmo-wx-widget displays live observations and multi-day forecasts from the World Meteorological Organization. Configure it once and embed it anywhere with a single URL.",
+    "heroMockCaption": "The actual widget, at actual size.",
     "customiserTitle": "Build your widget",
-    "customiserDescription": "Pick a city, tweak display and unit settings, and copy a ready-to-embed URL.",
-    "customiserCta": "Open the customiser",
     "aboutTitle": "About",
     "dataSourceLabel": "Data source",
     "dataSourceName": "WMO World Weather Information Service",

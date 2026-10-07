@@ -10,7 +10,10 @@
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      /* End at `none` so fill-mode doesn't leave a permanent transform, which
+         would keep a stacking context on every animated section and trap
+         positioned children (e.g. the city combobox dropdown) inside it. */
+      transform: none;
     }
   }
 }

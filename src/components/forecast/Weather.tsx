@@ -30,7 +30,7 @@ export default async function Weather({
           <div className="w-1/2">
             <div className="justify-self-end h-[40px] w-[55px] sm:h-[50px] sm:w-[70px]">
               <img
-                src={weather.icon!}
+                src={weather.icon}
                 className="size-full"
                 alt={weather.weather ?? ""}
               />

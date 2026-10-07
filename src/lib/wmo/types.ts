@@ -49,14 +49,14 @@ export interface PresentWeather {
   };
   rh: number | null;
   weather: string | null;
-  icon: string | null;
+  icon: string;
   wind: {
     direction: string;
-    speed: number | null;
+    speed: number;
   } | null;
   sun: {
-    rise: Date;
-    set: Date;
+    rise: Date | null;
+    set: Date | null;
   };
 }
 
@@ -109,7 +109,7 @@ export type WmoForecastResponse = {
  */
 export type WmoCountryResponse = {
   member: Array<{
-    city: Array<{
+    city?: Array<{
       cityId: number;
       cityLatitude: string;
       cityLongitude: string;

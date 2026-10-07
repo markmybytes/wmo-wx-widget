@@ -4,38 +4,78 @@ import Link from "next/link";
 
 export default async function Home() {
   const t = await getTranslations("home");
+  const wt = await getTranslations("weather");
 
   return (
-    <div className="relative">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 -top-10 -z-10 h-80 bg-gradient-to-b from-sky-100/80 to-transparent"
-      />
+    <div>
+      <section className="grid items-center gap-x-12 gap-y-10 py-12 sm:grid-cols-[1fr_auto] sm:py-16 motion-safe:animate-fade-up">
+        <div className="max-w-xl">
+          <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
+            {t("heroTitle")}
+          </h1>
 
-      <section className="flex flex-col items-start gap-y-5 py-16 sm:py-24 motion-safe:animate-fade-up">
-        <p className="flex items-center gap-x-1.5 rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs font-medium text-sky-700">
-          <Icon icon="material-symbols:cloud" width="14" height="14" />
-          {t("heroEyebrow")}
-        </p>
+          <p className="mt-3 text-base leading-relaxed text-zinc-600">
+            {t("heroDescription")}
+          </p>
+        </div>
 
-        <h1 className="text-4xl font-bold tracking-tight text-zinc-900 sm:text-5xl">
-          {t("heroTitle")}
-        </h1>
+        <div className="justify-self-center sm:justify-self-end">
+          {/* Static, real-CSS mock of the actual widget card (components/forecast/Weather.tsx). */}
+          <div
+            aria-hidden
+            className="rounded-2xl border border-dashed border-zinc-300 p-4"
+          >
+            <div className="w-56 rounded border border-zinc-300 bg-white p-3 shadow-sm">
+              <p className="flex items-center justify-center gap-x-1 text-xs text-zinc-500">
+                <Icon
+                  icon="material-symbols:location-on-outline"
+                  width="1em"
+                  height="1em"
+                />
+                Geneva
+              </p>
 
-        <p className="max-w-2xl text-lg leading-relaxed text-zinc-600">
-          {t("heroDescription")}
-        </p>
+              <div className="mt-2 flex flex-col items-center gap-y-2">
+                <div className="flex items-center gap-x-2">
+                  <Icon
+                    icon="material-symbols:partly-cloudy-day"
+                    className="text-amber-500"
+                    width="44"
+                    height="44"
+                  />
+                  <span className="text-2xl font-bold text-zinc-900">18°C</span>
+                </div>
 
-        <Link
-          href="/tool"
-          className="mt-2 inline-flex items-center gap-x-2 rounded-xl bg-sky-600 px-5 py-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-sky-500"
-        >
-          {t("customiserCta")}
-          <Icon icon="material-symbols:arrow-forward" width="18" height="18" />
-        </Link>
+                <p className="bg-zinc-100 px-2 text-xs text-zinc-700">
+                  {wt("Sunny")}
+                </p>
+
+                <div className="flex gap-x-3 text-xs text-zinc-600">
+                  <span className="flex items-center gap-x-1">
+                    <Icon
+                      icon="material-symbols:water-drop"
+                      width="1em"
+                      height="1em"
+                    />
+                    64%
+                  </span>
+                  <span className="flex items-center gap-x-1">
+                    <Icon icon="material-symbols:air" width="1em" height="1em" />
+                    {wt("NE")} 3 m/s
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p className="mt-2 text-center text-xs text-zinc-400">
+            {t("heroMockCaption")}
+          </p>
+        </div>
       </section>
 
-      <section className="mt-4 motion-safe:animate-fade-up [animation-delay:120ms]">
+      {/* The single entry point into /tool. */}
+      <section className="mt-2 motion-safe:animate-fade-up [animation-delay:120ms]">
         <Link
           href="/tool"
           className="group flex items-center justify-between gap-x-4 rounded-2xl border border-zinc-200 bg-white p-6 transition-colors hover:border-sky-300 hover:bg-sky-50/50"
