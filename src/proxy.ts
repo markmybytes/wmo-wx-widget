@@ -8,15 +8,9 @@ export default function proxy(req: NextRequest) {
   const headers = new Headers(req.headers);
 
   const lang = req.nextUrl.searchParams.get("lang");
-  // `tc`/`zh` are WMO codes; `kr` is the legacy code kept for backwards compatibility.
+  // `tc`/`zh` are WMO codes remapped to their internal locale.
   const locale =
-    lang == "tc"
-      ? "zh-Hant"
-      : lang == "zh"
-        ? "zh-Hans"
-        : lang == "kr"
-          ? "ko"
-          : lang || "en";
+    lang == "tc" ? "zh-Hant" : lang == "zh" ? "zh-Hans" : lang || "en";
 
   headers.set("x-wx-lang", locale);
 

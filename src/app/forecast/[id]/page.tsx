@@ -10,9 +10,7 @@ function parseLocale(locale: string | null | undefined): Locale {
   if (!locale) {
     return Locale.EN;
   }
-  // `kr` is the legacy code kept for backwards compatibility; `ko` takes precedence.
-  const normalized = locale === "kr" ? "ko" : locale;
-  return Locale[normalized.toUpperCase() as keyof typeof Locale] as Locale;
+  return Locale[locale.toUpperCase() as keyof typeof Locale] as Locale;
 }
 
 function str2bool(s: string): boolean {
@@ -29,9 +27,8 @@ type WidgetParams = {
 };
 
 /**
- * Parses the widget's search params once, applying the same defaults as before.
- * The `forcast` (sic) spelling is kept for backwards compatibility; `forecast`
- * is also accepted.
+ * Parses the widget's search params once. `forcast` (sic) is the canonical
+ * embed param.
  */
 function parseWidgetParams(
   sp: { [key: string]: string } | undefined,
@@ -44,7 +41,7 @@ function parseWidgetParams(
     days: parseInt(sp?.days ?? "5"),
     align: sp?.align || "start",
     weather: str2bool(sp?.weather?.toLowerCase() || "true"),
-    forecast: str2bool((sp?.forcast ?? sp?.forecast)?.toLowerCase() || "true"),
+    forecast: str2bool(sp?.forcast?.toLowerCase() || "true"),
   };
 }
 
