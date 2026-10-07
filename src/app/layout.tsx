@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
-import { Inter } from "next/font/google";
+import { Inter, Archivo, IBM_Plex_Mono } from "next/font/google";
 
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const archivo = Archivo({ subsets: ["latin"], variable: "--font-archivo" });
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("meta");
@@ -28,7 +34,9 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} dir={locale == "ar" ? "rtl" : "ltr"}>
-      <body className={inter.className}>
+      <body
+        className={`${inter.variable} ${archivo.variable} ${plexMono.variable} font-sans`}
+      >
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>
