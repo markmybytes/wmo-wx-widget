@@ -5,6 +5,7 @@ import Link from "next/link";
 export default async function Home() {
   const t = await getTranslations("home");
   const wt = await getTranslations("weather");
+  const ct = await getTranslations("common");
 
   return (
     <div className="motion-safe:animate-fade-up">
@@ -89,20 +90,35 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* The single entry point into /tool. */}
+      {/* The single entry point into /tool — staged as the page's CTA panel. */}
       <Link
         href="/tool"
-        className="group flex items-center justify-between gap-x-4 rounded-xl border border-line bg-white px-5 py-4 transition-colors hover:border-signal/50 hover:bg-signal-soft/40"
+        className="group grid gap-x-8 gap-y-3 rounded-xl border border-line bg-white px-5 py-5 shadow-sm transition-colors hover:border-signal/50 hover:bg-signal-soft/40 sm:grid-cols-[1fr_auto] sm:items-end sm:px-7 sm:py-6"
       >
-        <h2 className="font-display text-lg font-semibold text-ink sm:text-xl">
-          {t("customiserTitle")}
-        </h2>
-        <Icon
-          icon="material-symbols:chevron-right"
-          className="shrink-0 text-signal transition-transform ltr:group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5"
-          width="22"
-          height="22"
-        />
+        <div>
+          <p className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-signal">
+            {ct("widgetCustomiser")}
+          </p>
+
+          <h2 className="mt-1.5 font-display text-xl font-bold text-ink sm:text-2xl">
+            {t("customiserTitle")}
+          </h2>
+
+          <p className="mt-1.5 max-w-prose text-sm leading-relaxed text-faint">
+            {t("customiserDescription")}
+          </p>
+        </div>
+
+        {/* Button-styled chip; arrow travel flips per direction. */}
+        <span className="inline-flex items-center gap-x-1.5 justify-self-start rounded-md border border-signal bg-white px-3.5 py-2 font-mono text-xs font-medium text-signal sm:justify-self-end">
+          {t("customiserCta")}
+          <Icon
+            icon="material-symbols:chevron-right"
+            className="shrink-0 transition-transform motion-reduce:transition-none ltr:group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5"
+            width="16"
+            height="16"
+          />
+        </span>
       </Link>
 
       {/* Sources and code, set as report rows rather than cards. */}
