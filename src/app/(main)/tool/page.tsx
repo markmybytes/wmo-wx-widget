@@ -203,7 +203,7 @@ export default function Page() {
 
   return (
     <form className="flex flex-col gap-y-6">
-      <div className="motion-safe:animate-fade-up">
+      <div>
         <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
           {t("widgetCustomiser")}
         </h1>
@@ -212,9 +212,7 @@ export default function Page() {
         </p>
       </div>
 
-      <section
-        className={`${SECTION_CLASS} motion-safe:animate-fade-up [animation-delay:80ms]`}
-      >
+      <section className={SECTION_CLASS}>
         <h2 className="text-lg font-semibold text-zinc-900">{t("city")}</h2>
         <div className="mt-4">
           <label
@@ -234,9 +232,7 @@ export default function Page() {
         </div>
       </section>
 
-      <section
-        className={`${SECTION_CLASS} motion-safe:animate-fade-up [animation-delay:160ms]`}
-      >
+      <section className={SECTION_CLASS}>
         <h2 className="text-lg font-semibold text-zinc-900">
           {t("displaySettings")}
         </h2>
@@ -411,9 +407,7 @@ export default function Page() {
         </div>
       </section>
 
-      <section
-        className={`${SECTION_CLASS} motion-safe:animate-fade-up [animation-delay:240ms]`}
-      >
+      <section className={SECTION_CLASS}>
         <h2 className="text-lg font-semibold text-zinc-900">
           {t("unitSettings")}
         </h2>
@@ -449,9 +443,7 @@ export default function Page() {
         </fieldset>
       </section>
 
-      <section
-        className={`${SECTION_CLASS} motion-safe:animate-fade-up [animation-delay:320ms]`}
-      >
+      <section className={SECTION_CLASS}>
         <h2 className="text-lg font-semibold text-zinc-900">URL</h2>
 
         <div className="mt-4 flex flex-col gap-y-3">
