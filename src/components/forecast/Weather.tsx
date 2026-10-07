@@ -1,6 +1,6 @@
-import {Icon} from "@iconify/react";
-import {City, PresentWeather} from "@/lib/wmo/types";
-import {getTranslations} from "next-intl/server";
+import { Icon } from "@iconify/react";
+import { City, PresentWeather } from "@/lib/wmo/types";
+import { getTranslations } from "next-intl/server";
 
 export default async function Weather({
   city,

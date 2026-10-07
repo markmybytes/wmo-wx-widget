@@ -1,30 +1,34 @@
 "use client";
 
-import {Icon} from "@iconify/react";
+import { Icon } from "@iconify/react";
 import Link from "next/link";
-import {usePathname, useRouter} from "next/navigation";
-import {useEffect, useRef, useState} from "react";
-import {useLocale, useTranslations} from "next-intl";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 
 const LOCALES = [
-  {locale: "ar", name: "لعربية"},
-  {locale: "en", name: "English"},
-  {locale: "zh-Hant", name: "繁體中文"},
-  {locale: "zh-Hans", name: "简体中文"},
-  {locale: "fr", name: "Français"},
-  {locale: "de", name: "Deutsch"},
-  {locale: "it", name: "Italiano"},
-  {locale: "kr", name: "한국어"},
-  {locale: "pl", name: "Polski"},
-  {locale: "pt", name: "Português"},
-  {locale: "ru", name: "Русский"},
-  {locale: "es", name: "Español"},
+  { locale: "ar", name: "لعربية" },
+  { locale: "en", name: "English" },
+  { locale: "zh-Hant", name: "繁體中文" },
+  { locale: "zh-Hans", name: "简体中文" },
+  { locale: "fr", name: "Français" },
+  { locale: "de", name: "Deutsch" },
+  { locale: "it", name: "Italiano" },
+  { locale: "ko", name: "한국어" },
+  { locale: "pl", name: "Polski" },
+  { locale: "pt", name: "Português" },
+  { locale: "ru", name: "Русский" },
+  { locale: "es", name: "Español" },
 ];
 
 const LINKS = [
-  {href: "/", label: "home", icon: "material-symbols:home-outline"},
-  {href: "/tool", label: "tool", icon: "material-symbols:tune"},
-  {href: "/forecast/1", label: "widgetDemo", icon: "material-symbols:visibility-outline"},
+  { href: "/", label: "home", icon: "material-symbols:home-outline" },
+  { href: "/tool", label: "tool", icon: "material-symbols:tune" },
+  {
+    href: "/forecast/1",
+    label: "widgetDemo",
+    icon: "material-symbols:visibility-outline",
+  },
 ];
 
 export default function Navbar() {

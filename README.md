@@ -1,18 +1,16 @@
 <a id="readme-top"></a>
 
-
 <!-- PROJECT SHIELDS -->
 <div align="center">
 
-  [![Tag][tag-shield]][tag-url]
-  [![Contributors][contributors-shield]][contributors-url]
-  [![Forks][forks-shield]][forks-url]
-  [![Stargazers][stars-shield]][stars-url]
-  [![Issues][issues-shield]][issues-url]
-  [![License][license-shield]][license-url]
-  
-</div>
+[![Tag][tag-shield]][tag-url]
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![License][license-shield]][license-url]
 
+</div>
 
 <!-- PROJECT LOGO -->
 <br />
@@ -32,9 +30,10 @@
   </p>
 </div>
 
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
+
 <p align="center">
   <img src="https://github.com/user-attachments/assets/2226ee69-0553-4e17-be31-86db0c82ada7" alt="project screenshot">
 <p align="right">
@@ -45,8 +44,6 @@ _wmo-wx-widget_ brings you the weather information form a trustworthy source [Wo
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 ### Built With
 
 [<img src="https://img.shields.io/badge/bootstrap%20icons-7532fa?style=for-the-badge&logo=bootstrap&logoColor=white">](https://tailwindcss.com/)
@@ -55,8 +52,8 @@ _wmo-wx-widget_ brings you the weather information form a trustworthy source [Wo
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 ### Prerequisites
@@ -68,29 +65,29 @@ _wmo-wx-widget_ brings you the weather information form a trustworthy source [Wo
 #### Install dependencies
 
 - Install NPM packages
-   ```sh
-   npm install
-   ```
+  ```sh
+  npm install
+  ```
 
 #### Commands
 
-* Development
-   ```sh
-   npm run dev
-   ```
-* Preview
-   ```sh
-   npm run build && npm run start
-   ```
-* Docker Build
-   ```sh
-   docker build -t wmo-wx-widget .
-   ```
+- Development
+  ```sh
+  npm run dev
+  ```
+- Preview
+  ```sh
+  npm run build && npm run start
+  ```
+- Docker Build
+  ```sh
+  docker build -t wmo-wx-widget .
+  ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
 ### Responsive Widget
@@ -113,9 +110,9 @@ The widget can be embedding to note taking apps like Notion for your travel plan
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [tag-url]: https://github.com/markmybytes/wmo-wx-widget/releases
 [tag-shield]: https://img.shields.io/github/v/tag/markmybytes/wmo-wx-widget?style=for-the-badge&label=LATEST&color=%23B1B1B1
 [contributors-shield]: https://img.shields.io/github/contributors/markmybytes/wmo-wx-widget.svg?style=for-the-badge

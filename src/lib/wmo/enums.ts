@@ -6,7 +6,7 @@ export enum Locale {
   FR = "fr",
   DE = "de",
   IT = "it",
-  KR = "kr",
+  KO = "ko",
   PL = "pl",
   PT = "pt",
   RU = "ru",
