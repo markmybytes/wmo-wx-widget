@@ -26,41 +26,6 @@ export default async function Home() {
           <p className="mt-3 max-w-prose text-sm leading-relaxed text-faint sm:text-base">
             {t("heroDescription")}
           </p>
-
-          {/* Synoptic readout: the raw fields the widget renders. */}
-          <div
-            aria-hidden
-            className="mt-7 flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-line pt-4 font-mono text-sm text-ink sm:text-[15px]"
-          >
-            <span className="sr-only">Sample observation for Geneva</span>
-            <div className="flex items-center gap-x-2">
-              <Icon
-                icon="material-symbols:device-thermometer"
-                className="text-signal"
-                width="1em"
-                height="1em"
-              />
-              18°C
-            </div>
-            <div className="flex items-center gap-x-2">
-              <Icon
-                icon="material-symbols:water-drop"
-                className="text-signal"
-                width="1em"
-                height="1em"
-              />
-              64%
-            </div>
-            <div className="flex items-center gap-x-2">
-              <Icon
-                icon="material-symbols:air"
-                className="text-signal"
-                width="1em"
-                height="1em"
-              />
-              {wt("NE")} 3 m/s
-            </div>
-          </div>
         </div>
 
         <div className="justify-self-center sm:justify-self-end">
