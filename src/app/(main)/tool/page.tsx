@@ -2,11 +2,9 @@
 
 import "./style.css";
 
-import {Locale} from "@/libs/wmo/enums";
+import {Locale} from "@/lib/wmo/enums";
 import {useLocale, useTranslations} from "next-intl";
 import {useEffect, useState} from "react";
-import {createFilter} from "react-select";
-import AsyncSelect from "react-select/async";
 import {getCity} from "./actions";
 
 export default function Page() {
@@ -53,25 +51,23 @@ export default function Page() {
         <div>
           <h3 className="text-base">{t("city")}</h3>
 
-          <AsyncSelect
-            instanceId="city"
+          <input
+            list="city-options"
             name="city"
-            defaultOptions={cityOption}
-            loadOptions={(inputValue, callback) => {
-              callback(
-                cityOption.filter((c) =>
-                  c.label
-                    .toLocaleLowerCase()
-                    .includes(inputValue.toLocaleLowerCase()),
-                ),
+            className="block w-full sm:max-w-md sm:text-sm px-1.5 border border-gray-300 rounded-[4px]"
+            style={{height: "38px"}}
+            onChange={(e) => {
+              const selected = cityOption.find(
+                (c) => c.label === e.target.value,
               );
+              setFormData({...formData, city: selected ? selected.value : ""});
             }}
-            onChange={(newValue) => {
-              setFormData({...formData, city: newValue!.value});
-            }}
-            filterOption={createFilter({ignoreAccents: false})}
-            className="block w-full sm:max-w-md sm:text-sm"
-          ></AsyncSelect>
+          />
+          <datalist id="city-options">
+            {cityOption.map((c) => (
+              <option key={c.value} value={c.label} />
+            ))}
+          </datalist>
         </div>
       </div>
 
@@ -123,9 +119,8 @@ export default function Page() {
                     value={k}
                     checked={formData[k as keyof typeof formData] as boolean}
                     onChange={() => {
-                      let d: {[key: string]: any} = {};
-                      d[k] = !formData[k as keyof typeof formData];
-                      setFormData({...formData, ...d});
+                      const key = k as "weather" | "forecast";
+                      setFormData({...formData, [key]: !formData[key]});
                     }}
                     className="h-4 w-4"
                   />
@@ -192,7 +187,7 @@ export default function Page() {
                   setFormData({...formData, days: ""});
                 }
                 if (e.target.value.match(/^[0-9]+$/)) {
-                  let d = parseInt(e.target.value);
+                  const d = parseInt(e.target.value);
                   setFormData({
                     ...formData,
                     days: d > 0 ? d.toString() : "1",

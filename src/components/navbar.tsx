@@ -1,8 +1,6 @@
 "use client";
 
-import "bootstrap-icons/font/bootstrap-icons.css";
-
-import Cookies from "js-cookie";
+import {Icon} from "@iconify/react";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {useEffect, useRef, useState} from "react";
@@ -33,7 +31,7 @@ function LocaleButtons() {
         onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
           if (!event.currentTarget.dataset.code) return;
 
-          Cookies.set("lang", event.currentTarget.dataset.code);
+          document.cookie = `lang=${event.currentTarget.dataset.code}; path=/; max-age=31536000; samesite=lax`;
           router.refresh();
         }}
       >
@@ -66,13 +64,23 @@ export default function Navbar() {
           <span className="text-xl font-semibold">wmo-wx-widget</span>
           <Link href="/" className="text-gray-700 hover:text-gray-900">
             <span className="block sm:hidden">
-              <i className="bi bi-house"></i>
+              <Icon
+                icon="material-symbols:home-outline"
+                className="inline"
+                width="1em"
+                height="1em"
+              />
             </span>
             <span className="hidden sm:block">{t("home")}</span>
           </Link>
           <Link href="/tool" className="text-gray-700 hover:text-gray-900">
             <span className="block sm:hidden">
-              <i className="bi bi-ui-radios"></i>
+              <Icon
+                icon="material-symbols:tune"
+                className="inline"
+                width="1em"
+                height="1em"
+              />
             </span>
             <span className="hidden sm:block">{t("tool")}</span>
           </Link>
@@ -81,7 +89,12 @@ export default function Navbar() {
             className="text-gray-700 hover:text-gray-900"
           >
             <span className="block sm:hidden">
-              <i className="bi bi-eyeglasses"></i>
+              <Icon
+                icon="material-symbols:visibility-outline"
+                className="inline"
+                width="1em"
+                height="1em"
+              />
             </span>
             <span className="hidden sm:block">{t("widgetDemo")}</span>
           </Link>
@@ -93,7 +106,12 @@ export default function Navbar() {
             }}
             className="text-gray-700 hover:text-gray-900 focus:outline-hidden"
           >
-            <i className="bi bi-translate"></i>
+            <Icon
+              icon="material-symbols:translate"
+              className="inline"
+              width="1em"
+              height="1em"
+            />
           </button>
           {isDropdownOpen && (
             <div
