@@ -45,7 +45,7 @@ export default async function Forecasts({
             <div className="flex justify-center items-center grow my-1">
               <div className="h-[38px] w-[50px]">
                 <img
-                  src={fc.icon!}
+                  src={fc.icon}
                   className="size-full"
                   alt={fc.weather ?? ""}
                 />
