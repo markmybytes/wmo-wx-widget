@@ -1,5 +1,5 @@
-import {Icon} from "@iconify/react";
-import {getTranslations} from "next-intl/server";
+import { Icon } from "@iconify/react";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
 export default async function Home() {
@@ -35,9 +35,7 @@ export default async function Home() {
         </Link>
       </section>
 
-      <section
-        className="mt-4 motion-safe:animate-fade-up [animation-delay:120ms]"
-      >
+      <section className="mt-4 motion-safe:animate-fade-up [animation-delay:120ms]">
         <Link
           href="/tool"
           className="group flex items-center justify-between gap-x-4 rounded-2xl border border-zinc-200 bg-white p-6 transition-colors hover:border-sky-300 hover:bg-sky-50/50"

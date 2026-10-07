@@ -1,4 +1,4 @@
-import {Locale, TempUnit} from "./enums";
+import { Locale, TempUnit } from "./enums";
 import {
   Country,
   FutureWeather,
@@ -9,6 +9,14 @@ import {
 } from "./types";
 
 const wmoUrl = "https://worldweather.wmo.int";
+
+/**
+ * Maps an internal locale to the locale used in WMO API URLs.
+ * The API uses the country code `kr` for Korean while the internal locale is `ko`.
+ */
+function toWmoLocale(locale: Locale): string {
+  return locale === Locale.KO ? "kr" : locale;
+}
 
 /** Fetches a URL and parses its JSON body, mapping parse failures to a locale error. */
 async function getJson<T>(url: string): Promise<T> {
@@ -35,7 +43,7 @@ export function wmoToIso639(locale: Locale) {
     fr: "fr",
     de: "de",
     it: "it",
-    kr: "ko",
+    ko: "ko",
     pl: "pl",
     pt: "pt",
     ru: "ru",
@@ -73,8 +81,9 @@ export async function forecasts(
   unit: TempUnit,
   days: number,
 ): Promise<FutureWeather> {
+  const apiLocale = toWmoLocale(locale);
   const json = await getJson<WmoForecastResponse>(
-    `${wmoUrl}/${locale}/json/${cityId}_${locale}.xml`,
+    `${wmoUrl}/${apiLocale}/json/${cityId}_${apiLocale}.xml`,
   );
 
   return {
@@ -132,12 +141,14 @@ export async function present(
   unit: TempUnit,
 ): Promise<PresentWeather> {
   const json = await getJson<WmoPresentWxResponse>(
-    `${wmoUrl}/${locale}/json/present.xml`,
+    `${wmoUrl}/${toWmoLocale(locale)}/json/present.xml`,
   );
 
   let wx;
   try {
-    wx = Object.entries(json.present).filter(([_, v]) => v.cityId == cityId)[0][1];
+    wx = Object.entries(json.present).filter(
+      ([_, v]) => v.cityId == cityId,
+    )[0][1];
   } catch {
     throw new Error("Invalid City ID");
   }
@@ -205,8 +216,9 @@ export async function present(
  * @returns A promise that resolves to an array of countries.
  */
 export async function countries(locale: Locale): Promise<Array<Country>> {
+  const apiLocale = toWmoLocale(locale);
   const json = await getJson<WmoCountryResponse>(
-    `${wmoUrl}/${locale}/json/Country_${locale}.xml`,
+    `${wmoUrl}/${apiLocale}/json/Country_${apiLocale}.xml`,
   );
 
   const countries: Array<Country> = [];

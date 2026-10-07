@@ -1,8 +1,8 @@
-import {Icon} from "@iconify/react";
-import {FutureWeather} from "@/lib/wmo/types";
-import {Locale} from "@/lib/wmo/enums";
+import { Icon } from "@iconify/react";
+import { FutureWeather } from "@/lib/wmo/types";
+import { Locale } from "@/lib/wmo/enums";
 import * as wmo from "@/lib/wmo/wmo";
-import {getTranslations} from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 
 export default async function Forecasts({
   locale,
@@ -35,7 +35,9 @@ export default async function Forecasts({
           >
             <div className="flex flex-col justify-center items-center min-w-3/10 text-xs">
               <span className="max-w-32 text-gray-500 dark:text-gray-500 truncate">
-                {_d.toLocaleString(wmo.wmoToIso639(locale), {weekday: "long"})}{" "}
+                {_d.toLocaleString(wmo.wmoToIso639(locale), {
+                  weekday: "long",
+                })}{" "}
               </span>
               <span className="dark:text-gray-300">{_d.getDate()}</span>
             </div>

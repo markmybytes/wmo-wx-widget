@@ -1,16 +1,18 @@
-import {Locale, TempUnit} from "@/lib/wmo/enums";
+import { Locale, TempUnit } from "@/lib/wmo/enums";
 import * as wmo from "@/lib/wmo/wmo";
-import {Metadata} from "next";
+import { Metadata } from "next";
 import Weather from "@/components/forecast/Weather";
-import {getTranslations} from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import Forecast from "@/components/forecast/Forecast";
-import {notFound} from "next/navigation";
+import { notFound } from "next/navigation";
 
 function parseLocale(locale: string | null | undefined): Locale {
   if (!locale) {
     return Locale.EN;
   }
-  return Locale[locale.toUpperCase() as keyof typeof Locale] as Locale;
+  // `kr` is the legacy code kept for backwards compatibility; `ko` takes precedence.
+  const normalized = locale === "kr" ? "ko" : locale;
+  return Locale[normalized.toUpperCase() as keyof typeof Locale] as Locale;
 }
 
 function str2bool(s: string): boolean {
@@ -31,11 +33,14 @@ type WidgetParams = {
  * The `forcast` (sic) spelling is kept for backwards compatibility; `forecast`
  * is also accepted.
  */
-function parseWidgetParams(sp: {[key: string]: string} | undefined): WidgetParams {
+function parseWidgetParams(
+  sp: { [key: string]: string } | undefined,
+): WidgetParams {
   return {
     locale: parseLocale(sp?.lang),
     unit:
-      TempUnit[sp?.unit?.toUpperCase() as keyof typeof TempUnit] || TempUnit["C"],
+      TempUnit[sp?.unit?.toUpperCase() as keyof typeof TempUnit] ||
+      TempUnit["C"],
     days: parseInt(sp?.days ?? "5"),
     align: sp?.align || "start",
     weather: str2bool(sp?.weather?.toLowerCase() || "true"),
@@ -44,8 +49,8 @@ function parseWidgetParams(sp: {[key: string]: string} | undefined): WidgetParam
 }
 
 export async function generateMetadata(props: {
-  params: Promise<{id: number}>;
-  searchParams: Promise<{lang?: string}>;
+  params: Promise<{ id: number }>;
+  searchParams: Promise<{ lang?: string }>;
 }): Promise<Metadata> {
   const searchParams = await props.searchParams;
   const params = await props.params;
@@ -64,15 +69,15 @@ export async function generateMetadata(props: {
 }
 
 export default async function Page(props: {
-  params: Promise<{id: number}>;
-  searchParams?: Promise<{[key: string]: string}>;
+  params: Promise<{ id: number }>;
+  searchParams?: Promise<{ [key: string]: string }>;
 }) {
   const [params, searchParams] = await Promise.all([
     props.params,
     props.searchParams,
   ]);
 
-  const {locale, unit, days, align, weather, forecast} =
+  const { locale, unit, days, align, weather, forecast } =
     parseWidgetParams(searchParams);
 
   const city = await wmo.city(params.id, locale);

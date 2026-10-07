@@ -1,4 +1,4 @@
-import {TempUnit} from "./enums";
+import { TempUnit } from "./enums";
 
 export interface City {
   id: number;

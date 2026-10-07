@@ -1,8 +1,8 @@
 "use server";
 
-import {Locale} from "@/lib/wmo/enums";
+import { Locale } from "@/lib/wmo/enums";
 import * as wmo from "@/lib/wmo/wmo";
-import {unstable_cache} from "next/cache";
+import { unstable_cache } from "next/cache";
 
 const getCity = unstable_cache(async (locale: Locale) => {
   return (await wmo.countries(locale)).flatMap((country) => {
@@ -13,4 +13,4 @@ const getCity = unstable_cache(async (locale: Locale) => {
   });
 });
 
-export {getCity};
+export { getCity };

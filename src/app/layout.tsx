@@ -1,17 +1,20 @@
-import type {Metadata} from "next";
-import {NextIntlClientProvider} from "next-intl";
-import {getLocale, getMessages} from "next-intl/server";
-import {Inter} from "next/font/google";
+import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
+import { Inter } from "next/font/google";
 
 import "./globals.css";
 
-const inter = Inter({subsets: ["latin"]});
+const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: process.env.appTitle,
-  description:
-    "A responsive, self-hosted weather widget that provide official weather information around the world.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("meta");
+
+  return {
+    title: process.env.appTitle,
+    description: t("description"),
+  };
+}
 
 export default async function RootLayout({
   children,
