@@ -1,6 +1,20 @@
 @import "tailwindcss";
 
 @theme {
+  /* Station-report palette. Derived from the app's zinc+sky family; named so
+     pages reach for roles ("ink", "signal") instead of raw scale steps. */
+  --color-ink: #18181b;
+  --color-faint: #52525b;
+  --color-line: #e4e4e7;
+  --color-lift: #f4f4f5;
+  --color-signal: #0369a1;
+  --color-signal-soft: #e0f2fe;
+
+  /* Type: Inter for body, Archivo as display, Plex Mono as the bulletin face. */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-archivo), var(--font-inter), ui-sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
   --animate-fade-up: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 
   @keyframes fade-up {
@@ -19,6 +33,11 @@
 }
 
 @layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 2px;
+  }
+
   /* The days stepper renders its own -/+ buttons; hide the native spinner. */
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button {

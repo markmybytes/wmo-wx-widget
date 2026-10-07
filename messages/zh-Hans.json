@@ -40,7 +40,8 @@
     "dataSourceDescription": "由全球各国家气象与水文部门提供的、选定城市的官方天气观测、预报及气候信息。",
     "repoLabel": "源代码",
     "repoName": "markmybytes/wmo-wx-widget",
-    "repoDescription": "自行托管、阅读代码，或在 GitHub 上参与贡献。"
+    "repoDescription": "自行托管、阅读代码，或在 GitHub 上参与贡献。",
+    "heroMockCaption": "真实的组件，真实的尺寸。"
   },
   "meta": {
     "title": "wmo-wx-widget",

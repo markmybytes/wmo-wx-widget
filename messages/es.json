@@ -40,7 +40,8 @@
     "dataSourceDescription": "Observaciones, pronósticos e información climatológica oficiales de ciudades seleccionadas, proporcionados por los Servicios Meteorológicos e Hidrológicos Nacionales de todo el mundo.",
     "repoLabel": "Código fuente",
     "repoName": "markmybytes/wmo-wx-widget",
-    "repoDescription": "Autoalójalo, lee el código o contribuye en GitHub."
+    "repoDescription": "Autoalójalo, lee el código o contribuye en GitHub.",
+    "heroMockCaption": "El widget real, a tamaño real."
   },
   "meta": {
     "title": "wmo-wx-widget",

@@ -40,7 +40,8 @@
     "dataSourceDescription": "Официальные наблюдения, прогнозы и климатологическая информация по отдельным городам, предоставляемые национальными метеорологическими и гидрологическими службами по всему миру.",
     "repoLabel": "Исходный код",
     "repoName": "markmybytes/wmo-wx-widget",
-    "repoDescription": "Разместите проект у себя, изучите код или внесите свой вклад на GitHub."
+    "repoDescription": "Разместите проект у себя, изучите код или внесите свой вклад на GitHub.",
+    "heroMockCaption": "Настоящий виджет в натуральную величину."
   },
   "meta": {
     "description": "A responsive, self-hosted weather widget that provide official weather information around the world.",

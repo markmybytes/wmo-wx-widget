@@ -7,165 +7,200 @@ export default async function Home() {
   const wt = await getTranslations("weather");
 
   return (
-    <div>
-      <section className="grid items-center gap-x-12 gap-y-10 py-12 sm:grid-cols-[1fr_auto] sm:py-16 motion-safe:animate-fade-up">
-        <div className="max-w-xl">
-          <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
+    <div className="motion-safe:animate-fade-up">
+      {/* Station masthead: one line of real observation framing, one rule. */}
+      <div
+        aria-hidden
+        className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-line pb-3 font-mono text-[11px] tracking-[0.14em] text-faint sm:text-xs"
+      >
+        <span>06710 · 46.20° N 06.09° E</span>
+        <span>WMO · World Weather Information Service</span>
+      </div>
+
+      <section className="grid gap-x-12 gap-y-10 py-10 sm:grid-cols-[1fr_auto] sm:items-center sm:py-14">
+        <div className="max-w-lg">
+          <h1 className="text-balance font-display text-2xl font-bold leading-[1.15] tracking-tight text-ink sm:text-3xl">
             {t("heroTitle")}
           </h1>
 
-          <p className="mt-3 text-base leading-relaxed text-zinc-600">
+          <p className="mt-3 max-w-prose text-sm leading-relaxed text-faint sm:text-base">
             {t("heroDescription")}
           </p>
+
+          {/* Synoptic readout: the raw fields the widget renders. */}
+          <div
+            aria-hidden
+            className="mt-7 flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-line pt-4 font-mono text-sm text-ink sm:text-[15px]"
+          >
+            <span className="sr-only">Sample observation for Geneva</span>
+            <div className="flex items-center gap-x-2">
+              <Icon
+                icon="material-symbols:device-thermometer"
+                className="text-signal"
+                width="1em"
+                height="1em"
+              />
+              18°C
+            </div>
+            <div className="flex items-center gap-x-2">
+              <Icon
+                icon="material-symbols:water-drop"
+                className="text-signal"
+                width="1em"
+                height="1em"
+              />
+              64%
+            </div>
+            <div className="flex items-center gap-x-2">
+              <Icon
+                icon="material-symbols:air"
+                className="text-signal"
+                width="1em"
+                height="1em"
+              />
+              {wt("NE")} 3 m/s
+            </div>
+          </div>
         </div>
 
         <div className="justify-self-center sm:justify-self-end">
           {/* Static, real-CSS mock of the actual widget card (components/forecast/Weather.tsx). */}
           <div
             aria-hidden
-            className="rounded-2xl border border-dashed border-zinc-300 p-4"
+            className="flex w-56 flex-col items-center gap-y-1.5 rounded border border-line bg-white p-3 shadow-sm"
           >
-            <div className="w-56 rounded border border-zinc-300 bg-white p-3 shadow-sm">
-              <p className="flex items-center justify-center gap-x-1 text-xs text-zinc-500">
+            <p className="flex items-center gap-x-1 text-xs text-faint">
+              <Icon
+                icon="material-symbols:location-on-outline"
+                width="1em"
+                height="1em"
+              />
+              Geneva
+            </p>
+
+            <div className="flex items-center gap-x-2">
+              {/* WWIS-style flat pictogram in place of the WMO icon image. */}
+              <svg
+                className="h-[50px] w-[70px]"
+                viewBox="0 0 70 50"
+                fill="none"
+                aria-hidden
+              >
+                <circle cx="45" cy="18" r="12" fill="#FBBF24" />
+                <path
+                  d="M17 39h26a9 9 0 0 0 2.2-17.7A12.5 12.5 0 0 0 21.6 20 9.5 9.5 0 0 0 17 39Z"
+                  fill="#F4F7FA"
+                  stroke="#8FA3B8"
+                  strokeWidth={2}
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="text-2xl font-bold text-ink">18°C</span>
+            </div>
+
+            <p className="max-w-[12.5rem] truncate bg-lift px-2 text-xs text-ink">
+              {wt("Sunny")}
+            </p>
+
+            <div className="flex gap-x-2 text-xs text-faint">
+              <span className="flex items-center gap-x-1">
                 <Icon
-                  icon="material-symbols:location-on-outline"
+                  icon="material-symbols:water-drop"
                   width="1em"
                   height="1em"
                 />
-                Geneva
-              </p>
-
-              <div className="mt-2 flex flex-col items-center gap-y-2">
-                <div className="flex items-center gap-x-2">
-                  <Icon
-                    icon="material-symbols:partly-cloudy-day"
-                    className="text-amber-500"
-                    width="44"
-                    height="44"
-                  />
-                  <span className="text-2xl font-bold text-zinc-900">18°C</span>
-                </div>
-
-                <p className="bg-zinc-100 px-2 text-xs text-zinc-700">
-                  {wt("Sunny")}
-                </p>
-
-                <div className="flex gap-x-3 text-xs text-zinc-600">
-                  <span className="flex items-center gap-x-1">
-                    <Icon
-                      icon="material-symbols:water-drop"
-                      width="1em"
-                      height="1em"
-                    />
-                    64%
-                  </span>
-                  <span className="flex items-center gap-x-1">
-                    <Icon icon="material-symbols:air" width="1em" height="1em" />
-                    {wt("NE")} 3 m/s
-                  </span>
-                </div>
-              </div>
+                64%
+              </span>
+              <span className="flex items-center gap-x-1">
+                <Icon icon="material-symbols:air" width="1em" height="1em" />
+                {wt("NE")} 3 m/s
+              </span>
             </div>
           </div>
 
-          <p className="mt-2 text-center text-xs text-zinc-400">
+          <p className="mt-2 text-center text-xs text-faint">
             {t("heroMockCaption")}
           </p>
         </div>
       </section>
 
       {/* The single entry point into /tool. */}
-      <section className="mt-2 motion-safe:animate-fade-up [animation-delay:120ms]">
-        <Link
-          href="/tool"
-          className="group flex items-center justify-between gap-x-4 rounded-2xl border border-zinc-200 bg-white p-6 transition-colors hover:border-sky-300 hover:bg-sky-50/50"
-        >
-          <div className="flex items-center gap-x-4">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-700">
-              <Icon icon="material-symbols:tune" width="22" height="22" />
-            </span>
-            <div>
-              <h2 className="font-semibold text-zinc-900">
-                {t("customiserTitle")}
-              </h2>
-              <p className="mt-0.5 text-sm text-zinc-600">
-                {t("customiserDescription")}
-              </p>
-            </div>
-          </div>
-          <Icon
-            icon="material-symbols:chevron-right"
-            className="shrink-0 text-zinc-400 transition-transform group-hover:translate-x-0.5 group-hover:text-sky-600"
-            width="24"
-            height="24"
-          />
-        </Link>
-      </section>
+      <Link
+        href="/tool"
+        className="group flex items-center justify-between gap-x-4 rounded-xl border border-line bg-white px-5 py-4 transition-colors hover:border-signal/50 hover:bg-signal-soft/40"
+      >
+        <h2 className="font-display text-lg font-semibold text-ink sm:text-xl">
+          {t("customiserTitle")}
+        </h2>
+        <Icon
+          icon="material-symbols:chevron-right"
+          className="shrink-0 text-signal transition-transform ltr:group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5"
+          width="22"
+          height="22"
+        />
+      </Link>
 
-      <section className="mt-12 motion-safe:animate-fade-up [animation-delay:240ms]">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">
+      {/* Sources and code, set as report rows rather than cards. */}
+      <section className="mt-12 border-t border-line pt-5 sm:mt-16">
+        <h2 className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-faint">
           {t("aboutTitle")}
         </h2>
 
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          <a
-            href="https://worldweather.wmo.int"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-col gap-y-3 rounded-2xl border border-zinc-200 bg-white p-6 transition-colors hover:border-zinc-300"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+        <ul className="mt-1 divide-y divide-line">
+          <li>
+            <a
+              href="https://worldweather.wmo.int"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group grid items-baseline gap-x-6 gap-y-1 py-4 sm:grid-cols-[8rem_1fr_auto]"
+            >
+              <span className="font-mono text-xs text-faint">
                 {t("dataSourceLabel")}
               </span>
+              <div>
+                <p className="font-display text-base font-semibold text-ink">
+                  {t("dataSourceName")}
+                </p>
+                <p className="mt-1 max-w-prose text-sm leading-relaxed text-faint">
+                  {t("dataSourceDescription")}
+                </p>
+              </div>
               <Icon
                 icon="material-symbols:arrow-outward"
-                className="text-zinc-400"
+                className="justify-self-end text-faint transition-colors group-hover:text-signal"
                 width="18"
                 height="18"
               />
-            </div>
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 text-zinc-700">
-              <Icon icon="material-symbols:public" width="20" height="20" />
-            </span>
-            <div>
-              <p className="font-semibold text-zinc-900">
-                {t("dataSourceName")}
-              </p>
-              <p className="mt-1 text-sm leading-relaxed text-zinc-600">
-                {t("dataSourceDescription")}
-              </p>
-            </div>
-          </a>
+            </a>
+          </li>
 
-          <a
-            href="https://github.com/markmybytes/wmo-wx-widget"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-col gap-y-3 rounded-2xl border border-zinc-200 bg-white p-6 transition-colors hover:border-zinc-300"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+          <li>
+            <a
+              href="https://github.com/markmybytes/wmo-wx-widget"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group grid items-baseline gap-x-6 gap-y-1 py-4 sm:grid-cols-[8rem_1fr_auto]"
+            >
+              <span className="font-mono text-xs text-faint">
                 {t("repoLabel")}
               </span>
+              <div>
+                <p className="font-display text-base font-semibold text-ink">
+                  {t("repoName")}
+                </p>
+                <p className="mt-1 max-w-prose text-sm leading-relaxed text-faint">
+                  {t("repoDescription")}
+                </p>
+              </div>
               <Icon
                 icon="material-symbols:arrow-outward"
-                className="text-zinc-400"
+                className="justify-self-end text-faint transition-colors group-hover:text-signal"
                 width="18"
                 height="18"
               />
-            </div>
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 text-zinc-700">
-              <Icon icon="material-symbols:code" width="20" height="20" />
-            </span>
-            <div>
-              <p className="font-semibold text-zinc-900">{t("repoName")}</p>
-              <p className="mt-1 text-sm leading-relaxed text-zinc-600">
-                {t("repoDescription")}
-              </p>
-            </div>
-          </a>
-        </div>
+            </a>
+          </li>
+        </ul>
       </section>
     </div>
   );
