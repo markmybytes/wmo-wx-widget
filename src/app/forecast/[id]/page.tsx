@@ -17,6 +17,32 @@ function str2bool(s: string): boolean {
   return ["true", "yes", "1"].includes(s);
 }
 
+type WidgetParams = {
+  locale: Locale;
+  unit: TempUnit;
+  days: number;
+  align: string;
+  weather: boolean;
+  forecast: boolean;
+};
+
+/**
+ * Parses the widget's search params once, applying the same defaults as before.
+ * The `forcast` (sic) spelling is kept for backwards compatibility; `forecast`
+ * is also accepted.
+ */
+function parseWidgetParams(sp: {[key: string]: string} | undefined): WidgetParams {
+  return {
+    locale: parseLocale(sp?.lang),
+    unit:
+      TempUnit[sp?.unit?.toUpperCase() as keyof typeof TempUnit] || TempUnit["C"],
+    days: parseInt(sp?.days ?? "5"),
+    align: sp?.align || "start",
+    weather: str2bool(sp?.weather?.toLowerCase() || "true"),
+    forecast: str2bool((sp?.forcast ?? sp?.forecast)?.toLowerCase() || "true"),
+  };
+}
+
 export async function generateMetadata(props: {
   params: Promise<{id: number}>;
   searchParams: Promise<{lang?: string}>;
@@ -46,40 +72,28 @@ export default async function Page(props: {
     props.searchParams,
   ]);
 
-  const locale = parseLocale(searchParams?.lang);
+  const {locale, unit, days, align, weather, forecast} =
+    parseWidgetParams(searchParams);
 
   const city = await wmo.city(params.id, locale);
   if (city === undefined) {
     return notFound();
   }
 
-  const unit =
-    TempUnit[searchParams?.unit?.toUpperCase() as keyof typeof TempUnit] ||
-    TempUnit["C"];
-
   return (
-    <main
-      className={`flex min-h-screen dark:bg-[#191919] items-${
-        searchParams?.align || "start"
-      }`}
-    >
+    <main className={`flex min-h-screen dark:bg-[#191919] items-${align}`}>
       <div className="flex flex-col md:flex-row gap-x-1.5 gap-y-1 w-full h-fit p-1.5">
-        {str2bool(searchParams?.weather?.toLowerCase() || "true") ? (
+        {weather ? (
           <Weather
             city={city}
             weather={await wmo.present(params.id, locale, unit)}
           ></Weather>
         ) : null}
 
-        {str2bool(searchParams?.forcast?.toLowerCase() || "true") ? (
+        {forecast ? (
           <Forecast
             locale={locale}
-            weather={await wmo.forecasts(
-              params.id,
-              locale,
-              unit,
-              parseInt(searchParams?.days ?? "5") ?? 5,
-            )}
+            weather={await wmo.forecasts(params.id, locale, unit, days)}
           ></Forecast>
         ) : null}
       </div>

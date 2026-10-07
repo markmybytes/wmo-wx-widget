@@ -10,6 +10,16 @@ import {
 
 const wmoUrl = "https://worldweather.wmo.int";
 
+/** Fetches a URL and parses its JSON body, mapping parse failures to a locale error. */
+async function getJson<T>(url: string): Promise<T> {
+  const res = await fetch(url);
+  try {
+    return await res.json();
+  } catch {
+    throw new Error("Invalid Locale");
+  }
+}
+
 /**
  * Converts WMO locale codes to ISO639 codes.
  *
@@ -63,59 +73,49 @@ export async function forecasts(
   unit: TempUnit,
   days: number,
 ): Promise<FutureWeather> {
-  return fetch(`${wmoUrl}/${locale}/json/${cityId}_${locale}.xml`)
-    .then(async (res) => {
-      try {
-        return res.json();
-      } catch (e) {
-        return Promise.reject(new Error("Invalid Locale"));
-      }
-    })
-    .then((json: WmoForecastResponse) => {
-      return {
-        issueAt:
-          json.city.forecast.issueDate != "N/A"
-            ? new Date(json.city.forecast.issueDate + json.city.timeZone)
-            : null,
-        forecasts: json.city.forecast.forecastDay
-          .map((forecast) => ({
-            date: forecast.forecastDate,
-            description: forecast.wxdesc,
-            weather: forecast.weather,
-            temp: {
-              min: {
-                unit: unit,
-                val:
-                  (unit == TempUnit.C && forecast.minTemp !== "") ||
-                  (unit == TempUnit.F && forecast.minTempF !== "")
-                    ? parseInt(
-                        unit == TempUnit.C
-                          ? forecast.minTemp
-                          : forecast.minTempF,
-                      )
-                    : null,
-              },
-              max: {
-                unit: unit,
-                val:
-                  (unit == TempUnit.C && forecast.maxTemp !== "") ||
-                  (unit == TempUnit.F && forecast.maxTempF !== "")
-                    ? parseInt(
-                        unit == TempUnit.C
-                          ? forecast.maxTemp
-                          : forecast.maxTempF,
-                      )
-                    : null,
-              },
-            },
-            icon:
-              forecast.weatherIcon != 0
-                ? wxIconUrl(forecast.weatherIcon.toString(), "")
-                : "/images/question_mark.png",
-          }))
-          .slice(0, Math.max(Math.abs(days), 1)),
-      };
-    });
+  const json = await getJson<WmoForecastResponse>(
+    `${wmoUrl}/${locale}/json/${cityId}_${locale}.xml`,
+  );
+
+  return {
+    issueAt:
+      json.city.forecast.issueDate != "N/A"
+        ? new Date(json.city.forecast.issueDate + json.city.timeZone)
+        : null,
+    forecasts: json.city.forecast.forecastDay
+      .map((forecast) => ({
+        date: forecast.forecastDate,
+        description: forecast.wxdesc,
+        weather: forecast.weather,
+        temp: {
+          min: {
+            unit: unit,
+            val:
+              (unit == TempUnit.C && forecast.minTemp !== "") ||
+              (unit == TempUnit.F && forecast.minTempF !== "")
+                ? parseInt(
+                    unit == TempUnit.C ? forecast.minTemp : forecast.minTempF,
+                  )
+                : null,
+          },
+          max: {
+            unit: unit,
+            val:
+              (unit == TempUnit.C && forecast.maxTemp !== "") ||
+              (unit == TempUnit.F && forecast.maxTempF !== "")
+                ? parseInt(
+                    unit == TempUnit.C ? forecast.maxTemp : forecast.maxTempF,
+                  )
+                : null,
+          },
+        },
+        icon:
+          forecast.weatherIcon != 0
+            ? wxIconUrl(forecast.weatherIcon.toString(), "")
+            : "/images/question_mark.png",
+      }))
+      .slice(0, Math.max(Math.abs(days), 1)),
+  };
 }
 
 /**
@@ -131,82 +131,71 @@ export async function present(
   locale: Locale,
   unit: TempUnit,
 ): Promise<PresentWeather> {
-  return fetch(`${wmoUrl}/${locale}/json/present.xml`)
-    .then(async (res) => {
-      try {
-        return res.json();
-      } catch (e) {
-        return Promise.reject(new Error("Invalid Locale"));
-      }
-    })
-    .then(async (json: WmoPresentWxResponse) => {
-      let wx;
-      try {
-        wx = Object.entries(json.present).filter(
-          ([_, v]) => v.cityId == cityId,
-        )[0][1];
-      } catch (e) {
-        return Promise.reject(new Error("Invalid City ID"));
-      }
+  const json = await getJson<WmoPresentWxResponse>(
+    `${wmoUrl}/${locale}/json/present.xml`,
+  );
 
-      if (!wx) {
-        return Promise.reject(
-          new RangeError(`No data for the city (id: ${cityId})`),
-        );
-      }
+  let wx;
+  try {
+    wx = Object.entries(json.present).filter(([_, v]) => v.cityId == cityId)[0][1];
+  } catch {
+    throw new Error("Invalid City ID");
+  }
 
-      return {
-        issueAt: wx.issue
-          ? new Date(
-              Number(wx.issue.slice(0, 4)),
-              Number(wx.issue.slice(5, 6)),
-              Number(wx.issue.slice(7, 8)),
-              Number(wx.issue.slice(9, 10)),
-              Number(wx.issue.slice(11, 12)),
-            )
+  if (!wx) {
+    throw new RangeError(`No data for the city (id: ${cityId})`);
+  }
+
+  return {
+    issueAt: wx.issue
+      ? new Date(
+          Number(wx.issue.slice(0, 4)),
+          Number(wx.issue.slice(5, 6)),
+          Number(wx.issue.slice(7, 8)),
+          Number(wx.issue.slice(9, 10)),
+          Number(wx.issue.slice(11, 12)),
+        )
+      : null,
+    temp: {
+      unit: unit,
+      val:
+        wx.temp !== ""
+          ? unit == TempUnit.C
+            ? wx.temp
+            : Math.round(((wx.temp * 9) / 5 + 32 + Number.EPSILON) * 100) / 100
           : null,
-        temp: {
-          unit: unit,
-          val:
-            wx.temp !== ""
-              ? unit == TempUnit.C
-                ? wx.temp
-                : Math.round(((wx.temp * 9) / 5 + 32 + Number.EPSILON) * 100) /
-                  100
-              : null,
-        },
-        rh: wx.rh || null,
-        weather: wx.wxdesc,
-        icon:
-          wx.iconNum !== ""
-            ? wxIconUrl(wx.iconNum, wx.daynightcode)
-            : "/images/question_mark.png",
-        wind:
-          wx.wd !== "" && wx.ws !== ""
-            ? {
-                direction: wx.wd,
-                speed:
-                  wx.ws !== "" ? Math.round(parseFloat(wx.ws) * 10) / 10 : null,
-              }
-            : null,
-        sun: {
-          rise: new Date(
-            Number(wx.sundate.slice(0, 4)),
-            Number(wx.sundate.slice(5, 6)),
-            Number(wx.sundate.slice(7, 8)),
-            Number(wx.sunrise.slice(0, 2)),
-            Number(wx.sunrise.slice(3, 4)),
-          ),
-          set: new Date(
-            Number(wx.sundate.slice(0, 4)),
-            Number(wx.sundate.slice(5, 6)),
-            Number(wx.sundate.slice(7, 8)),
-            Number(wx.sunset.slice(0, 2)),
-            Number(wx.sunset.slice(3, 4)),
-          ),
-        },
-      };
-    });
+    },
+    rh: wx.rh || null,
+    weather: wx.wxdesc,
+    icon:
+      wx.iconNum !== ""
+        ? wxIconUrl(wx.iconNum, wx.daynightcode)
+        : "/images/question_mark.png",
+    wind:
+      wx.wd !== "" && wx.ws !== ""
+        ? {
+            direction: wx.wd,
+            speed:
+              wx.ws !== "" ? Math.round(parseFloat(wx.ws) * 10) / 10 : null,
+          }
+        : null,
+    sun: {
+      rise: new Date(
+        Number(wx.sundate.slice(0, 4)),
+        Number(wx.sundate.slice(5, 6)),
+        Number(wx.sundate.slice(7, 8)),
+        Number(wx.sunrise.slice(0, 2)),
+        Number(wx.sunrise.slice(3, 4)),
+      ),
+      set: new Date(
+        Number(wx.sundate.slice(0, 4)),
+        Number(wx.sundate.slice(5, 6)),
+        Number(wx.sundate.slice(7, 8)),
+        Number(wx.sunset.slice(0, 2)),
+        Number(wx.sunset.slice(3, 4)),
+      ),
+    },
+  };
 }
 
 /**
@@ -216,36 +205,36 @@ export async function present(
  * @returns A promise that resolves to an array of countries.
  */
 export async function countries(locale: Locale): Promise<Array<Country>> {
-  return fetch(`${wmoUrl}/${locale}/json/Country_${locale}.xml`)
-    .then((res) => res.json())
-    .then((json: WmoCountryResponse) => {
-      const countries: Array<Country> = [];
-      for (const [k, country] of Object.entries(json.member)) {
-        if (k == "lang") {
-          continue;
-        }
+  const json = await getJson<WmoCountryResponse>(
+    `${wmoUrl}/${locale}/json/Country_${locale}.xml`,
+  );
 
-        countries.push({
-          id: country.memId,
-          name: country.memName,
-          cities: country.city?.map((c) => ({
-            id: c.cityId,
-            name: c.cityName,
-            latitude: parseFloat(c.cityLatitude),
-            longitude: parseFloat(c.cityLongitude),
-            forecast: c.forecast === "Y",
-            climate: c.climate === "Y",
-            isCapital: c.isCapital,
-          })),
-          organisation: {
-            name: country.orgName,
-            logo: country.logo ? wmoUrl + `/images/logo/${country.logo}` : null,
-            url: country.url || null,
-          },
-        });
-      }
-      return countries;
+  const countries: Array<Country> = [];
+  for (const [k, country] of Object.entries(json.member)) {
+    if (k == "lang") {
+      continue;
+    }
+
+    countries.push({
+      id: country.memId,
+      name: country.memName,
+      cities: country.city?.map((c) => ({
+        id: c.cityId,
+        name: c.cityName,
+        latitude: parseFloat(c.cityLatitude),
+        longitude: parseFloat(c.cityLongitude),
+        forecast: c.forecast === "Y",
+        climate: c.climate === "Y",
+        isCapital: c.isCapital,
+      })),
+      organisation: {
+        name: country.orgName,
+        logo: country.logo ? wmoUrl + `/images/logo/${country.logo}` : null,
+        url: country.url || null,
+      },
     });
+  }
+  return countries;
 }
 
 /**
