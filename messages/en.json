@@ -32,6 +32,8 @@
     "heroDescription": "wmo-wx-widget displays live observations and multi-day forecasts from the World Meteorological Organization. Configure it once and embed it anywhere with a single URL.",
     "heroMockCaption": "The actual widget, at actual size.",
     "customiserTitle": "Build your widget",
+    "customiserDescription": "Choose a city, adjust the display and unit settings, then copy a URL ready to embed anywhere.",
+    "customiserCta": "Open the customiser",
     "aboutTitle": "About",
     "dataSourceLabel": "Data source",
     "dataSourceName": "WMO World Weather Information Service",
