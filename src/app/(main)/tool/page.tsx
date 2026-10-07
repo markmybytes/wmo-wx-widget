@@ -1,12 +1,12 @@
 "use client";
 
-import {Icon} from "@iconify/react";
-import {Locale} from "@/lib/wmo/enums";
-import {useLocale, useTranslations} from "next-intl";
-import {useEffect, useRef, useState} from "react";
-import {getCity} from "./actions";
+import { Icon } from "@iconify/react";
+import { Locale } from "@/lib/wmo/enums";
+import { useLocale, useTranslations } from "next-intl";
+import { useEffect, useRef, useState } from "react";
+import { getCity } from "./actions";
 
-type CityOption = {value: string; label: string};
+type CityOption = { value: string; label: string };
 
 const SECTION_CLASS = "rounded-2xl border border-zinc-200 bg-white p-6";
 const INPUT_CLASS =
@@ -30,9 +30,7 @@ function CityPicker({
 
   const selected = options.find((o) => o.value === value);
   const filtered = query
-    ? options.filter((o) =>
-        o.label.toLowerCase().includes(query.toLowerCase()),
-      )
+    ? options.filter((o) => o.label.toLowerCase().includes(query.toLowerCase()))
     : options;
   // ponytail: cap the dropdown at 50 rows; fine for the ~4k cities on the source list
   const visible = filtered.slice(0, 50);
@@ -41,10 +39,7 @@ function CityPicker({
     if (!open) return;
 
     function handleMouseDown(event: MouseEvent) {
-      if (
-        rootRef.current &&
-        !rootRef.current.contains(event.target as Node)
-      ) {
+      if (rootRef.current && !rootRef.current.contains(event.target as Node)) {
         setOpen(false);
       }
     }
@@ -159,7 +154,7 @@ function CityPicker({
 export default function Page() {
   const t = useTranslations("common");
   const usrLocale = useLocale();
-  const locale = {"zh-Hant": "tc", "zh-Hans": "zh"}[usrLocale] || usrLocale;
+  const locale = { "zh-Hant": "tc", "zh-Hans": "zh" }[usrLocale] || usrLocale;
 
   const [cityOption, setCityOption] = useState<CityOption[]>([]);
 
@@ -178,9 +173,9 @@ export default function Page() {
   const [outUrl, setOutUrl] = useState("");
 
   useEffect(() => {
-    getCity(Locale[locale as keyof typeof Locale] || Locale.EN).then((cities) =>
-      setCityOption(cities ?? []),
-    );
+    getCity(
+      Locale[locale.toUpperCase() as keyof typeof Locale] || Locale.EN,
+    ).then((cities) => setCityOption(cities ?? []));
   }, [locale]);
 
   function handleGenerate() {
@@ -212,34 +207,46 @@ export default function Page() {
         <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
           {t("widgetCustomiser")}
         </h1>
-        <p className="mt-1 text-sm text-zinc-500">{t("widgetCustomiserHelp")}</p>
+        <p className="mt-1 text-sm text-zinc-500">
+          {t("widgetCustomiserHelp")}
+        </p>
       </div>
 
-      <section className={`${SECTION_CLASS} motion-safe:animate-fade-up [animation-delay:80ms]`}>
+      <section
+        className={`${SECTION_CLASS} motion-safe:animate-fade-up [animation-delay:80ms]`}
+      >
         <h2 className="text-lg font-semibold text-zinc-900">{t("city")}</h2>
         <div className="mt-4">
-          <label htmlFor="city" className="mb-1.5 block text-sm font-medium text-zinc-700">
+          <label
+            htmlFor="city"
+            className="mb-1.5 block text-sm font-medium text-zinc-700"
+          >
             {t("city")}
           </label>
           <CityPicker
             options={cityOption}
             value={formData.city}
             onChange={(city) => {
-              setFormData({...formData, city});
+              setFormData({ ...formData, city });
               if (city !== "") setCityError(false);
             }}
           />
         </div>
       </section>
 
-      <section className={`${SECTION_CLASS} motion-safe:animate-fade-up [animation-delay:160ms]`}>
+      <section
+        className={`${SECTION_CLASS} motion-safe:animate-fade-up [animation-delay:160ms]`}
+      >
         <h2 className="text-lg font-semibold text-zinc-900">
           {t("displaySettings")}
         </h2>
 
         <div className="mt-4 flex flex-col gap-y-6">
           <div>
-            <label htmlFor="locale" className="mb-1.5 block text-sm font-medium text-zinc-700">
+            <label
+              htmlFor="locale"
+              className="mb-1.5 block text-sm font-medium text-zinc-700"
+            >
               {t("language")}
             </label>
 
@@ -249,7 +256,7 @@ export default function Page() {
                 name="locale"
                 defaultValue={locale}
                 onChange={(e) => {
-                  setFormData({...formData, lang: e.target.value});
+                  setFormData({ ...formData, lang: e.target.value });
                 }}
                 className={`${INPUT_CLASS} appearance-none pe-9`}
               >
@@ -260,7 +267,7 @@ export default function Page() {
                 <option value="fr">Français</option>
                 <option value="de">Deutsch</option>
                 <option value="it">Italiano</option>
-                <option value="kr">한국어</option>
+                <option value="ko">한국어</option>
                 <option value="pl">Polski</option>
                 <option value="pt">Português</option>
                 <option value="ru">Русский</option>
@@ -297,7 +304,7 @@ export default function Page() {
                       checked={formData[k as keyof typeof formData] as boolean}
                       onChange={() => {
                         const key = k as "weather" | "forecast";
-                        setFormData({...formData, [key]: !formData[key]});
+                        setFormData({ ...formData, [key]: !formData[key] });
                       }}
                       className={CHECK_CLASS}
                     />
@@ -327,7 +334,7 @@ export default function Page() {
                       name="align"
                       value={k}
                       checked={formData.align == k}
-                      onChange={() => setFormData({...formData, align: k})}
+                      onChange={() => setFormData({ ...formData, align: k })}
                       className={CHECK_CLASS}
                     />
                     {text}
@@ -338,7 +345,10 @@ export default function Page() {
           </div>
 
           <div>
-            <label htmlFor="days" className="block text-sm font-medium text-zinc-700">
+            <label
+              htmlFor="days"
+              className="block text-sm font-medium text-zinc-700"
+            >
               {t("maxForecastPeriod")}
             </label>
             <p className="mb-2 mt-1 text-xs text-zinc-500">
@@ -370,7 +380,7 @@ export default function Page() {
                 value={formData.days}
                 onChange={(e) => {
                   if (e.target.value == "") {
-                    setFormData({...formData, days: ""});
+                    setFormData({ ...formData, days: "" });
                   }
                   if (e.target.value.match(/^[0-9]+$/)) {
                     const d = parseInt(e.target.value);
@@ -401,7 +411,9 @@ export default function Page() {
         </div>
       </section>
 
-      <section className={`${SECTION_CLASS} motion-safe:animate-fade-up [animation-delay:240ms]`}>
+      <section
+        className={`${SECTION_CLASS} motion-safe:animate-fade-up [animation-delay:240ms]`}
+      >
         <h2 className="text-lg font-semibold text-zinc-900">
           {t("unitSettings")}
         </h2>
@@ -426,7 +438,7 @@ export default function Page() {
                   value={k}
                   checked={formData.unit == k}
                   onChange={() => {
-                    setFormData({...formData, unit: k});
+                    setFormData({ ...formData, unit: k });
                   }}
                   className={CHECK_CLASS}
                 />
@@ -437,7 +449,9 @@ export default function Page() {
         </fieldset>
       </section>
 
-      <section className={`${SECTION_CLASS} motion-safe:animate-fade-up [animation-delay:320ms]`}>
+      <section
+        className={`${SECTION_CLASS} motion-safe:animate-fade-up [animation-delay:320ms]`}
+      >
         <h2 className="text-lg font-semibold text-zinc-900">URL</h2>
 
         <div className="mt-4 flex flex-col gap-y-3">
