@@ -35,8 +35,8 @@
     "copied": "Copiato!"
   },
   "home": {
-    "heroTitle": "Un widget meteo, basato su dati ufficiali WMO",
-    "heroDescription": "wmo-wx-widget mostra osservazioni in tempo reale e previsioni su più giorni dell'Organizzazione Meteorologica Mondiale. Configuralo una volta e incorporalo ovunque con un unico URL.",
+    "heroTitle": "Il cielo, a colpo d'occhio",
+    "heroDescription": "wmo-wx-widget ti porta le osservazioni in tempo reale e le previsioni su più giorni dell'Organizzazione Meteorologica Mondiale. Configuralo una volta, un solo URL, e incorporalo dove vuoi.",
     "customiserTitle": "Crea il tuo widget",
     "customiserDescription": "Scegli una città, regola le impostazioni di visualizzazione e delle unità, quindi copia un URL pronto da incorporare.",
     "customiserCta": "Apri il personalizzatore",
