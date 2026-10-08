@@ -35,9 +35,8 @@
     "copied": "已複製！"
   },
   "home": {
-    "heroEyebrow": "官方天氣數據",
-    "heroTitle": "wmo-wx-widget",
-    "heroDescription": "一款響應式、可自行託管的天氣部件，提供世界氣象組織的官方天氣觀測和預報。",
+    "heroTitle": "一款由 WMO 官方數據驅動的天氣部件",
+    "heroDescription": "wmo-wx-widget 顯示世界氣象組織的即時觀測與多日預報。只需設定一次，即可透過單一網址嵌入任何地方。",
     "customiserTitle": "建立你的部件",
     "customiserDescription": "選擇城市，調整顯示和單位設定，然後複製可直接嵌入的網址。",
     "customiserCta": "開啟客製化工具",
@@ -47,8 +46,7 @@
     "dataSourceDescription": "由全球各國家氣象與水文部門提供的、選定城市的官方天氣觀測、預報及氣候資訊。",
     "repoLabel": "原始碼",
     "repoName": "markmybytes/wmo-wx-widget",
-    "repoDescription": "自行託管、閱讀程式碼，或在 GitHub 上參與貢獻。",
-    "heroMockCaption": "真實的元件，真實的尺寸。"
+    "repoDescription": "自行託管、閱讀程式碼，或在 GitHub 上參與貢獻。"
   },
   "meta": {
     "description": "A responsive, self-hosted weather widget that provide official weather information around the world.",

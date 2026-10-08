@@ -35,9 +35,8 @@
     "copied": "복사됨!"
   },
   "home": {
-    "heroEyebrow": "공식 날씨 데이터",
-    "heroTitle": "wmo-wx-widget",
-    "heroDescription": "세계기상기구(WMO)의 공식 날씨 관측과 예보를 제공하는 반응형 자체 호스팅 날씨 위젯입니다.",
+    "heroTitle": "공식 WMO 데이터를 기반으로 한 날씨 위젯",
+    "heroDescription": "wmo-wx-widget는 세계기상기구의 실시간 관측과 여러 날에 걸친 예보를 표시합니다. 한 번 설정하면 하나의 URL로 어디에나 삽입할 수 있습니다.",
     "customiserTitle": "위젯 만들기",
     "customiserDescription": "도시를 선택하고 표시 및 단위 설정을 조정한 뒤 바로 삽입할 수 있는 URL을 복사하세요.",
     "customiserCta": "커스터마이저 열기",
@@ -47,8 +46,7 @@
     "dataSourceDescription": "전 세계 국가기상·수문기상청이 제공하는 주요 도시의 공식 날씨 관측, 예보 및 기후 정보입니다.",
     "repoLabel": "소스 코드",
     "repoName": "markmybytes/wmo-wx-widget",
-    "repoDescription": "직접 호스팅하거나 코드를 살펴보고 GitHub에서 기여하세요.",
-    "heroMockCaption": "실제 위젯, 실제 크기 그대로."
+    "repoDescription": "직접 호스팅하거나 코드를 살펴보고 GitHub에서 기여하세요."
   },
   "meta": {
     "description": "A responsive, self-hosted weather widget that provide official weather information around the world.",

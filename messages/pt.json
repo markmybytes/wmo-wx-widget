@@ -35,9 +35,8 @@
     "copied": "Copiado!"
   },
   "home": {
-    "heroEyebrow": "Dados meteorológicos oficiais",
-    "heroTitle": "wmo-wx-widget",
-    "heroDescription": "Um widget meteorológico responsivo e auto-alojável que fornece observações e previsões meteorológicas oficiais da Organização Meteorológica Mundial.",
+    "heroTitle": "Um widget de meteorologia com dados oficiais da OMM",
+    "heroDescription": "O wmo-wx-widget exibe observações ao vivo e previsões de vários dias da Organização Meteorológica Mundial. Configure uma vez e incorpore em qualquer lugar com um único URL.",
     "customiserTitle": "Crie o seu widget",
     "customiserDescription": "Escolha uma cidade, ajuste as definições de apresentação e de unidades e copie um URL pronto a incorporar.",
     "customiserCta": "Abrir o personalizador",
@@ -47,8 +46,7 @@
     "dataSourceDescription": "Observações, previsões e informações climatológicas oficiais para cidades selecionadas, fornecidas pelos Serviços Meteorológicos e Hidrológicos Nacionais de todo o mundo.",
     "repoLabel": "Código-fonte",
     "repoName": "markmybytes/wmo-wx-widget",
-    "repoDescription": "Aloje-o você mesmo, leia o código ou contribua no GitHub.",
-    "heroMockCaption": "O widget real, em tamanho real."
+    "repoDescription": "Aloje-o você mesmo, leia o código ou contribua no GitHub."
   },
   "meta": {
     "description": "A responsive, self-hosted weather widget that provide official weather information around the world.",
