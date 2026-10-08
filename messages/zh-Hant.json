@@ -36,7 +36,7 @@
   },
   "home": {
     "heroTitle": "一窗氣象，天下晴雨",
-    "heroDescription": "wmo-wx-widget 把世界氣象組織的即時觀測與多日預報收進一窗。設定一次，一個網址，隨處嵌入。",
+    "heroDescription": "wmo-wx-widget 帶來世界氣象組織的即時觀測與多日預報。設定一次，一個網址，隨處嵌入。",
     "customiserTitle": "建立你的部件",
     "customiserDescription": "選擇城市，調整顯示和單位設定，然後複製可直接嵌入的網址。",
     "customiserCta": "開啟客製化工具",
