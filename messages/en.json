@@ -25,7 +25,7 @@
     "emptyCityValidation": "Please select a city first.",
     "displayedComponent": "Displayed Component",
     "presentWeather": "Present Weather",
-    "futureWeather": "Future Weather (Forecast)",
+    "futureWeather": "Forecast",
     "unitSettings": "Unit Settings",
     "noForecastAvailable": "No Forecast Available",
     "cityPlaceholder": "Type to search cities…",

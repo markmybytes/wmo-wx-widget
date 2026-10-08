@@ -26,7 +26,7 @@
     "widgetCustomiserHelp": "날씨 정보가 표시되는 방식을 사용자 지정합니다.",
     "displayedComponent": "표시 구성 요소",
     "presentWeather": "현재 날씨",
-    "futureWeather": "앞으로의 날씨 (예보)",
+    "futureWeather": "예보",
     "unitSettings": "단위 설정",
     "cityPlaceholder": "도시를 입력해 검색하세요…",
     "cityNoResults": "일치하는 도시가 없습니다",
