@@ -79,10 +79,6 @@ export default async function Home() {
               </span>
             </div>
           </div>
-
-          <p className="mt-2 text-center text-xs text-faint">
-            {t("heroMockCaption")}
-          </p>
         </div>
       </section>
 

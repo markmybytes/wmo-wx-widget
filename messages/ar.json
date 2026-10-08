@@ -35,9 +35,8 @@
     "copied": "تم النسخ!"
   },
   "home": {
-    "heroEyebrow": "بيانات الطقس الرسمية",
-    "heroTitle": "wmo-wx-widget",
-    "heroDescription": "أداة طقس متجاوبة قابلة للاستضافة الذاتية توفّر أرصادًا وتوقعاتٍ رسمية للطقس من المنظمة العالمية للأرصاد الجوية.",
+    "heroTitle": "أداة طقس مدعومة ببيانات رسمية من WMO",
+    "heroDescription": "تعرض wmo-wx-widget أرصادًا مباشرة وتوقعاتٍ لعدة أيام من المنظمة العالمية للأرصاد الجوية. اضبطها مرة واحدة وضمّنها في أي مكان عبر رابط واحد.",
     "customiserTitle": "أنشئ أداتك",
     "customiserDescription": "اختر مدينة، واضبط إعدادات العرض والوحدات، ثم انسخ رابطًا جاهزًا للتضمين.",
     "customiserCta": "افتح أداة التخصيص",
@@ -47,8 +46,7 @@
     "dataSourceDescription": "أرصاد وتوقعات ومعلومات مناخية رسمية لمدن مختارة، توفّرها الهيئات الوطنية للأرصاد الجوية والهيدرولوجيا حول العالم.",
     "repoLabel": "الشيفرة المصدرية",
     "repoName": "markmybytes/wmo-wx-widget",
-    "repoDescription": "استضفها بنفسك، أو اطّلع على الشيفرة، أو ساهم على GitHub.",
-    "heroMockCaption": "الأداة الفعلية، بالحجم الفعلي."
+    "repoDescription": "استضفها بنفسك، أو اطّلع على الشيفرة، أو ساهم على GitHub."
   },
   "meta": {
     "description": "A responsive, self-hosted weather widget that provide official weather information around the world.",
