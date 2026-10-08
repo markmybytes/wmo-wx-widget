@@ -13,6 +13,11 @@
      position — marks which is which. */
   --color-warm: #dc2626;
 
+  /* Widget surfaces. `canvas` is the page behind the cards, `surface` the
+     cards themselves; both start at white so the light widget is unchanged. */
+  --color-canvas: #ffffff;
+  --color-surface: #ffffff;
+
   /* Type: Inter for body, Archivo as display, Plex Mono as the bulletin face. */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-archivo), var(--font-inter), ui-sans-serif;
@@ -32,6 +37,29 @@
          positioned children (e.g. the city combobox dropdown) inside it. */
       transform: none;
     }
+  }
+}
+
+/* Dark scheme for the embeddable widget only (`/forecast/[id]`). The
+   `.wx-scheme` class on the widget redefines the theme variables for its own
+   subtree; utilities compile to `var(--color-*)`, so every tokenised colour
+   inside flips together. Nothing outside the wrapper matches, so the home
+   page and the customiser keep their light (and raw zinc/sky) values, and no
+   per-element `dark:` variants are needed. The bare `color` rule covers the
+   few spans that ride on the UA's default text colour, which must not survive
+   into a dark surface. */
+@media (prefers-color-scheme: dark) {
+  .wx-scheme {
+    color: var(--color-ink);
+    --color-canvas: #0f0f12;
+    --color-surface: #1a1a1e;
+    --color-lift: #26262b;
+    --color-line: #3f3f46;
+    --color-ink: #f4f4f5;
+    --color-faint: #a1a1aa;
+    --color-signal: #38bdf8;
+    --color-signal-soft: #0c4a6e;
+    --color-warm: #f87171;
   }
 }
 
