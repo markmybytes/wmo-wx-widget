@@ -58,7 +58,7 @@ export default async function ForecastCards({
             </div>
 
             <div className="flex justify-center items-center grow my-1">
-              <div className="h-[38px] w-[50px]">
+              <div className="h-9.5 w-12.5">
                 <img
                   src={fc.icon}
                   className="size-full"
