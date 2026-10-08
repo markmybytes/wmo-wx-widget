@@ -35,6 +35,32 @@
   }
 }
 
+@layer components {
+  .wctl-section {
+    @apply rounded-2xl border border-zinc-200 bg-white p-6;
+  }
+
+  .wctl-input {
+    @apply w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10;
+  }
+
+  .wctl-check {
+    @apply size-4 accent-sky-600;
+  }
+
+  .wctl-heading {
+    @apply text-lg font-semibold text-zinc-900;
+  }
+
+  .wctl-legend {
+    @apply mb-2 text-sm font-medium text-zinc-700;
+  }
+
+  .wctl-option {
+    @apply flex items-center gap-x-2 text-sm text-zinc-600;
+  }
+}
+
 @layer base {
   :focus-visible {
     outline: 2px solid var(--color-signal);

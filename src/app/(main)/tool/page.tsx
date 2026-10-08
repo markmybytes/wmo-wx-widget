@@ -8,11 +8,6 @@ import { getCity } from "./actions";
 
 type CityOption = { value: string; label: string };
 
-const SECTION_CLASS = "rounded-2xl border border-zinc-200 bg-white p-6";
-const INPUT_CLASS =
-  "w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10";
-const CHECK_CLASS = "size-4 accent-sky-600";
-
 // The WMO feed never returns more than nine days, so anything above this
 // only widens the URL without changing the widget.
 const MAX_DAYS = 9;
@@ -77,7 +72,7 @@ function CityPicker({
         aria-controls="city-listbox"
         aria-labelledby={labelId}
         autoComplete="off"
-        className={`${INPUT_CLASS} pe-9 ps-9`}
+        className="wctl-input pe-9 ps-9"
         placeholder={t("cityPlaceholder")}
         value={query !== "" ? query : (selected?.label ?? "")}
         onFocus={() => setOpen(true)}
@@ -227,10 +222,10 @@ export default function Page() {
         </p>
       </div>
 
-      <section className={SECTION_CLASS}>
+      <section className="wctl-section">
         {/* The heading is also the input's label: one visible "City", and it
             actually names the control instead of pointing at no id. */}
-        <h2 id="city-label" className="text-lg font-semibold text-zinc-900">
+        <h2 id="city-label" className="wctl-heading">
           {t("city")}
         </h2>
         <div className="mt-4">
@@ -246,10 +241,8 @@ export default function Page() {
         </div>
       </section>
 
-      <section className={SECTION_CLASS}>
-        <h2 className="text-lg font-semibold text-zinc-900">
-          {t("displaySettings")}
-        </h2>
+      <section className="wctl-section">
+        <h2 className="wctl-heading">{t("displaySettings")}</h2>
 
         <div className="mt-4 flex flex-col gap-y-6">
           <div>
@@ -268,7 +261,7 @@ export default function Page() {
                 onChange={(e) => {
                   setFormData({ ...formData, lang: e.target.value });
                 }}
-                className={`${INPUT_CLASS} appearance-none pe-9`}
+                className="wctl-input appearance-none pe-9"
               >
                 <option value="ar">لعربية</option>
                 <option value="en">English</option>
@@ -294,19 +287,14 @@ export default function Page() {
 
           <div className="flex flex-wrap gap-x-10 gap-y-6">
             <fieldset>
-              <legend className="mb-2 text-sm font-medium text-zinc-700">
-                {t("displayedComponent")}
-              </legend>
+              <legend className="wctl-legend">{t("displayedComponent")}</legend>
 
               <div className="flex gap-x-4">
                 {Object.entries({
                   weather: t("presentWeather"),
                   forcast: t("futureWeather"),
                 }).map(([k, text]) => (
-                  <label
-                    className="flex items-center gap-x-2 text-sm text-zinc-600"
-                    key={k}
-                  >
+                  <label className="wctl-option" key={k}>
                     <input
                       type="checkbox"
                       name="unit"
@@ -316,7 +304,7 @@ export default function Page() {
                         const key = k as "weather" | "forcast";
                         setFormData({ ...formData, [key]: !formData[key] });
                       }}
-                      className={CHECK_CLASS}
+                      className="wctl-check"
                     />
                     {text}
                   </label>
@@ -325,9 +313,7 @@ export default function Page() {
             </fieldset>
 
             <fieldset>
-              <legend className="mb-2 text-sm font-medium text-zinc-700">
-                {t("widgetAlignment")}
-              </legend>
+              <legend className="wctl-legend">{t("widgetAlignment")}</legend>
 
               <div className="flex gap-x-4">
                 {Object.entries({
@@ -335,17 +321,14 @@ export default function Page() {
                   center: t("center"),
                   end: t("end"),
                 }).map(([k, text]) => (
-                  <label
-                    className="flex items-center gap-x-2 text-sm text-zinc-600"
-                    key={k}
-                  >
+                  <label className="wctl-option" key={k}>
                     <input
                       type="radio"
                       name="align"
                       value={k}
                       checked={formData.align == k}
                       onChange={() => setFormData({ ...formData, align: k })}
-                      className={CHECK_CLASS}
+                      className="wctl-check"
                     />
                     {text}
                   </label>
@@ -355,19 +338,14 @@ export default function Page() {
 
             <div>
               <fieldset>
-                <legend className="mb-2 text-sm font-medium text-zinc-700">
-                  {t("widgetStyle")}
-                </legend>
+                <legend className="wctl-legend">{t("widgetStyle")}</legend>
 
                 <div className="flex gap-x-4">
                   {Object.entries({
                     cards: t("styleCards"),
                     list: t("styleList"),
                   }).map(([k, text]) => (
-                    <label
-                      className="flex items-center gap-x-2 text-sm text-zinc-600"
-                      key={k}
-                    >
+                    <label className="wctl-option" key={k}>
                       <input
                         type="radio"
                         name="style"
@@ -379,7 +357,7 @@ export default function Page() {
                             style: k as "cards" | "list",
                           })
                         }
-                        className={CHECK_CLASS}
+                        className="wctl-check"
                       />
                       {text}
                     </label>
@@ -393,19 +371,14 @@ export default function Page() {
 
             <div>
               <fieldset>
-                <legend className="mb-2 text-sm font-medium text-zinc-700">
-                  {t("dateDisplay")}
-                </legend>
+                <legend className="wctl-legend">{t("dateDisplay")}</legend>
 
                 <div className="flex gap-x-4">
                   {Object.entries({
                     weekday: t("showWeekday"),
                     date: t("showDate"),
                   }).map(([k, text]) => (
-                    <label
-                      className="flex items-center gap-x-2 text-sm text-zinc-600"
-                      key={k}
-                    >
+                    <label className="wctl-option" key={k}>
                       <input
                         type="checkbox"
                         name={k}
@@ -418,7 +391,7 @@ export default function Page() {
                             [key]: !formData[key],
                           });
                         }}
-                        className={CHECK_CLASS}
+                        className="wctl-check"
                       />
                       {text}
                     </label>
@@ -497,25 +470,18 @@ export default function Page() {
         </div>
       </section>
 
-      <section className={SECTION_CLASS}>
-        <h2 className="text-lg font-semibold text-zinc-900">
-          {t("unitSettings")}
-        </h2>
+      <section className="wctl-section">
+        <h2 className="wctl-heading">{t("unitSettings")}</h2>
 
         <fieldset className="mt-4">
-          <legend className="mb-2 text-sm font-medium text-zinc-700">
-            {t("temperatureUnit")}
-          </legend>
+          <legend className="wctl-legend">{t("temperatureUnit")}</legend>
 
           <div className="flex gap-x-4">
             {Object.entries({
               C: `${t("celsius")} (°C)`,
               F: `${t("fahrenheit")} (°F)`,
             }).map(([k, text]) => (
-              <label
-                className="flex items-center gap-x-2 text-sm text-zinc-600"
-                key={k}
-              >
+              <label className="wctl-option" key={k}>
                 <input
                   type="radio"
                   name="unit"
@@ -524,7 +490,7 @@ export default function Page() {
                   onChange={() => {
                     setFormData({ ...formData, unit: k });
                   }}
-                  className={CHECK_CLASS}
+                  className="wctl-check"
                 />
                 {text}
               </label>
@@ -533,8 +499,8 @@ export default function Page() {
         </fieldset>
       </section>
 
-      <section className={SECTION_CLASS}>
-        <h2 className="text-lg font-semibold text-zinc-900">URL</h2>
+      <section className="wctl-section">
+        <h2 className="wctl-heading">URL</h2>
 
         <div className="mt-4 flex flex-col gap-y-3">
           <div className="flex flex-col items-stretch gap-x-2 gap-y-3 sm:flex-row sm:items-center">
@@ -552,7 +518,7 @@ export default function Page() {
                 type="text"
                 value={outUrl}
                 aria-label="URL"
-                className={`${INPUT_CLASS} pe-11 text-zinc-500 disabled:cursor-not-allowed disabled:bg-zinc-50`}
+                className="wctl-input pe-11 text-zinc-500 disabled:cursor-not-allowed disabled:bg-zinc-50"
                 readOnly
                 disabled={!outUrl}
               />
