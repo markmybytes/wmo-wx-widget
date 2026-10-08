@@ -91,6 +91,7 @@ export async function generateMetadata(props: {
       }),
       process.env.appTitle,
     ].join(" | "),
+    other: { "color-scheme": "light dark" },
   };
 }
 
@@ -123,7 +124,10 @@ export default async function Page(props: {
   return (
     // Layout-only entrance, skipped for reduced-motion users. This is the
     // widget's one motion concession; everything below it sits still.
-    <main className="min-h-svh motion-safe:animate-fade-up">
+    // `wx-scheme` anchors the widget's dark-mode variable override (see
+    // globals.css); `bg-canvas` gives the widget an explicit page backdrop in
+    // either scheme.
+    <main className="wx-scheme bg-canvas min-h-svh motion-safe:animate-fade-up">
       <div
         className={`flex w-full flex-col items-stretch gap-2 p-2 md:flex-row md:gap-x-2 ${
           alignClass[align] ?? alignClass["start"]

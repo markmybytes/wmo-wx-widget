@@ -31,7 +31,7 @@ export default async function Forecast({
     const tc = await getTranslations("common");
 
     return (
-      <div className="flex grow items-center justify-center rounded-lg border border-line bg-white p-6 shadow-sm">
+      <div className="flex grow items-center justify-center rounded-lg border border-line bg-surface p-6 shadow-sm">
         <span className="font-mono text-xs text-faint">
           {tc("noForecastAvailable")}
         </span>
@@ -40,7 +40,7 @@ export default async function Forecast({
   }
 
   return (
-    <div className="flex grow flex-col divide-y divide-line rounded-lg border border-line bg-white shadow-sm">
+    <div className="flex grow flex-col divide-y divide-line rounded-lg border border-line bg-surface shadow-sm">
       {weather.forecasts.map((fc) => {
         const d = new Date(fc.date);
 
