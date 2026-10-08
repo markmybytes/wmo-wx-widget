@@ -184,8 +184,7 @@ export default function Page() {
     ).then((cities) => setCityOption(cities ?? []));
   }, [locale]);
 
-  // NaN while the field is empty; both steppers read it as 0, which also
-  // covers the old empty-input-plus-NaN guard.
+  // NaN while the field is empty; both steppers read it as 0.
   const dayCount = parseInt(formData.days) || 0;
 
   function handleGenerate() {
@@ -223,8 +222,7 @@ export default function Page() {
       </div>
 
       <section className="wctl-section">
-        {/* The heading is also the input's label: one visible "City", and it
-            actually names the control instead of pointing at no id. */}
+        {/* Also the input's label — a second "City" label pointed at no id. */}
         <h2 id="city-label" className="wctl-heading">
           {t("city")}
         </h2>

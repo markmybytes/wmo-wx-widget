@@ -13,11 +13,9 @@ export default async function Weather({
   const t = await getTranslations("weather");
 
   return (
-    // The 240px cap is md-only so the border spans the full row on mobile;
-    // at md+ the card becomes a sidebar beside the forecast. `only:` drops
-    // the cap when there is no forecast to sit beside, so a lone card fills
-    // the row the way the cards variant does. A sibling appearing later
-    // reverts it to the sidebar, which is the behaviour we want anyway.
+    // The 240px cap makes this a sidebar at md+, so `only:` drops it when the
+    // card is alone and it fills the row like cards does. A sibling appearing
+    // later reverts to the sidebar, which is the wanted behaviour anyway.
     <div className="flex w-full shrink-0 flex-col items-center gap-y-2 rounded-lg border border-line bg-white p-3 shadow-sm md:justify-center md:max-w-60 md:only:max-w-none">
       <p className="truncate font-mono text-xs text-faint">{city.name}</p>
 
