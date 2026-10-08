@@ -26,7 +26,7 @@
     "widgetCustomiserHelp": "Personalização da forma como a informação meteorológica é apresentada.",
     "displayedComponent": "Componente apresentado",
     "presentWeather": "Tempo atual",
-    "futureWeather": "Tempo futuro (previsão)",
+    "futureWeather": "previsão",
     "unitSettings": "Definições de unidades",
     "cityPlaceholder": "Escreva para pesquisar cidades…",
     "cityNoResults": "Nenhuma cidade correspondente",

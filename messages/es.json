@@ -26,7 +26,7 @@
     "noForecastAvailable": "No hay pronóstico disponible",
     "displayedComponent": "Componente mostrado",
     "presentWeather": "Tiempo actual",
-    "futureWeather": "Tiempo futuro (pronóstico)",
+    "futureWeather": "pronóstico",
     "unitSettings": "Ajustes de unidades",
     "cityPlaceholder": "Escribe para buscar ciudades…",
     "cityNoResults": "No hay ciudades coincidentes",
