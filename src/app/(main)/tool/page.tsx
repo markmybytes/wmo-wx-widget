@@ -13,11 +13,17 @@ const INPUT_CLASS =
   "w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10";
 const CHECK_CLASS = "size-4 accent-sky-600";
 
+// The WMO feed never returns more than nine days, so anything above this
+// only widens the URL without changing the widget.
+const MAX_DAYS = 9;
+
 function CityPicker({
+  labelId,
   options,
   value,
   onChange,
 }: {
+  labelId: string;
   options: CityOption[];
   value: string;
   onChange: (value: string) => void;
@@ -64,10 +70,12 @@ function CityPicker({
       />
 
       <input
+        id="city"
         type="text"
         role="combobox"
         aria-expanded={open}
         aria-controls="city-listbox"
+        aria-labelledby={labelId}
         autoComplete="off"
         className={`${INPUT_CLASS} pe-9 ps-9`}
         placeholder={t("cityPlaceholder")}
@@ -181,6 +189,10 @@ export default function Page() {
     ).then((cities) => setCityOption(cities ?? []));
   }, [locale]);
 
+  // NaN while the field is empty; both steppers read it as 0, which also
+  // covers the old empty-input-plus-NaN guard.
+  const dayCount = parseInt(formData.days) || 0;
+
   function handleGenerate() {
     if (formData.city === "") {
       setOutUrl("");
@@ -216,15 +228,14 @@ export default function Page() {
       </div>
 
       <section className={SECTION_CLASS}>
-        <h2 className="text-lg font-semibold text-zinc-900">{t("city")}</h2>
+        {/* The heading is also the input's label: one visible "City", and it
+            actually names the control instead of pointing at no id. */}
+        <h2 id="city-label" className="text-lg font-semibold text-zinc-900">
+          {t("city")}
+        </h2>
         <div className="mt-4">
-          <label
-            htmlFor="city"
-            className="mb-1.5 block text-sm font-medium text-zinc-700"
-          >
-            {t("city")}
-          </label>
           <CityPicker
+            labelId="city-label"
             options={cityOption}
             value={formData.city}
             onChange={(city) => {
@@ -432,13 +443,13 @@ export default function Page() {
               <button
                 type="button"
                 aria-label="−"
-                className="px-3.5 text-zinc-600 transition-colors hover:bg-zinc-100"
+                disabled={dayCount <= 1}
+                className="px-3.5 text-zinc-600 transition-colors hover:bg-zinc-100 disabled:cursor-not-allowed disabled:text-zinc-300 disabled:hover:bg-transparent"
                 onClick={() => {
-                  let d = parseInt(formData.days);
-                  if (d > 1) {
+                  if (dayCount > 1) {
                     setFormData({
                       ...formData,
-                      days: (--d).toString(),
+                      days: (dayCount - 1).toString(),
                     });
                   }
                 }}
@@ -449,6 +460,7 @@ export default function Page() {
                 id="days"
                 type="number"
                 min="1"
+                max={MAX_DAYS}
                 className="w-14 border-x border-zinc-300 text-center text-sm text-zinc-900 outline-none"
                 value={formData.days}
                 onChange={(e) => {
@@ -456,7 +468,7 @@ export default function Page() {
                     setFormData({ ...formData, days: "" });
                   }
                   if (e.target.value.match(/^[0-9]+$/)) {
-                    const d = parseInt(e.target.value);
+                    const d = Math.min(parseInt(e.target.value), MAX_DAYS);
                     setFormData({
                       ...formData,
                       days: d > 0 ? d.toString() : "1",
@@ -467,14 +479,15 @@ export default function Page() {
               <button
                 type="button"
                 aria-label="+"
-                className="px-3.5 text-zinc-600 transition-colors hover:bg-zinc-100"
+                disabled={dayCount >= MAX_DAYS}
+                className="px-3.5 text-zinc-600 transition-colors hover:bg-zinc-100 disabled:cursor-not-allowed disabled:text-zinc-300 disabled:hover:bg-transparent"
                 onClick={() => {
-                  let d = parseInt(formData.days);
-                  if (isNaN(d)) d = 0; // guard: empty input + "+" used to yield "NaN"
-                  setFormData({
-                    ...formData,
-                    days: (++d).toString(),
-                  });
+                  if (dayCount < MAX_DAYS) {
+                    setFormData({
+                      ...formData,
+                      days: (dayCount + 1).toString(),
+                    });
+                  }
                 }}
               >
                 <Icon icon="material-symbols:add" width="18" height="18" />
