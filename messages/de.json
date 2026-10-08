@@ -35,8 +35,8 @@
     "copied": "Kopiert!"
   },
   "home": {
-    "heroTitle": "Ein Wetter-Widget mit offiziellen WMO-Daten",
-    "heroDescription": "wmo-wx-widget zeigt Live-Beobachtungen und Mehrtagesvorhersagen der Weltorganisation für Meteorologie. Einmal konfigurieren und mit einer einzigen URL überall einbetten.",
+    "heroTitle": "Fernes Wetter, ganz nah",
+    "heroDescription": "wmo-wx-widget bringt dir die Beobachtungen und die Mehrtagesprognosen der Weltorganisation für Meteorologie. Einmal einrichten, eine URL – und überall einbetten.",
     "customiserTitle": "Widget erstellen",
     "customiserDescription": "Wählen Sie eine Stadt, passen Sie Anzeige- und Einheiten-Einstellungen an und kopieren Sie eine einbettbare URL.",
     "customiserCta": "Anpassung öffnen",

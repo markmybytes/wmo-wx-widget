@@ -35,8 +35,8 @@
     "copied": "Skopiowano!"
   },
   "home": {
-    "heroTitle": "Widget pogodowy oparty na oficjalnych danych WMO",
-    "heroDescription": "wmo-wx-widget wyświetla bieżące obserwacje i wielodniowe prognozy Światowej Organizacji Meteorologicznej. Skonfiguruj go raz i osadź w dowolnym miejscu za pomocą jednego adresu URL.",
+    "heroTitle": "Niebo na wyciągnięciecie",
+    "heroDescription": "wmo-wx-widget dostarcza bieżące obserwacje i wielodniowe prognozy Światowej Organizacji Meteorologicznej. Skonfiguruj raz, jeden adres URL — i osadź go, gdzie chcesz.",
     "customiserTitle": "Zbuduj swój widget",
     "customiserDescription": "Wybierz miasto, dostosuj ustawienia wyświetlania i jednostek, a następnie skopiuj gotowy do osadzenia adres URL.",
     "customiserCta": "Otwórz kreator",

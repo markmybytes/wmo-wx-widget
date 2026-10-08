@@ -35,8 +35,8 @@
     "copied": "¡Copiado!"
   },
   "home": {
-    "heroTitle": "Un widget del tiempo con datos oficiales de la OMM",
-    "heroDescription": "wmo-wx-widget muestra observaciones en vivo y pronósticos de varios días de la Organización Meteorológica Mundial. Configúralo una vez e insértalo en cualquier lugar con una sola URL.",
+    "heroTitle": "El cielo, a un vistazo",
+    "heroDescription": "wmo-wx-widget te trae las observaciones en vivo y los pronósticos de varios días de la Organización Meteorológica Mundial. Configúralo una vez, una sola URL, e incorpóralo donde quieras.",
     "customiserTitle": "Crea tu widget",
     "customiserDescription": "Elige una ciudad, ajusta la visualización y las unidades, y copia una URL lista para insertar.",
     "customiserCta": "Abrir el personalizador",

@@ -35,8 +35,8 @@
     "copied": "복사됨!"
   },
   "home": {
-    "heroTitle": "공식 WMO 데이터를 기반으로 한 날씨 위젯",
-    "heroDescription": "wmo-wx-widget는 세계기상기구의 실시간 관측과 여러 날에 걸친 예보를 표시합니다. 한 번 설정하면 하나의 URL로 어디에나 삽입할 수 있습니다.",
+    "heroTitle": "하늘이, 코앞에",
+    "heroDescription": "wmo-wx-widget가 세계기상기구의 실시간 관측과 며칠치 예보를 전해줍니다. 한 번 설정하면, 하나의 URL로 어디에나 넣을 수 있습니다.",
     "customiserTitle": "위젯 만들기",
     "customiserDescription": "도시를 선택하고 표시 및 단위 설정을 조정한 뒤 바로 삽입할 수 있는 URL을 복사하세요.",
     "customiserCta": "커스터마이저 열기",
