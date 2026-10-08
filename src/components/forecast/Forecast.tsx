@@ -63,7 +63,7 @@ export default async function Forecast({
 
             <img
               src={fc.icon}
-              className="h-[38px] w-[50px]"
+              className="h-9.5 w-12.5"
               alt={fc.weather ?? ""}
             />
 

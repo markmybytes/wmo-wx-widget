@@ -41,7 +41,7 @@ export default async function Home() {
             <div className="flex items-center gap-x-2">
               {/* WWIS-style flat pictogram in place of the WMO icon image. */}
               <svg
-                className="h-[50px] w-[70px]"
+                className="h-12.5 w-17.5"
                 viewBox="0 0 70 50"
                 fill="none"
                 aria-hidden
