@@ -162,6 +162,9 @@ export default function Page() {
     weather: true,
     forcast: true,
     align: "start",
+    style: "cards",
+    weekday: true,
+    date: true,
     city: "",
     days: "5",
     lang: locale,
@@ -338,6 +341,80 @@ export default function Page() {
                 ))}
               </div>
             </fieldset>
+
+            <div>
+              <fieldset>
+                <legend className="mb-2 text-sm font-medium text-zinc-700">
+                  {t("widgetStyle")}
+                </legend>
+
+                <div className="flex gap-x-4">
+                  {Object.entries({
+                    cards: t("styleCards"),
+                    list: t("styleList"),
+                  }).map(([k, text]) => (
+                    <label
+                      className="flex items-center gap-x-2 text-sm text-zinc-600"
+                      key={k}
+                    >
+                      <input
+                        type="radio"
+                        name="style"
+                        value={k}
+                        checked={formData.style == k}
+                        onChange={() =>
+                          setFormData({
+                            ...formData,
+                            style: k as "cards" | "list",
+                          })
+                        }
+                        className={CHECK_CLASS}
+                      />
+                      {text}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+              <p className="mb-2 mt-1 text-xs text-zinc-500">
+                {t("styleHelp")}
+              </p>
+            </div>
+
+            <div>
+              <fieldset>
+                <legend className="mb-2 text-sm font-medium text-zinc-700">
+                  {t("dateDisplay")}
+                </legend>
+
+                <div className="flex gap-x-4">
+                  {Object.entries({
+                    weekday: t("showWeekday"),
+                    date: t("showDate"),
+                  }).map(([k, text]) => (
+                    <label
+                      className="flex items-center gap-x-2 text-sm text-zinc-600"
+                      key={k}
+                    >
+                      <input
+                        type="checkbox"
+                        name={k}
+                        value={k}
+                        checked={formData[k as "weekday" | "date"]}
+                        onChange={() => {
+                          const key = k as "weekday" | "date";
+                          setFormData({
+                            ...formData,
+                            [key]: !formData[key],
+                          });
+                        }}
+                        className={CHECK_CLASS}
+                      />
+                      {text}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+            </div>
           </div>
 
           <div>

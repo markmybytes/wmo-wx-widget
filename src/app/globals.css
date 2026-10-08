@@ -9,6 +9,9 @@
   --color-lift: #f4f4f5;
   --color-signal: #0369a1;
   --color-signal-soft: #e0f2fe;
+  /* Companion to `signal` for the cards low/high pair, where colour — not
+     position — marks which is which. */
+  --color-warm: #dc2626;
 
   /* Type: Inter for body, Archivo as display, Plex Mono as the bulletin face. */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;

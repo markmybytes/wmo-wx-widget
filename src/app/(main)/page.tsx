@@ -1,11 +1,12 @@
 import { Icon } from "@iconify/react";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import Link from "next/link";
 
 export default async function Home() {
   const t = await getTranslations("home");
   const wt = await getTranslations("weather");
   const ct = await getTranslations("common");
+  const rtl = (await getLocale()) === "ar";
 
   return (
     <div className="motion-safe:animate-fade-up">
@@ -33,16 +34,9 @@ export default async function Home() {
           {/* Static, real-CSS mock of the actual widget card (components/forecast/Weather.tsx). */}
           <div
             aria-hidden
-            className="flex w-56 flex-col items-center gap-y-1.5 rounded border border-line bg-white p-3 shadow-sm"
+            className="flex w-60 flex-col items-center gap-y-2 rounded-lg border border-line bg-white p-3 shadow-sm"
           >
-            <p className="flex items-center gap-x-1 text-xs text-faint">
-              <Icon
-                icon="material-symbols:location-on-outline"
-                width="1em"
-                height="1em"
-              />
-              Geneva
-            </p>
+            <p className="font-mono text-xs text-faint">Geneva</p>
 
             <div className="flex items-center gap-x-2">
               {/* WWIS-style flat pictogram in place of the WMO icon image. */}
@@ -61,14 +55,16 @@ export default async function Home() {
                   strokeLinejoin="round"
                 />
               </svg>
-              <span className="text-2xl font-bold text-ink">18°C</span>
+              <span className="font-mono text-2xl font-medium text-ink">
+                18°C
+              </span>
             </div>
 
-            <p className="max-w-[12.5rem] truncate bg-lift px-2 text-xs text-ink">
+            <p className="max-w-52 truncate bg-lift px-2 py-0.5 text-xs text-ink">
               {wt("Sunny")}
             </p>
 
-            <div className="flex gap-x-2 text-xs text-faint">
+            <div className="flex justify-center gap-x-3 font-mono text-xs text-faint">
               <span className="flex items-center gap-x-1">
                 <Icon
                   icon="material-symbols:water-drop"
@@ -109,11 +105,16 @@ export default async function Home() {
           </p>
         </div>
 
-        {/* Button-styled chip; arrow travel flips per direction. */}
+        {/* Button-styled chip; chevron flips with the text direction so the
+            glyph and the hover travel always agree. */}
         <span className="inline-flex items-center gap-x-1.5 justify-self-start rounded-md border border-signal bg-white px-3.5 py-2 font-mono text-xs font-medium text-signal sm:justify-self-end">
           {t("customiserCta")}
           <Icon
-            icon="material-symbols:chevron-right"
+            icon={
+              rtl
+                ? "material-symbols:chevron-left"
+                : "material-symbols:chevron-right"
+            }
             className="shrink-0 transition-transform motion-reduce:transition-none ltr:group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5"
             width="16"
             height="16"

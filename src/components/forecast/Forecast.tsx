@@ -1,113 +1,83 @@
-import { Icon } from "@iconify/react";
 import { FutureWeather } from "@/lib/wmo/types";
 import { Locale } from "@/lib/wmo/enums";
 import * as wmo from "@/lib/wmo/wmo";
 import { getTranslations } from "next-intl/server";
 
+/**
+ * One row per day at every width — the widget's spine. A fixed grid template
+ * locks weekday, pictogram and temps into true columns across rows.
+ */
 export default async function Forecast({
   locale,
   weather,
+  showWeekday,
+  showDate,
 }: {
   locale: Locale;
   weather: FutureWeather;
+  style?: "cards" | "list";
+  showWeekday?: boolean;
+  showDate?: boolean;
 }) {
-  const flength = weather.forecasts.length;
+  const t = await getTranslations("weather");
+  // Day number off by default: this is the `list` default, and its 2.75rem
+  // column is too narrow for a long weekday, so it shows the short one alone.
+  // Day number off by default: this is the `list` default, and its 2.75rem
+  // column is too narrow for a long weekday, so it shows the short one alone.
+  const weekday = showWeekday ?? true;
+  const dayNum = showDate ?? false;
 
-  if (flength == 0) {
-    const t = await getTranslations("common");
+  if (weather.forecasts.length === 0) {
+    const tc = await getTranslations("common");
 
     return (
-      <div className="flex flex-2 justify-center items-center min-h-20 border border-gray-300 rounded">
-        <span className="text-red-600">{t("noForecastAvailable")}</span>
+      <div className="flex grow items-center justify-center rounded-lg border border-line bg-white p-6 shadow-sm">
+        <span className="font-mono text-xs text-faint">
+          {tc("noForecastAvailable")}
+        </span>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col sm:flex-row flex-2 items-center gap-y-1.5 sm:p-1 sm:border border-gray-300 dark:border-gray-600 rounded">
+    <div className="flex grow flex-col divide-y divide-line rounded-lg border border-line bg-white shadow-sm">
       {weather.forecasts.map((fc) => {
-        const date = new Date(fc.date);
+        const d = new Date(fc.date);
 
         return (
           <div
-            className="flex sm:flex-col items-center grow w-full border sm:border-none border-gray-300 dark:border-gray-600 rounded"
+            className="grid h-11 grid-cols-[2.75rem_3.125rem_1fr] items-center gap-x-2 px-3 sm:h-14 sm:grid-cols-[4rem_3.125rem_1fr_auto] sm:gap-x-3"
             key={fc.date}
           >
-            <div className="flex flex-col justify-center items-center min-w-3/10 text-xs">
-              <span className="max-w-32 text-gray-500 dark:text-gray-500 truncate">
-                {date.toLocaleString(wmo.wmoToIso639(locale), {
-                  weekday: "long",
-                })}{" "}
-              </span>
-              <span className="dark:text-gray-300">{date.getDate()}</span>
-            </div>
-
-            <div className="flex justify-center items-center grow my-1">
-              <div className="h-[38px] w-[50px]">
-                <img
-                  src={fc.icon}
-                  className="size-full"
-                  alt={fc.weather ?? ""}
-                />
-              </div>
-            </div>
-
-            <div
-              className={`flex flex-col justify-center items-center gap-x-1 min-w-3/10  ${
-                flength >= 7 ? "xl:flex-row" : "lg:flex-row"
-              }`}
-            >
-              {flength < 8 ? (
-                <>
-                  <div className="flex justify-around min-w-13 text-sky-600 dark:text-sky-700">
-                    <Icon
-                      icon="material-symbols:device-thermometer"
-                      className="inline"
-                      width="1em"
-                      height="1em"
-                    />
-                    <span className="grow text-center">
-                      {`${fc.temp.min.val ?? "--"}${fc.temp.min.unit}`}
-                    </span>
-                  </div>
-                  <div className="flex justify-around min-w-13 text-red-600 dark:text-red-700">
-                    <Icon
-                      icon="material-symbols:device-thermometer"
-                      className="inline"
-                      width="1em"
-                      height="1em"
-                    />
-                    <span className="grow text-center">
-                      {`${fc.temp.max.val ?? "--"}${fc.temp.max.unit}`}
-                    </span>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="flex justify-around xl:justify-end min-w-13 text-sky-600 dark:text-sky-600">
-                    <Icon
-                      icon="material-symbols:device-thermometer"
-                      className="sm:hidden inline"
-                      width="1em"
-                      height="1em"
-                    />
-                    <span className="grow text-center">
-                      {`${fc.temp.min.val ?? "--"}${fc.temp.min.unit}`}
-                    </span>
-                  </div>
-                  <div className="flex justify-around xl:justify-start min-w-13 text-red-600 dark:text-red-700">
-                    <Icon
-                      icon="material-symbols:device-thermometer"
-                      className="sm:hidden inline"
-                      width="1em"
-                      height="1em"
-                    />
-                    <span className="grow text-center">
-                      {`${fc.temp.max.val ?? "--"}${fc.temp.max.unit}`}
-                    </span>
-                  </div>
-                </>
+            {/* Weekday over day number, matching the cards variant. */}
+            <div className="flex flex-col items-center font-mono text-[11px] text-faint sm:text-xs">
+              {weekday && (
+                <span className="truncate">
+                  {d.toLocaleString(wmo.wmoToIso639(locale), {
+                    weekday: "short",
+                  })}
+                </span>
               )}
+              {dayNum && <span className="text-ink">{d.getDate()}</span>}
+            </div>
+
+            <img
+              src={fc.icon}
+              className="h-[38px] w-[50px]"
+              alt={fc.weather ?? ""}
+            />
+
+            <p className="hidden min-w-0 truncate text-xs text-faint sm:block">
+              {fc.weather ? t(fc.weather) : ""}
+            </p>
+
+            {/* Range as one unit; the unit rides on max, written once. */}
+            <div className="flex items-baseline justify-self-end gap-x-1 font-mono text-xs sm:text-sm">
+              <span className="text-faint">{`${fc.temp.min.val ?? "--"}°`}</span>
+              <span className="text-faint">/</span>
+              <span className="font-medium text-ink">
+                {`${fc.temp.max.val ?? "--"}${fc.temp.max.unit}`}
+              </span>
             </div>
           </div>
         );

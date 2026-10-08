@@ -8,72 +8,45 @@ export default async function Weather({
 }: {
   city: City;
   weather: PresentWeather;
+  style?: "cards" | "list"; // ignored; kept so both variants share one call site
 }) {
   const t = await getTranslations("weather");
 
   return (
-    <div className="flex flex-col flex-1 justify-around md:justify-center items-center gap-y-1.5 min-w-54 p-1 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded">
-      <div className="w-full text-center">
-        <p className="text-xs sm:text-sm text-gray-500 truncate">
-          <Icon
-            icon="material-symbols:location-on-outline"
-            className="inline"
-            width="1em"
-            height="1em"
-          />{" "}
-          {city.name}
+    // The 240px cap is md-only so the border spans the full row on mobile;
+    // at md+ the card becomes a sidebar beside the forecast.
+    <div className="flex w-full shrink-0 flex-col items-center gap-y-2 rounded-lg border border-line bg-white p-3 shadow-sm md:max-w-60 md:justify-center">
+      <p className="truncate font-mono text-xs text-faint">{city.name}</p>
+
+      {/* Hero: pictogram at its full 70×50 beside the reading — the pairing
+          this widget exists for. The image is shrink-0 so the temp keeps its
+          measure instead of both fighting over one cramped flex line. */}
+      <div className="flex items-center gap-x-2">
+        <img
+          src={weather.icon}
+          className="h-[50px] w-[70px] shrink-0"
+          alt={weather.weather ?? ""}
+        />
+        <p className="whitespace-nowrap font-mono text-2xl font-medium text-ink">
+          {`${weather.temp.val ?? "--"}${weather.temp.unit}`}
         </p>
       </div>
 
-      <div className="flex md:flex-col justify-around items-center gap-2">
-        <div className="md:w-full flex items-center gap-x-0.5 sm:gap-x-1.5">
-          <div className="w-1/2">
-            <div className="justify-self-end h-[40px] w-[55px] sm:h-[50px] sm:w-[70px]">
-              <img
-                src={weather.icon}
-                className="size-full"
-                alt={weather.weather ?? ""}
-              />
-            </div>
-          </div>
+      <p className="max-w-52 truncate bg-lift px-2 py-0.5 text-xs text-ink">
+        {weather.weather ? t(weather.weather) : ""}
+      </p>
 
-          <div className="w-1/2">
-            <p className="font-bold text-center text-lg sm:text-2xl">
-              {`${weather.temp.val ?? "--"}${weather.temp.unit}`}
-            </p>
-          </div>
-        </div>
-
-        <div className="md:w-full flex flex-col items-center">
-          <div className="hidden sm:block w-full max-w-50 text-center">
-            <p className="text-xs bg-gray-100 dark:bg-gray-500 text-black truncate">
-              {weather.weather ? t(weather.weather) : ""}
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-x-2 text-xs sm:text-sm">
-            <span>
-              <Icon
-                icon="material-symbols:water-drop"
-                className="inline"
-                width="1em"
-                height="1em"
-              />{" "}
-              {`${weather.rh || "--"}%`}
-            </span>
-            <span>
-              <Icon
-                icon="material-symbols:air"
-                className="inline"
-                width="1em"
-                height="1em"
-              />{" "}
-              {weather.wind
-                ? `${weather.wind.direction} ${weather.wind.speed || "--"} m/s`
-                : "--"}
-            </span>
-          </div>
-        </div>
+      <div className="flex justify-center gap-x-3 font-mono text-xs text-faint">
+        <span className="flex items-center gap-x-1">
+          <Icon icon="material-symbols:water-drop" width="1em" height="1em" />
+          {`${weather.rh ?? "--"}%`}
+        </span>
+        <span className="flex items-center gap-x-1">
+          <Icon icon="material-symbols:air" width="1em" height="1em" />
+          {weather.wind
+            ? `${weather.wind.direction} ${weather.wind.speed ?? "--"} m/s`
+            : "--"}
+        </span>
       </div>
     </div>
   );
