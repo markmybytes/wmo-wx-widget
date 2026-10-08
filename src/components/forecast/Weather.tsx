@@ -24,7 +24,7 @@ export default async function Weather({
       <div className="flex items-center gap-x-2">
         <img
           src={weather.icon}
-          className="h-[50px] w-[70px] shrink-0"
+          className="h-12.5 w-17.5 shrink-0"
           alt={weather.weather ?? ""}
         />
         <p className="whitespace-nowrap font-mono text-2xl font-medium text-ink">
