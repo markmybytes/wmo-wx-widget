@@ -16,7 +16,7 @@ export default async function Weather({
     // The 240px cap makes this a sidebar at md+, so `only:` drops it when the
     // card is alone and it fills the row like cards does. A sibling appearing
     // later reverts to the sidebar, which is the wanted behaviour anyway.
-    <div className="flex w-full shrink-0 flex-col items-center gap-y-2 rounded-lg border border-line bg-white p-3 shadow-sm md:justify-center md:max-w-60 md:only:max-w-none">
+    <div className="flex w-full shrink-0 flex-col items-center gap-y-2 rounded-lg border border-line bg-surface p-3 shadow-sm md:justify-center md:max-w-60 md:only:max-w-none">
       <p className="truncate font-mono text-xs text-faint">{city.name}</p>
 
       {/* Hero: pictogram at its full 70×50 beside the reading — the pairing
