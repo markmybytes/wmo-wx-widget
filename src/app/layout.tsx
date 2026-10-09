@@ -19,6 +19,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: process.env.appTitle,
     description: t("description"),
+    icons: {
+      icon: "/icon.svg",
+    },
   };
 }
 
