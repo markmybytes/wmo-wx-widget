@@ -13,7 +13,7 @@ export default async function Home() {
       {/* Station masthead: one line of real observation framing, one rule. */}
       <div
         aria-hidden
-        className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-zinc-200 pb-3 font-mono text-[11px] tracking-[0.14em] text-zinc-600 sm:text-xs"
+        className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-outline pb-3 font-mono text-[11px] tracking-[0.14em] text-muted sm:text-xs"
       >
         <span>06710 · 46.20° N 06.09° E</span>
         <span>WMO · World Weather Information Service</span>
@@ -21,11 +21,11 @@ export default async function Home() {
 
       <section className="grid gap-x-12 gap-y-10 py-10 sm:grid-cols-[1fr_auto] sm:items-center sm:py-14">
         <div className="max-w-lg">
-          <h1 className="text-balance font-display text-2xl font-bold leading-[1.15] tracking-tight text-zinc-900 sm:text-3xl">
+          <h1 className="text-balance font-display text-2xl font-bold leading-[1.15] tracking-tight text-foreground sm:text-3xl">
             {t("heroTitle")}
           </h1>
 
-          <p className="mt-3 max-w-prose text-sm leading-relaxed text-zinc-600 sm:text-base">
+          <p className="mt-3 max-w-prose text-sm leading-relaxed text-muted sm:text-base">
             {t("heroDescription")}
           </p>
         </div>
@@ -34,9 +34,9 @@ export default async function Home() {
           {/* Static, real-CSS mock of the actual widget card (components/forecast/Weather.tsx). */}
           <div
             aria-hidden
-            className="flex w-60 flex-col items-center gap-y-2 rounded-lg border border-zinc-200 bg-white p-3 shadow-sm"
+            className="flex w-60 flex-col items-center gap-y-2 rounded-lg border border-outline bg-surface p-3 shadow-sm"
           >
-            <p className="font-mono text-xs text-zinc-600">Geneva</p>
+            <p className="font-mono text-xs text-muted">Geneva</p>
 
             <div className="flex items-center gap-x-2">
               {/* WWIS-style flat pictogram in place of the WMO icon image. */}
@@ -55,16 +55,16 @@ export default async function Home() {
                   strokeLinejoin="round"
                 />
               </svg>
-              <span className="font-mono text-2xl font-medium text-zinc-900">
+              <span className="font-mono text-2xl font-medium text-foreground">
                 18°C
               </span>
             </div>
 
-            <p className="max-w-52 truncate bg-zinc-100 px-2 py-0.5 text-xs text-zinc-900">
+            <p className="max-w-52 truncate bg-fill px-2 py-0.5 text-xs text-foreground">
               {wt("Sunny")}
             </p>
 
-            <div className="flex justify-center gap-x-3 font-mono text-xs text-zinc-600">
+            <div className="flex justify-center gap-x-3 font-mono text-xs text-muted">
               <span className="flex items-center gap-x-1">
                 <Icon
                   icon="material-symbols:water-drop"
@@ -85,25 +85,25 @@ export default async function Home() {
       {/* The single entry point into /tool — staged as the page's CTA panel. */}
       <Link
         href="/tool"
-        className="group grid gap-x-8 gap-y-3 rounded-xl border border-zinc-200 bg-white px-5 py-5 shadow-sm transition-colors hover:border-sky-700/50 hover:bg-sky-100/40 sm:grid-cols-[1fr_auto] sm:items-end sm:px-7 sm:py-6"
+        className="group grid gap-x-8 gap-y-3 rounded-xl border border-outline bg-surface px-5 py-5 shadow-sm transition-colors hover:border-brand/50 hover:bg-brand-wash/80 sm:grid-cols-[1fr_auto] sm:items-end sm:px-7 sm:py-6"
       >
         <div>
-          <p className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-sky-700">
+          <p className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-brand">
             {ct("widgetCustomiser")}
           </p>
 
-          <h2 className="mt-1.5 font-display text-xl font-bold text-zinc-900 sm:text-2xl">
+          <h2 className="mt-1.5 font-display text-xl font-bold text-foreground sm:text-2xl">
             {t("customiserTitle")}
           </h2>
 
-          <p className="mt-1.5 max-w-prose text-sm leading-relaxed text-zinc-600">
+          <p className="mt-1.5 max-w-prose text-sm leading-relaxed text-muted">
             {t("customiserDescription")}
           </p>
         </div>
 
         {/* Button-styled chip; chevron flips with the text direction so the
             glyph and the hover travel always agree. */}
-        <span className="inline-flex items-center gap-x-1.5 justify-self-start rounded-md border border-sky-700 bg-white px-3.5 py-2 font-mono text-xs font-medium text-sky-700 sm:justify-self-end">
+        <span className="inline-flex items-center gap-x-1.5 justify-self-start rounded-md border border-brand bg-surface px-3.5 py-2 font-mono text-xs font-medium text-brand sm:justify-self-end">
           {t("customiserCta")}
           <Icon
             icon={
@@ -119,12 +119,12 @@ export default async function Home() {
       </Link>
 
       {/* Sources and code, set as report rows rather than cards. */}
-      <section className="mt-12 border-t border-zinc-200 pt-5 sm:mt-16">
-        <h2 className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-zinc-600">
+      <section className="mt-12 border-t border-outline pt-5 sm:mt-16">
+        <h2 className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-muted">
           {t("aboutTitle")}
         </h2>
 
-        <ul className="mt-1 divide-y divide-zinc-200">
+        <ul className="mt-1 divide-y divide-outline">
           <li>
             <a
               href="https://worldweather.wmo.int"
@@ -132,20 +132,20 @@ export default async function Home() {
               rel="noopener noreferrer"
               className="group grid items-baseline gap-x-6 gap-y-1 py-4 sm:grid-cols-[8rem_1fr_auto]"
             >
-              <span className="font-mono text-xs text-zinc-600">
+              <span className="font-mono text-xs text-muted">
                 {t("dataSourceLabel")}
               </span>
               <div>
-                <p className="font-display text-base font-semibold text-zinc-900">
+                <p className="font-display text-base font-semibold text-foreground">
                   {t("dataSourceName")}
                 </p>
-                <p className="mt-1 max-w-prose text-sm leading-relaxed text-zinc-600">
+                <p className="mt-1 max-w-prose text-sm leading-relaxed text-muted">
                   {t("dataSourceDescription")}
                 </p>
               </div>
               <Icon
                 icon="material-symbols:arrow-outward"
-                className="justify-self-end text-zinc-600 transition-colors group-hover:text-sky-700"
+                className="justify-self-end text-muted transition-colors group-hover:text-brand"
                 width="18"
                 height="18"
               />
@@ -159,20 +159,20 @@ export default async function Home() {
               rel="noopener noreferrer"
               className="group grid items-baseline gap-x-6 gap-y-1 py-4 sm:grid-cols-[8rem_1fr_auto]"
             >
-              <span className="font-mono text-xs text-zinc-600">
+              <span className="font-mono text-xs text-muted">
                 {t("repoLabel")}
               </span>
               <div>
-                <p className="font-display text-base font-semibold text-zinc-900">
+                <p className="font-display text-base font-semibold text-foreground">
                   {t("repoName")}
                 </p>
-                <p className="mt-1 max-w-prose text-sm leading-relaxed text-zinc-600">
+                <p className="mt-1 max-w-prose text-sm leading-relaxed text-muted">
                   {t("repoDescription")}
                 </p>
               </div>
               <Icon
                 icon="material-symbols:arrow-outward"
-                className="justify-self-end text-zinc-600 transition-colors group-hover:text-sky-700"
+                className="justify-self-end text-muted transition-colors group-hover:text-brand"
                 width="18"
                 height="18"
               />
