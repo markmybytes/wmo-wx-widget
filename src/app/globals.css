@@ -8,7 +8,6 @@
   --color-line: #e4e4e7;
   --color-lift: #f4f4f5;
   --color-signal: #0369a1;
-  --color-signal-soft: #e0f2fe;
   /* Companion to `signal` for the cards low/high pair, where colour — not
      position — marks which is which. */
   --color-warm: #dc2626;
@@ -58,7 +57,6 @@
     --color-ink: #f4f4f5;
     --color-faint: #a1a1aa;
     --color-signal: #38bdf8;
-    --color-signal-soft: #0c4a6e;
     --color-warm: #f87171;
   }
 }
