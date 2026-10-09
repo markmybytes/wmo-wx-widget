@@ -1,6 +1,7 @@
 import { FutureWeather } from "@/lib/wmo/types";
 import { Locale } from "@/lib/wmo/enums";
 import * as wmo from "@/lib/wmo/wmo";
+import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
 /** One row per day at every width. A fixed grid template locks weekday, pictogram
@@ -55,8 +56,8 @@ export default async function Forecast({
               {dayNum && <span className="text-foreground">{d.getDate()}</span>}
             </div>
 
-            <img
-              src={fc.icon}
+            <WxIcon
+              icon={fc.icon}
               className="h-9.5 w-12.5"
               alt={fc.weather ?? ""}
             />

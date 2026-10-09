@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import { City, PresentWeather } from "@/lib/wmo/types";
+import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
 /** `cards` variant. Spacing and sizing are frozen by decision, not accident — the
@@ -32,8 +33,8 @@ export default async function WeatherCards({
         <div className="md:w-full flex items-center gap-x-0.5 sm:gap-x-1.5">
           <div className="w-1/2">
             <div className="justify-self-end h-10 w-13.75 sm:h-12.5 sm:w-17.5">
-              <img
-                src={weather.icon}
+              <WxIcon
+                icon={weather.icon}
                 className="size-full"
                 alt={weather.weather ?? ""}
               />

@@ -158,7 +158,7 @@ function mapForecasts(
         icon:
           day.weatherIcon != 0
             ? wxIconUrl(day.weatherIcon.toString(), "")
-            : "/images/question_mark.png",
+            : null,
       }))
       .slice(0, Math.max(Math.abs(days), 1)),
   };
@@ -192,10 +192,7 @@ function mapPresent(
     },
     rh: wx.rh || null,
     weather: wx.wxdesc,
-    icon:
-      wx.iconNum !== ""
-        ? wxIconUrl(wx.iconNum, wx.daynightcode)
-        : "/images/question_mark.png",
+    icon: wx.iconNum !== "" ? wxIconUrl(wx.iconNum, wx.daynightcode) : null,
     wind:
       wx.wd !== "" && wx.ws !== ""
         ? {

@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import { City, PresentWeather } from "@/lib/wmo/types";
+import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
 export default async function Weather({
@@ -21,8 +22,8 @@ export default async function Weather({
       {/* Hero: pictogram at its full 70×50 beside the reading. shrink-0 so the temp
           keeps its measure instead of both fighting over one cramped flex line. */}
       <div className="flex items-center gap-x-2">
-        <img
-          src={weather.icon}
+        <WxIcon
+          icon={weather.icon}
           className="h-12.5 w-17.5 shrink-0"
           alt={weather.weather ?? ""}
         />
