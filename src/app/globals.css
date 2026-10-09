@@ -1,20 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  /* Station-report palette. Derived from the app's zinc+sky family; named so
-     pages reach for roles ("ink", "signal") instead of raw scale steps. */
-  --color-ink: #18181b;
-  --color-faint: #52525b;
-  --color-line: #e4e4e7;
-  --color-lift: #f4f4f5;
-  --color-signal: #0369a1;
-  /* Companion to `signal` for the cards low/high pair, where colour — not
-     position — marks which is which. */
-  --color-warm: #dc2626;
+  --color-foreground: var(--color-zinc-900);
+  --color-muted: var(--color-zinc-600);
+  --color-outline: var(--color-zinc-200);
+  --color-fill: var(--color-zinc-100);
+  
+  /* temp-low/temp-high are a data pair marking the cards min/max reading, not UI roles. */
+  --color-temp-low: var(--color-sky-700);
+  --color-temp-high: #dc2626;
 
-  /* Widget surfaces. `canvas` is the page behind the cards, `surface` the
-     cards themselves; both start at white so the light widget is unchanged. */
-  --color-canvas: #ffffff;
+  /* `background` is the page behind the cards, `surface` the cards themselves. */
+  --color-background: #ffffff;
   --color-surface: #ffffff;
 
   /* Type: Inter for body, Archivo as display, Plex Mono as the bulletin face. */
@@ -39,25 +36,21 @@
   }
 }
 
-/* Dark scheme for the embeddable widget only (`/forecast/[id]`). The
-   `.wx-scheme` class on the widget redefines the theme variables for its own
-   subtree; utilities compile to `var(--color-*)`, so every tokenised colour
-   inside flips together. Nothing outside the wrapper matches, so the home
-   page and the customiser keep their light (and raw zinc/sky) values, and no
-   per-element `dark:` variants are needed. The bare `color` rule covers the
-   few spans that ride on the UA's default text colour, which must not survive
-   into a dark surface. */
+/* Dark scheme for the widget only (`/forecast/[id]`). Scoped to `.wx-scheme` so the
+   marketing surfaces keep their light values; utilities resolve to var(--color-*),
+   so redefining the names here flips the subtree. The bare `color` rule catches the
+   spans that ride on the UA default and would otherwise go black on a dark card. */
 @media (prefers-color-scheme: dark) {
   .wx-scheme {
-    color: var(--color-ink);
-    --color-canvas: #0f0f12;
-    --color-surface: #1a1a1e;
-    --color-lift: #26262b;
-    --color-line: #3f3f46;
-    --color-ink: #f4f4f5;
-    --color-faint: #a1a1aa;
-    --color-signal: #38bdf8;
-    --color-warm: #f87171;
+    color: var(--color-foreground);
+    --color-background: #0f0f12;
+    --color-surface: var(--color-zinc-900);
+    --color-fill: var(--color-zinc-800);
+    --color-outline: var(--color-zinc-700);
+    --color-foreground: var(--color-zinc-100);
+    --color-muted: var(--color-zinc-400);
+    --color-temp-low: var(--color-sky-400);
+    --color-temp-high: var(--color-red-400);
   }
 }
 
@@ -89,7 +82,7 @@
 
 @layer base {
   :focus-visible {
-    outline: 2px solid var(--color-signal);
+    outline: 2px solid var(--color-temp-low);
     outline-offset: 2px;
   }
 
