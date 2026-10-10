@@ -59,7 +59,7 @@ function CityPicker({
     <div ref={rootRef} className="relative sm:max-w-md">
       <Icon
         icon="material-symbols:search"
-        className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-zinc-400"
+        className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-faint"
         width="18"
         height="18"
       />
@@ -102,7 +102,7 @@ function CityPicker({
         <button
           type="button"
           aria-label={t("clear")}
-          className="absolute end-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600"
+          className="absolute end-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-faint hover:bg-fill hover:text-muted"
           onClick={() => {
             onChange("");
             setQuery("");
@@ -116,10 +116,10 @@ function CityPicker({
         <ul
           id="city-listbox"
           role="listbox"
-          className="absolute z-20 mt-1.5 max-h-60 w-full overflow-auto rounded-xl border border-zinc-200 bg-white py-1.5 shadow-lg"
+          className="absolute z-20 mt-1.5 max-h-60 w-full overflow-auto rounded-xl border border-outline bg-surface py-1.5 shadow-lg"
         >
           {visible.length === 0 && (
-            <li className="px-3 py-2 text-sm text-zinc-500">
+            <li className="px-3 py-2 text-sm text-faint">
               {t("cityNoResults")}
             </li>
           )}
@@ -129,8 +129,8 @@ function CityPicker({
                 type="button"
                 className={`flex w-full items-center justify-between px-3 py-2 text-start text-sm ${
                   i === activeIndex
-                    ? "bg-sky-50 text-zinc-900"
-                    : "text-zinc-700"
+                    ? "bg-brand-wash text-foreground"
+                    : "text-muted"
                 }`}
                 onMouseDown={(e) => e.preventDefault()}
                 onMouseEnter={() => setActiveIndex(i)}
@@ -140,7 +140,7 @@ function CityPicker({
                 {o.value === value && (
                   <Icon
                     icon="material-symbols:check"
-                    className="text-sky-600"
+                    className="text-brand-solid"
                     width="16"
                     height="16"
                   />
@@ -213,10 +213,10 @@ export default function Page() {
   return (
     <form className="flex flex-col gap-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
+        <h1 className="text-2xl font-bold tracking-tight text-foreground">
           {t("widgetCustomiser")}
         </h1>
-        <p className="mt-1 text-sm text-zinc-500">
+        <p className="mt-1 text-sm text-faint">
           {t("widgetCustomiserHelp")}
         </p>
       </div>
@@ -246,7 +246,7 @@ export default function Page() {
           <div>
             <label
               htmlFor="locale"
-              className="mb-1.5 block text-sm font-medium text-zinc-700"
+              className="mb-1.5 block text-sm font-medium text-muted"
             >
               {t("language")}
             </label>
@@ -276,7 +276,7 @@ export default function Page() {
               </select>
               <Icon
                 icon="material-symbols:keyboard-arrow-down"
-                className="pointer-events-none absolute end-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                className="pointer-events-none absolute end-3 top-1/2 -translate-y-1/2 text-faint"
                 width="18"
                 height="18"
               />
@@ -362,7 +362,7 @@ export default function Page() {
                   ))}
                 </div>
               </fieldset>
-              <p className="mb-2 mt-1 text-xs text-zinc-500">
+              <p className="mb-2 mt-1 text-xs text-faint">
                 {t("styleHelp")}
               </p>
             </div>
@@ -402,20 +402,20 @@ export default function Page() {
           <div>
             <label
               htmlFor="days"
-              className="block text-sm font-medium text-zinc-700"
+              className="block text-sm font-medium text-muted"
             >
               {t("maxForecastPeriod")}
             </label>
-            <p className="mb-2 mt-1 text-xs text-zinc-500">
+            <p className="mb-2 mt-1 text-xs text-faint">
               {t("maxForecastPeriodHelp")}
             </p>
 
-            <div className="inline-flex items-stretch overflow-hidden rounded-lg border border-zinc-300">
+            <div className="inline-flex items-stretch overflow-hidden rounded-lg border border-outline-strong">
               <button
                 type="button"
                 aria-label="−"
                 disabled={dayCount <= 1}
-                className="px-3.5 text-zinc-600 transition-colors hover:bg-zinc-100 disabled:cursor-not-allowed disabled:text-zinc-300 disabled:hover:bg-transparent"
+                className="px-3.5 text-muted transition-colors hover:bg-fill disabled:cursor-not-allowed disabled:text-faint disabled:hover:bg-transparent"
                 onClick={() => {
                   if (dayCount > 1) {
                     setFormData({
@@ -432,7 +432,7 @@ export default function Page() {
                 type="number"
                 min="1"
                 max={MAX_DAYS}
-                className="w-14 border-x border-zinc-300 text-center text-sm text-zinc-900 outline-none"
+                className="w-14 border-x border-outline-strong text-center text-sm text-foreground outline-none"
                 value={formData.days}
                 onChange={(e) => {
                   if (e.target.value == "") {
@@ -451,7 +451,7 @@ export default function Page() {
                 type="button"
                 aria-label="+"
                 disabled={dayCount >= MAX_DAYS}
-                className="px-3.5 text-zinc-600 transition-colors hover:bg-zinc-100 disabled:cursor-not-allowed disabled:text-zinc-300 disabled:hover:bg-transparent"
+                className="px-3.5 text-muted transition-colors hover:bg-fill disabled:cursor-not-allowed disabled:text-faint disabled:hover:bg-transparent"
                 onClick={() => {
                   if (dayCount < MAX_DAYS) {
                     setFormData({
@@ -504,7 +504,7 @@ export default function Page() {
           <div className="flex flex-col items-stretch gap-x-2 gap-y-3 sm:flex-row sm:items-center">
             <button
               type="button"
-              className="inline-flex items-center justify-center gap-x-2 rounded-lg bg-sky-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-sky-500"
+              className="inline-flex items-center justify-center gap-x-2 rounded-lg bg-brand-solid px-5 py-2.5 text-sm font-medium text-on-brand shadow-sm transition-colors hover:bg-brand-hover"
               onClick={handleGenerate}
             >
               <Icon icon="material-symbols:link" width="18" height="18" />
@@ -516,7 +516,7 @@ export default function Page() {
                 type="text"
                 value={outUrl}
                 aria-label="URL"
-                className="wctl-input pe-11 text-zinc-500 disabled:cursor-not-allowed disabled:bg-zinc-50"
+                className="wctl-input pe-11 text-faint disabled:cursor-not-allowed disabled:bg-fill-faint"
                 readOnly
                 disabled={!outUrl}
               />
@@ -527,8 +527,8 @@ export default function Page() {
                 disabled={!outUrl}
                 className={`absolute inset-y-0 end-0 flex items-center px-3.5 transition-colors ${
                   copied
-                    ? "text-green-600"
-                    : "text-zinc-400 hover:text-zinc-600"
+                    ? "text-success"
+                    : "text-faint hover:text-muted"
                 } disabled:cursor-not-allowed`}
                 onClick={() => {
                   if (!outUrl) {
@@ -559,7 +559,7 @@ export default function Page() {
           </div>
 
           {cityError && (
-            <p className="text-xs text-red-600">{t("emptyCityValidation")}</p>
+            <p className="text-xs text-danger">{t("emptyCityValidation")}</p>
           )}
         </div>
       </section>

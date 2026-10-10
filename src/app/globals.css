@@ -1,18 +1,37 @@
 @import "tailwindcss";
 
+/* Plain @theme, never inline: inline would bake the values into the utilities,
+   and the dark override below redefines these names. */
 @theme {
   --color-foreground: var(--color-zinc-900);
   --color-muted: var(--color-zinc-600);
+  --color-faint: var(--color-zinc-500);
+
   --color-outline: var(--color-zinc-200);
+  --color-outline-strong: var(--color-zinc-300);
+
   --color-fill: var(--color-zinc-100);
-  
-  /* temp-low/temp-high are a data pair marking the cards min/max reading, not UI roles. */
-  --color-temp-low: var(--color-sky-700);
-  --color-temp-high: #dc2626;
+  --color-fill-faint: var(--color-zinc-50);
 
   /* `background` is the page behind the cards, `surface` the cards themselves. */
   --color-background: #ffffff;
   --color-surface: #ffffff;
+
+  /* Solid steps sit darker than sky-600/sky-500: white on sky-600 measured
+     4.06:1, an AA failure inherited from the pre-token button. */
+  --color-brand: var(--color-sky-700);
+  --color-brand-solid: var(--color-sky-700);
+  --color-brand-hover: var(--color-sky-800);
+  --color-brand-ring: var(--color-sky-500);
+  --color-brand-wash: var(--color-sky-50);
+  --color-on-brand: #ffffff;
+
+  --color-danger: var(--color-red-600);
+  --color-success: var(--color-green-600);
+
+  /* A data pair marking the cards min/max reading, not UI roles. */
+  --color-temp-low: var(--color-sky-700);
+  --color-temp-high: #dc2626;
 
   /* Type: Inter for body, Archivo as display, Plex Mono as the bulletin face. */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
@@ -36,19 +55,25 @@
   }
 }
 
-/* Dark scheme for the widget only (`/forecast/[id]`). Scoped to `.wx-scheme` so the
-   marketing surfaces keep their light values; utilities resolve to var(--color-*),
-   so redefining the names here flips the subtree. The bare `color` rule catches the
-   spans that ride on the UA default and would otherwise go black on a dark card. */
 @media (prefers-color-scheme: dark) {
-  .wx-scheme {
-    color: var(--color-foreground);
+  :root {
     --color-background: #0f0f12;
     --color-surface: var(--color-zinc-900);
     --color-fill: var(--color-zinc-800);
+    --color-fill-faint: var(--color-zinc-950);
     --color-outline: var(--color-zinc-700);
+    --color-outline-strong: var(--color-zinc-600);
     --color-foreground: var(--color-zinc-100);
     --color-muted: var(--color-zinc-400);
+    --color-faint: var(--color-zinc-400);
+    --color-brand: var(--color-sky-400);
+    --color-brand-solid: var(--color-sky-500);
+    --color-brand-hover: var(--color-sky-400);
+    --color-brand-ring: var(--color-sky-400);
+    --color-brand-wash: var(--color-sky-950);
+    --color-on-brand: #0f0f12;
+    --color-danger: var(--color-red-400);
+    --color-success: var(--color-green-400);
     --color-temp-low: var(--color-sky-400);
     --color-temp-high: var(--color-red-400);
   }
@@ -56,31 +81,40 @@
 
 @layer components {
   .wctl-section {
-    @apply rounded-2xl border border-zinc-200 bg-white p-6;
+    @apply rounded-2xl border border-outline bg-surface p-6;
   }
 
   .wctl-input {
-    @apply w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10;
+    @apply w-full rounded-lg border border-outline-strong bg-surface px-3 py-2 text-sm text-foreground outline-none transition-colors placeholder:text-faint focus:border-brand-ring focus:ring-4 focus:ring-brand-ring/10;
   }
 
   .wctl-check {
-    @apply size-4 accent-sky-600;
+    @apply size-4 accent-brand-solid;
   }
 
   .wctl-heading {
-    @apply text-lg font-semibold text-zinc-900;
+    @apply text-lg font-semibold text-foreground;
   }
 
   .wctl-legend {
-    @apply mb-2 text-sm font-medium text-zinc-700;
+    @apply mb-2 text-sm font-medium text-muted;
   }
 
   .wctl-option {
-    @apply flex items-center gap-x-2 text-sm text-zinc-600;
+    @apply flex items-center gap-x-2 text-sm text-muted;
   }
 }
 
 @layer base {
+  :root {
+    color-scheme: light dark;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+
   :focus-visible {
     outline: 2px solid var(--color-temp-low);
     outline-offset: 2px;
