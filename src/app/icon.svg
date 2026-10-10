@@ -1,0 +1,27 @@
+<svg
+  viewBox="0 0 64 64"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  class="w-full h-full"
+>
+  <rect width="64" height="64" rx="16" fill="#0369a1" />
+  <rect
+    x="0.75"
+    y="0.75"
+    width="62.5"
+    height="62.5"
+    rx="15.25"
+    stroke="#ffffff"
+    stroke-width="1.5"
+    stroke-opacity="0.2"
+  />
+
+  <path
+    d="M 18 40 L 46 40 A 7 7 0 0 0 53 33 A 8.5 8.5 0 0 0 44 24 A 12 12 0 0 0 20 24 A 8.5 8.5 0 0 0 11 33 A 7 7 0 0 0 18 40 Z"
+    fill="#ffffff"
+  />
+
+  <rect x="12" y="46" width="9" height="7" rx="2.5" fill="#bae6fd" />
+  <rect x="25" y="46" width="14" height="7" rx="2.5" fill="#ffffff" />
+  <rect x="43" y="46" width="9" height="7" rx="2.5" fill="#bae6fd" />
+</svg>
