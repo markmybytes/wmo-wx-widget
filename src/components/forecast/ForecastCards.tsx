@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import { FutureWeather } from "@/lib/wmo/types";
 import { Locale } from "@/lib/wmo/enums";
 import * as wmo from "@/lib/wmo/wmo";
+import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
 /** `cards` variant. Spacing and the day-count-driven `flength` branching are frozen by
@@ -55,8 +56,8 @@ export default async function ForecastCards({
 
             <div className="flex justify-center items-center grow my-1">
               <div className="h-9.5 w-12.5">
-                <img
-                  src={fc.icon}
+                <WxIcon
+                  icon={fc.icon}
                   className="size-full"
                   alt={fc.weather ?? ""}
                 />

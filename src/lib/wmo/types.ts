@@ -37,7 +37,7 @@ export interface FutureWeather {
         val: number | null;
       };
     };
-    icon: string;
+    icon: string | null;
   }>;
 }
 
@@ -49,7 +49,7 @@ export interface PresentWeather {
   };
   rh: number | null;
   weather: string | null;
-  icon: string;
+  icon: string | null;
   wind: {
     direction: string;
     speed: number;
