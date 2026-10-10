@@ -57,13 +57,13 @@ export default function Navbar() {
   }, [isDropdownOpen]);
 
   return (
-    <nav className="sticky top-0 z-40 border-b border-line bg-white/80 backdrop-blur">
+    <nav className="sticky top-0 z-40 border-b border-zinc-200 bg-white/80 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-4 sm:px-6">
         <div className="flex items-center gap-x-8">
-          <span className="flex items-center gap-x-2 text-base font-semibold tracking-tight text-ink">
+          <span className="flex items-center gap-x-2 text-base font-semibold tracking-tight text-zinc-900">
             <Icon
               icon="material-symbols:partly-cloudy-day"
-              className="text-signal"
+              className="text-sky-700"
               width="22"
               height="22"
             />
@@ -83,8 +83,8 @@ export default function Navbar() {
                   href={link.href}
                   className={`flex items-center gap-x-1.5 rounded-lg px-3 py-2 text-sm transition-colors ${
                     isActive
-                      ? "bg-lift font-medium text-ink"
-                      : "text-faint hover:bg-lift hover:text-ink"
+                      ? "bg-zinc-100 font-medium text-zinc-900"
+                      : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
                   }`}
                 >
                   <Icon icon={link.icon} width="18" height="18" />
@@ -101,7 +101,7 @@ export default function Navbar() {
             aria-haspopup="menu"
             aria-expanded={isDropdownOpen}
             aria-label={LOCALES.find((v) => v.locale === usrLocale)?.name}
-            className="flex items-center gap-x-1 rounded-lg p-2 text-faint transition-colors hover:bg-lift hover:text-ink"
+            className="flex items-center gap-x-1 rounded-lg p-2 text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
             <Icon icon="material-symbols:translate" width="20" height="20" />
@@ -110,13 +110,13 @@ export default function Navbar() {
           {isDropdownOpen && (
             <div
               role="menu"
-              className="absolute end-0 z-50 mt-2 w-40 rounded-xl border border-line bg-white py-1.5 shadow-lg"
+              className="absolute end-0 z-50 mt-2 w-40 rounded-xl border border-zinc-200 bg-white py-1.5 shadow-lg"
             >
               {LOCALES.map((v) => (
                 <button
                   key={v.locale}
                   role="menuitem"
-                  className="flex w-full items-center justify-between px-4 py-2 text-sm text-faint hover:bg-lift hover:text-ink"
+                  className="flex w-full items-center justify-between px-4 py-2 text-sm text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
                   onClick={() => {
                     setIsDropdownOpen(false);
                     document.cookie = `lang=${v.locale}; path=/; max-age=31536000; samesite=lax`;
@@ -127,7 +127,7 @@ export default function Navbar() {
                   {v.locale === usrLocale && (
                     <Icon
                       icon="material-symbols:check"
-                      className="text-signal"
+                      className="text-sky-700"
                       width="16"
                       height="16"
                     />
