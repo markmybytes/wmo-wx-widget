@@ -28,7 +28,9 @@ export default async function ForecastCards({
 
     return (
       <div className="flex flex-2 justify-center items-center min-h-20 border border-outline rounded">
-        <span className="text-muted">{t("noForecastAvailable")}</span>
+        <span className="font-mono text-xs text-muted">
+          {t("noForecastAvailable")}
+        </span>
       </div>
     );
   }
