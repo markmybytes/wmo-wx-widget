@@ -61,12 +61,7 @@ export default function Navbar() {
       <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-4 sm:px-6">
         <div className="flex items-center gap-x-8">
           <span className="flex items-center gap-x-2 text-base font-semibold tracking-tight text-foreground">
-            <Icon
-              icon="material-symbols:partly-cloudy-day"
-              className="text-brand"
-              width="22"
-              height="22"
-            />
+            <img src="/icon.svg" alt="" width="22" height="22" />
             wmo-wx-widget
           </span>
 

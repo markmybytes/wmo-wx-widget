@@ -16,7 +16,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/markmybytes/wmo-wx-widget">
-    <img src="https://github.com/user-attachments/assets/f41d13b1-f0c7-4516-8741-145c28890158" alt="logo" width="80" height="80">
+    <img src="public/icon.svg" alt="logo" width="80" height="80">
   </a>
 
   <h3 align="center">wmo-wx-widget</h3>
