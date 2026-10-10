@@ -13,31 +13,29 @@ export default async function Weather({
   const t = await getTranslations("weather");
 
   return (
-    // The 240px cap makes this a sidebar at md+, so `only:` drops it when the
-    // card is alone and it fills the row like cards does. A sibling appearing
-    // later reverts to the sidebar, which is the wanted behaviour anyway.
-    <div className="flex w-full shrink-0 flex-col items-center gap-y-2 rounded-lg border border-line bg-surface p-3 shadow-sm md:justify-center md:max-w-60 md:only:max-w-none">
-      <p className="truncate font-mono text-xs text-faint">{city.name}</p>
+    // The 240px cap makes this a sidebar at md+, so `only:` drops it when the card is
+    // alone. A sibling appearing later reverts to the sidebar, which is wanted anyway.
+    <div className="flex w-full shrink-0 flex-col items-center gap-y-2 rounded-lg border border-outline bg-surface p-3 shadow-sm md:justify-center md:max-w-60 md:only:max-w-none">
+      <p className="truncate font-mono text-xs text-muted">{city.name}</p>
 
-      {/* Hero: pictogram at its full 70×50 beside the reading — the pairing
-          this widget exists for. The image is shrink-0 so the temp keeps its
-          measure instead of both fighting over one cramped flex line. */}
+      {/* Hero: pictogram at its full 70×50 beside the reading. shrink-0 so the temp
+          keeps its measure instead of both fighting over one cramped flex line. */}
       <div className="flex items-center gap-x-2">
         <img
           src={weather.icon}
           className="h-12.5 w-17.5 shrink-0"
           alt={weather.weather ?? ""}
         />
-        <p className="whitespace-nowrap font-mono text-2xl font-medium text-ink">
+        <p className="whitespace-nowrap font-mono text-2xl font-medium text-foreground">
           {`${weather.temp.val ?? "--"}${weather.temp.unit}`}
         </p>
       </div>
 
-      <p className="max-w-52 truncate bg-lift px-2 py-0.5 text-xs text-ink">
+      <p className="max-w-52 truncate bg-fill px-2 py-0.5 text-xs text-foreground">
         {weather.weather ? t(weather.weather) : ""}
       </p>
 
-      <div className="flex justify-center gap-x-3 font-mono text-xs text-faint">
+      <div className="flex justify-center gap-x-3 font-mono text-xs text-muted">
         <span className="flex items-center gap-x-1">
           <Icon icon="material-symbols:water-drop" width="1em" height="1em" />
           {`${weather.rh ?? "--"}%`}

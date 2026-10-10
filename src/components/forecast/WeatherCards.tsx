@@ -2,10 +2,8 @@ import { Icon } from "@iconify/react";
 import { City, PresentWeather } from "@/lib/wmo/types";
 import { getTranslations } from "next-intl/server";
 
-/**
- * The `cards` variant, preserved from the original design. Spacing and sizing
- * are deliberately untouched; only colour and font were modernised.
- */
+/** `cards` variant. Spacing and sizing are frozen by decision, not accident — the
+ *  original's per-device proportions were validated. Only colour and font changed. */
 export default async function WeatherCards({
   city,
   weather,
@@ -17,9 +15,9 @@ export default async function WeatherCards({
   const t = await getTranslations("weather");
 
   return (
-    <div className="flex flex-col flex-1 justify-around md:justify-center items-center gap-y-1.5 min-w-54 p-1 border border-line rounded">
+    <div className="flex flex-col flex-1 justify-around md:justify-center items-center gap-y-1.5 min-w-54 p-1 border border-outline rounded">
       <div className="w-full text-center">
-        <p className="text-xs sm:text-sm text-faint truncate">
+        <p className="text-xs sm:text-sm text-muted truncate">
           <Icon
             icon="material-symbols:location-on-outline"
             className="inline"
@@ -43,7 +41,7 @@ export default async function WeatherCards({
           </div>
 
           <div className="w-1/2">
-            <p className="font-mono font-medium text-center text-lg sm:text-2xl text-ink">
+            <p className="font-mono font-medium text-center text-lg sm:text-2xl text-foreground">
               {`${weather.temp.val ?? "--"}${weather.temp.unit}`}
             </p>
           </div>
@@ -51,7 +49,7 @@ export default async function WeatherCards({
 
         <div className="md:w-full flex flex-col items-center">
           <div className="hidden sm:block w-full max-w-50 text-center">
-            <p className="text-xs bg-lift text-ink truncate">
+            <p className="text-xs bg-fill text-foreground truncate">
               {weather.weather ? t(weather.weather) : ""}
             </p>
           </div>

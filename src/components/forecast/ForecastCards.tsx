@@ -4,11 +4,8 @@ import { Locale } from "@/lib/wmo/enums";
 import * as wmo from "@/lib/wmo/wmo";
 import { getTranslations } from "next-intl/server";
 
-/**
- * `cards` variant, preserved from the original Forecast design. Spacing and the
- * day-count-driven `flength` branching are deliberately untouched — the original's
- * per-device sizing was validated. Only colour and font were modernised.
- */
+/** `cards` variant. Spacing and the day-count-driven `flength` branching are frozen by
+ *  decision — the original's per-device sizing was validated. Only colour and font changed. */
 export default async function ForecastCards({
   locale,
   weather,
@@ -17,7 +14,6 @@ export default async function ForecastCards({
 }: {
   locale: Locale;
   weather: FutureWeather;
-  // Accepted for call-site symmetry with Forecast.tsx; this variant ignores it.
   style?: "cards" | "list"; // ignored; kept so both variants share one call site
   showWeekday?: boolean;
   showDate?: boolean;
@@ -30,25 +26,25 @@ export default async function ForecastCards({
     const t = await getTranslations("common");
 
     return (
-      <div className="flex flex-2 justify-center items-center min-h-20 border border-line rounded">
-        <span className="text-faint">{t("noForecastAvailable")}</span>
+      <div className="flex flex-2 justify-center items-center min-h-20 border border-outline rounded">
+        <span className="text-muted">{t("noForecastAvailable")}</span>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col sm:flex-row flex-2 items-center gap-y-1.5 sm:p-1 sm:border border-line rounded">
+    <div className="flex flex-col sm:flex-row flex-2 items-center gap-y-1.5 sm:p-1 sm:border border-outline rounded">
       {weather.forecasts.map((fc) => {
         const date = new Date(fc.date);
 
         return (
           <div
-            className="flex sm:flex-col items-center grow w-full border sm:border-none border-line rounded"
+            className="flex sm:flex-col items-center grow w-full border sm:border-none border-outline rounded"
             key={fc.date}
           >
             <div className="flex flex-col justify-center items-center min-w-3/10 text-xs font-mono">
               {weekday && (
-                <span className="max-w-32 text-faint truncate">
+                <span className="max-w-32 text-muted truncate">
                   {date.toLocaleString(wmo.wmoToIso639(locale), {
                     weekday: "long",
                   })}
@@ -74,7 +70,7 @@ export default async function ForecastCards({
             >
               {flength < 8 ? (
                 <>
-                  <div className="flex justify-around min-w-13 text-signal">
+                  <div className="flex justify-around min-w-13 text-temp-low">
                     <Icon
                       icon="material-symbols:device-thermometer"
                       className="inline"
@@ -85,7 +81,7 @@ export default async function ForecastCards({
                       {`${fc.temp.min.val ?? "--"}${fc.temp.min.unit}`}
                     </span>
                   </div>
-                  <div className="flex justify-around min-w-13 text-warm">
+                  <div className="flex justify-around min-w-13 text-temp-high">
                     <Icon
                       icon="material-symbols:device-thermometer"
                       className="inline"
@@ -99,7 +95,7 @@ export default async function ForecastCards({
                 </>
               ) : (
                 <>
-                  <div className="flex justify-around xl:justify-end min-w-13 text-signal">
+                  <div className="flex justify-around xl:justify-end min-w-13 text-temp-low">
                     <Icon
                       icon="material-symbols:device-thermometer"
                       className="sm:hidden inline"
@@ -110,7 +106,7 @@ export default async function ForecastCards({
                       {`${fc.temp.min.val ?? "--"}${fc.temp.min.unit}`}
                     </span>
                   </div>
-                  <div className="flex justify-around xl:justify-start min-w-13 text-warm">
+                  <div className="flex justify-around xl:justify-start min-w-13 text-temp-high">
                     <Icon
                       icon="material-symbols:device-thermometer"
                       className="sm:hidden inline"

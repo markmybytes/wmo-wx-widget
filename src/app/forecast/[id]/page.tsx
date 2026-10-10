@@ -30,10 +30,7 @@ const alignClass: Record<string, string> = {
  *  at `sm`; `list` = one sheet whose rows keep their shape at every width. */
 type WidgetStyle = "cards" | "list";
 
-/**
- * Parses the widget's search params once. `forcast` (sic) is the canonical
- * embed param.
- */
+/** Parses the widget's search params once. `forcast` (sic) is the canonical embed param. */
 
 function parseWidgetParams(sp: { [key: string]: string } | undefined): {
   locale: Locale;
@@ -124,10 +121,8 @@ export default async function Page(props: {
   return (
     // Layout-only entrance, skipped for reduced-motion users. This is the
     // widget's one motion concession; everything below it sits still.
-    // `wx-scheme` anchors the widget's dark-mode variable override (see
-    // globals.css); `bg-canvas` gives the widget an explicit page backdrop in
-    // either scheme.
-    <main className="wx-scheme bg-canvas min-h-svh motion-safe:animate-fade-up">
+    // `wx-scheme` anchors the widget's dark-mode variable override; see globals.css.
+    <main className="wx-scheme bg-background min-h-svh motion-safe:animate-fade-up">
       <div
         className={`flex w-full flex-col items-stretch gap-2 p-2 md:flex-row md:gap-x-2 ${
           alignClass[align] ?? alignClass["start"]
