@@ -216,9 +216,7 @@ export default function Page() {
         <h1 className="text-2xl font-bold tracking-tight text-foreground">
           {t("widgetCustomiser")}
         </h1>
-        <p className="mt-1 text-sm text-faint">
-          {t("widgetCustomiserHelp")}
-        </p>
+        <p className="mt-1 text-sm text-faint">{t("widgetCustomiserHelp")}</p>
       </div>
 
       <section className="wctl-section">
@@ -362,9 +360,7 @@ export default function Page() {
                   ))}
                 </div>
               </fieldset>
-              <p className="mb-2 mt-1 text-xs text-faint">
-                {t("styleHelp")}
-              </p>
+              <p className="mb-2 mt-1 text-xs text-faint">{t("styleHelp")}</p>
             </div>
 
             <div>
@@ -526,9 +522,7 @@ export default function Page() {
                 aria-label={copied ? t("copied") : t("copy")}
                 disabled={!outUrl}
                 className={`absolute inset-y-0 end-0 flex items-center px-3.5 transition-colors ${
-                  copied
-                    ? "text-success"
-                    : "text-faint hover:text-muted"
+                  copied ? "text-success" : "text-faint hover:text-muted"
                 } disabled:cursor-not-allowed`}
                 onClick={() => {
                   if (!outUrl) {
