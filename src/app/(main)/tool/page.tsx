@@ -58,7 +58,7 @@ function CityPicker({
     <div ref={rootRef} className="relative sm:max-w-md">
       <Icon
         icon="material-symbols:search"
-        className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-faint"
+        className="pointer-events-none absolute inset-s-3 top-1/2 -translate-y-1/2 text-faint"
         width="18"
         height="18"
       />
@@ -101,7 +101,7 @@ function CityPicker({
         <button
           type="button"
           aria-label={t("clear")}
-          className="absolute end-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-faint hover:bg-fill hover:text-muted"
+          className="absolute inset-e-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-faint hover:bg-fill hover:text-muted"
           onClick={() => {
             onChange("");
             setQuery("");
@@ -273,7 +273,7 @@ export default function Page() {
               </select>
               <Icon
                 icon="material-symbols:keyboard-arrow-down"
-                className="pointer-events-none absolute end-3 top-1/2 -translate-y-1/2 text-faint"
+                className="pointer-events-none absolute inset-e-3 top-1/2 -translate-y-1/2 text-faint"
                 width="18"
                 height="18"
               />
@@ -520,7 +520,7 @@ export default function Page() {
                 title={copied ? t("copied") : undefined}
                 aria-label={copied ? t("copied") : t("copy")}
                 disabled={!outUrl}
-                className={`absolute inset-y-0 end-0 flex items-center px-3.5 transition-colors ${
+                className={`absolute inset-y-0 inset-e-0 flex items-center px-3.5 transition-colors ${
                   copied ? "text-success" : "text-faint hover:text-muted"
                 } disabled:cursor-not-allowed`}
                 onClick={() => {

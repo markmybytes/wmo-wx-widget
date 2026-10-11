@@ -105,7 +105,7 @@ export default function Navbar() {
           {isDropdownOpen && (
             <div
               role="menu"
-              className="absolute end-0 z-50 mt-2 w-40 rounded-xl border border-outline bg-surface py-1.5 shadow-lg"
+              className="absolute inset-e-0 z-50 mt-2 w-40 rounded-xl border border-outline bg-surface py-1.5 shadow-lg"
             >
               {LOCALES.map((v) => (
                 <button
