@@ -65,24 +65,14 @@ export default async function ForecastCards({
             >
               {flength < 8 ? (
                 <>
-                  <div className="flex justify-around min-w-13 text-temp-low">
-                    <Icon
-                      icon="material-symbols:device-thermometer"
-                      className="inline"
-                      width="1em"
-                      height="1em"
-                    />
+                  <div className="flex items-center justify-around min-w-13 text-temp-low">
+                    <Icon icon="bi:thermometer-low" className="size-3.5" />
                     <span className="grow text-center font-mono text-sm">
                       {`${fc.temp.min.val ?? "--"}${fc.temp.min.unit}`}
                     </span>
                   </div>
-                  <div className="flex justify-around min-w-13 text-temp-high">
-                    <Icon
-                      icon="material-symbols:device-thermometer"
-                      className="inline"
-                      width="1em"
-                      height="1em"
-                    />
+                  <div className="flex items-center justify-around min-w-13 text-temp-high">
+                    <Icon icon="bi:thermometer-high" className="size-3.5" />
                     <span className="grow text-center font-mono text-sm">
                       {`${fc.temp.max.val ?? "--"}${fc.temp.max.unit}`}
                     </span>
@@ -90,24 +80,14 @@ export default async function ForecastCards({
                 </>
               ) : (
                 <>
-                  <div className="flex justify-around xl:justify-end min-w-13 text-temp-low">
-                    <Icon
-                      icon="material-symbols:device-thermometer"
-                      className="sm:hidden inline"
-                      width="1em"
-                      height="1em"
-                    />
+                  <div className="flex items-center justify-around xl:justify-end min-w-13 text-temp-low">
+                    <Icon icon="bi:thermometer-low" className="size-3.5 sm:hidden" />
                     <span className="grow text-center font-mono text-sm">
                       {`${fc.temp.min.val ?? "--"}${fc.temp.min.unit}`}
                     </span>
                   </div>
-                  <div className="flex justify-around xl:justify-start min-w-13 text-temp-high">
-                    <Icon
-                      icon="material-symbols:device-thermometer"
-                      className="sm:hidden inline"
-                      width="1em"
-                      height="1em"
-                    />
+                  <div className="flex items-center justify-around xl:justify-start min-w-13 text-temp-high">
+                    <Icon icon="bi:thermometer-high" className="size-3.5 sm:hidden" />
                     <span className="grow text-center font-mono text-sm">
                       {`${fc.temp.max.val ?? "--"}${fc.temp.max.unit}`}
                     </span>

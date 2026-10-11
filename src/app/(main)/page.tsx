@@ -56,11 +56,11 @@ export default async function Home() {
 
             <div className="flex justify-center gap-x-3 font-mono text-xs text-muted">
               <span className="flex items-center gap-x-1">
-                <Icon icon="material-symbols:water-drop" width="1em" height="1em" />
+                <Icon icon="material-symbols:water-drop" />
                 64%
               </span>
               <span className="flex items-center gap-x-1">
-                <Icon icon="material-symbols:air" width="1em" height="1em" />
+                <Icon icon="material-symbols:air" />
                 {wt("NE")} 3 m/s
               </span>
             </div>
