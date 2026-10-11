@@ -33,7 +33,6 @@ function CityPicker({
   const filtered = query
     ? options.filter((o) => o.label.toLowerCase().includes(query.toLowerCase()))
     : options;
-  // ponytail: cap the dropdown at 50 rows; fine for the ~4k cities on the source list
   const visible = filtered.slice(0, 50);
 
   useEffect(() => {
