@@ -69,7 +69,7 @@ export default async function Home() {
       </section>
 
       <Link
-        href="/tool"
+        href="/customiser"
         className="group grid gap-x-8 gap-y-3 rounded-xl border border-outline bg-surface px-5 py-5 shadow-sm transition-colors hover:border-brand/50 hover:bg-brand-wash/80 sm:grid-cols-[1fr_auto] sm:items-end sm:px-7 sm:py-6"
       >
         <div>
