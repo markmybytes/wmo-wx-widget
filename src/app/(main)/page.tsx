@@ -37,12 +37,7 @@ export default async function Home() {
             <p className="font-mono text-xs text-muted">Geneva</p>
 
             <div className="flex items-center gap-x-2">
-              <svg
-                className="h-12.5 w-17.5"
-                viewBox="0 0 70 50"
-                fill="none"
-                aria-hidden
-              >
+              <svg className="h-12.5 w-17.5" viewBox="0 0 70 50" fill="none" aria-hidden>
                 <circle cx="45" cy="18" r="12" fill="#FBBF24" />
                 <path
                   d="M17 39h26a9 9 0 0 0 2.2-17.7A12.5 12.5 0 0 0 21.6 20 9.5 9.5 0 0 0 17 39Z"
@@ -52,9 +47,7 @@ export default async function Home() {
                   strokeLinejoin="round"
                 />
               </svg>
-              <span className="font-mono text-2xl font-medium text-foreground">
-                18°C
-              </span>
+              <span className="font-mono text-2xl font-medium text-foreground">18°C</span>
             </div>
 
             <p className="max-w-52 truncate bg-fill px-2 py-0.5 text-xs text-foreground">
@@ -63,11 +56,7 @@ export default async function Home() {
 
             <div className="flex justify-center gap-x-3 font-mono text-xs text-muted">
               <span className="flex items-center gap-x-1">
-                <Icon
-                  icon="material-symbols:water-drop"
-                  width="1em"
-                  height="1em"
-                />
+                <Icon icon="material-symbols:water-drop" width="1em" height="1em" />
                 64%
               </span>
               <span className="flex items-center gap-x-1">
@@ -100,11 +89,7 @@ export default async function Home() {
         <span className="inline-flex items-center gap-x-1.5 justify-self-start rounded-md border border-brand bg-surface px-3.5 py-2 font-mono text-xs font-medium text-brand sm:justify-self-end">
           {t("customiserCta")}
           <Icon
-            icon={
-              rtl
-                ? "material-symbols:chevron-left"
-                : "material-symbols:chevron-right"
-            }
+            icon={rtl ? "material-symbols:chevron-left" : "material-symbols:chevron-right"}
             className="shrink-0 transition-transform motion-reduce:transition-none ltr:group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5"
             width="16"
             height="16"
@@ -125,9 +110,7 @@ export default async function Home() {
               rel="noopener noreferrer"
               className="group grid items-baseline gap-x-6 gap-y-1 py-4 sm:grid-cols-[8rem_1fr_auto]"
             >
-              <span className="font-mono text-xs text-muted">
-                {t("dataSourceLabel")}
-              </span>
+              <span className="font-mono text-xs text-muted">{t("dataSourceLabel")}</span>
               <div>
                 <p className="font-display text-base font-semibold text-foreground">
                   {t("dataSourceName")}
@@ -152,9 +135,7 @@ export default async function Home() {
               rel="noopener noreferrer"
               className="group grid items-baseline gap-x-6 gap-y-1 py-4 sm:grid-cols-[8rem_1fr_auto]"
             >
-              <span className="font-mono text-xs text-muted">
-                {t("repoLabel")}
-              </span>
+              <span className="font-mono text-xs text-muted">{t("repoLabel")}</span>
               <div>
                 <p className="font-display text-base font-semibold text-foreground">
                   {t("repoName")}

@@ -27,9 +27,7 @@ export default async function Forecast({
 
     return (
       <div className="flex grow items-center justify-center rounded-lg border border-outline bg-surface p-6 shadow-sm">
-        <span className="font-mono text-xs text-muted">
-          {tc("noForecastAvailable")}
-        </span>
+        <span className="font-mono text-xs text-muted">{tc("noForecastAvailable")}</span>
       </div>
     );
   }
@@ -55,11 +53,7 @@ export default async function Forecast({
               {dayNum && <span className="text-foreground">{d.getDate()}</span>}
             </div>
 
-            <WxIcon
-              icon={fc.icon}
-              className="h-9.5 w-12.5"
-              alt={fc.weather ?? ""}
-            />
+            <WxIcon icon={fc.icon} className="h-9.5 w-12.5" alt={fc.weather ?? ""} />
 
             <p className="hidden min-w-0 truncate text-xs text-muted sm:block">
               {fc.weather ? t(fc.weather) : ""}

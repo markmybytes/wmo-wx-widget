@@ -33,11 +33,7 @@ export default async function WeatherCards({
         <div className="md:w-full flex items-center gap-x-0.5 sm:gap-x-1.5">
           <div className="w-1/2">
             <div className="justify-self-end h-10 w-13.75 sm:h-12.5 sm:w-17.5">
-              <WxIcon
-                icon={weather.icon}
-                className="size-full"
-                alt={weather.weather ?? ""}
-              />
+              <WxIcon icon={weather.icon} className="size-full" alt={weather.weather ?? ""} />
             </div>
           </div>
 
@@ -66,15 +62,8 @@ export default async function WeatherCards({
               {`${weather.rh ?? "--"}%`}
             </span>
             <span>
-              <Icon
-                icon="material-symbols:air"
-                className="inline"
-                width="1em"
-                height="1em"
-              />{" "}
-              {weather.wind
-                ? `${weather.wind.direction} ${weather.wind.speed ?? "--"} m/s`
-                : "--"}
+              <Icon icon="material-symbols:air" className="inline" width="1em" height="1em" />{" "}
+              {weather.wind ? `${weather.wind.direction} ${weather.wind.speed ?? "--"} m/s` : "--"}
             </span>
           </div>
         </div>
