@@ -25,14 +25,14 @@ export default async function ForecastCards({
     const t = await getTranslations("common");
 
     return (
-      <div className="flex flex-2 justify-center items-center min-h-20 border border-outline rounded">
+      <div className="flex flex-2 justify-center items-center min-h-20 border border-outline bg-surface shadow-sm rounded">
         <span className="font-mono text-xs text-muted">{t("noForecastAvailable")}</span>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col sm:flex-row flex-2 items-center gap-y-1.5 sm:p-1 sm:border border-outline rounded">
+    <div className="flex flex-col sm:flex-row flex-2 items-center gap-y-1.5 sm:p-1 sm:border border-outline bg-surface shadow-sm rounded">
       {weather.forecasts.map((fc) => {
         const date = new Date(fc.date);
 

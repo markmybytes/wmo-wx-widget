@@ -16,7 +16,7 @@ export default async function WeatherCards({
   const t = await getTranslations("weather");
 
   return (
-    <div className="flex flex-col flex-1 justify-around md:justify-center items-center gap-y-1.5 min-w-54 p-1 border border-outline rounded">
+    <div className="flex flex-col flex-1 justify-around md:justify-center items-center gap-y-1.5 min-w-54 p-1 border border-outline bg-surface shadow-sm rounded">
       <div className="w-full text-center">
         <p className="flex items-center justify-center gap-x-1 text-xs sm:text-sm text-muted">
           <Icon icon="material-symbols:location-on-outline" />
