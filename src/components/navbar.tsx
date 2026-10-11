@@ -24,7 +24,7 @@ const LINKS = [
   { href: "/", label: "home", icon: "material-symbols:home-outline" },
   { href: "/tool", label: "tool", icon: "material-symbols:tune" },
   {
-    href: "/forecast/1",
+    href: "/weather/1",
     label: "widgetDemo",
     icon: "material-symbols:visibility-outline",
   },
