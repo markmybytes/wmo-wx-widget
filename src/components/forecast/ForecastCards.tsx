@@ -16,12 +16,10 @@ export default async function ForecastCards({
   locale: Locale;
   weather: FutureWeather;
   style?: "cards" | "list"; // ignored; kept so both variants share one call site
-  showWeekday?: boolean;
-  showDate?: boolean;
+  showWeekday: boolean;
+  showDate: boolean;
 }) {
   const flength = weather.forecasts.length;
-  const weekday = showWeekday ?? true;
-  const dayNum = showDate ?? true;
 
   if (flength == 0) {
     const t = await getTranslations("common");
@@ -44,14 +42,14 @@ export default async function ForecastCards({
             key={fc.date}
           >
             <div className="flex flex-col justify-center items-center min-w-3/10 text-xs font-mono">
-              {weekday && (
+              {showWeekday && (
                 <span className="max-w-32 text-muted truncate">
                   {date.toLocaleString(wmo.wmoToIso639(locale), {
                     weekday: "long",
                   })}
                 </span>
               )}
-              {dayNum && <span>{date.getDate()}</span>}
+              {showDate && <span>{date.getDate()}</span>}
             </div>
 
             <div className="flex justify-center items-center grow my-1">
