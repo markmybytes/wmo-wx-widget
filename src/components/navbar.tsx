@@ -22,7 +22,7 @@ const LOCALES = [
 
 const LINKS = [
   { href: "/", label: "home", icon: "material-symbols:home-outline" },
-  { href: "/customiser", label: "tool", icon: "material-symbols:tune" },
+  { href: "/customiser", label: "customiser", icon: "material-symbols:tune" },
   {
     href: "/weather/1",
     label: "widgetDemo",
