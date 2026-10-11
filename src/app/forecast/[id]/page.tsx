@@ -26,24 +26,18 @@ const alignClass: Record<string, string> = {
   start: "items-start",
 };
 
-/** `cards` = the original per-day cards that reflow from a stack to columns
- *  at `sm`; `list` = one sheet whose rows keep their shape at every width. */
-type WidgetStyle = "cards" | "list";
-
-/** Parses the widget's search params once. `forcast` (sic) is the canonical embed param. */
-
 function parseWidgetParams(sp: { [key: string]: string } | undefined): {
   locale: Locale;
   unit: TempUnit;
   days: number;
   align: string;
-  style: WidgetStyle;
+  style: "cards" | "list";
   showWeekday: boolean;
   showDate: boolean;
   weather: boolean;
   forecast: boolean;
 } {
-  const style: WidgetStyle = sp?.style === "list" ? "list" : "cards";
+  const style = sp?.style === "list" ? "list" : "cards";
   const wd =
     sp?.weekday !== undefined ? str2bool(sp.weekday.toLowerCase()) : true;
   // Style-dependent: `cards` has the room for the day number, `list` doesn't.
@@ -118,8 +112,6 @@ export default async function Page(props: {
   }
 
   return (
-    // Layout-only entrance, skipped for reduced-motion users. This is the
-    // widget's one motion concession; everything below it sits still.
     <main className="bg-background min-h-svh motion-safe:animate-fade-up">
       <div
         className={`flex w-full flex-col items-stretch gap-2 p-2 md:flex-row md:gap-x-2 ${

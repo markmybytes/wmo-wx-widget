@@ -10,7 +10,6 @@ export default async function Home() {
 
   return (
     <div className="motion-safe:animate-fade-up">
-      {/* Station masthead: one line of real observation framing, one rule. */}
       <div
         aria-hidden
         className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-outline pb-3 font-mono text-[11px] tracking-[0.14em] text-muted sm:text-xs"
@@ -31,7 +30,6 @@ export default async function Home() {
         </div>
 
         <div className="justify-self-center sm:justify-self-end">
-          {/* Static, real-CSS mock of the actual widget card (components/forecast/Weather.tsx). */}
           <div
             aria-hidden
             className="flex w-60 flex-col items-center gap-y-2 rounded-lg border border-outline bg-surface p-3 shadow-sm"
@@ -39,7 +37,6 @@ export default async function Home() {
             <p className="font-mono text-xs text-muted">Geneva</p>
 
             <div className="flex items-center gap-x-2">
-              {/* WWIS-style flat pictogram in place of the WMO icon image. */}
               <svg
                 className="h-12.5 w-17.5"
                 viewBox="0 0 70 50"
@@ -82,7 +79,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* The single entry point into /tool — staged as the page's CTA panel. */}
       <Link
         href="/tool"
         className="group grid gap-x-8 gap-y-3 rounded-xl border border-outline bg-surface px-5 py-5 shadow-sm transition-colors hover:border-brand/50 hover:bg-brand-wash/80 sm:grid-cols-[1fr_auto] sm:items-end sm:px-7 sm:py-6"
@@ -101,8 +97,6 @@ export default async function Home() {
           </p>
         </div>
 
-        {/* Button-styled chip; chevron flips with the text direction so the
-            glyph and the hover travel always agree. */}
         <span className="inline-flex items-center gap-x-1.5 justify-self-start rounded-md border border-brand bg-surface px-3.5 py-2 font-mono text-xs font-medium text-brand sm:justify-self-end">
           {t("customiserCta")}
           <Icon
@@ -118,7 +112,6 @@ export default async function Home() {
         </span>
       </Link>
 
-      {/* Sources and code, set as report rows rather than cards. */}
       <section className="mt-12 border-t border-outline pt-5 sm:mt-16">
         <h2 className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-muted">
           {t("aboutTitle")}

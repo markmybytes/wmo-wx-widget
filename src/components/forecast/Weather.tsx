@@ -19,8 +19,6 @@ export default async function Weather({
     <div className="flex w-full shrink-0 flex-col items-center gap-y-2 rounded-lg border border-outline bg-surface p-3 shadow-sm md:justify-center md:max-w-60 md:only:max-w-none">
       <p className="truncate font-mono text-xs text-muted">{city.name}</p>
 
-      {/* Hero: pictogram at its full 70×50 beside the reading. shrink-0 so the temp
-          keeps its measure instead of both fighting over one cramped flex line. */}
       <div className="flex items-center gap-x-2">
         <WxIcon
           icon={weather.icon}

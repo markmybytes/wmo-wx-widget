@@ -19,8 +19,7 @@ export default async function Forecast({
   showDate?: boolean;
 }) {
   const t = await getTranslations("weather");
-  // Off by default in `list`: its 2.75rem column can't fit a long weekday.
-  const weekday = showWeekday ?? true;
+  const weekday = showWeekday ?? true; // Off by default in `list`: its 2.75rem column can't fit a long weekday.
   const dayNum = showDate ?? false;
 
   if (weather.forecasts.length === 0) {
@@ -66,7 +65,6 @@ export default async function Forecast({
               {fc.weather ? t(fc.weather) : ""}
             </p>
 
-            {/* Range as one unit; the unit rides on max, written once. */}
             <div className="flex items-baseline justify-self-end gap-x-1 font-mono text-xs sm:text-sm">
               <span className="text-muted">{`${fc.temp.min.val ?? "--"}°`}</span>
               <span className="text-muted">/</span>
