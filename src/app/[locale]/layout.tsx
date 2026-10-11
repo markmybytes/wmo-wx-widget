@@ -3,6 +3,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { Inter, Archivo, IBM_Plex_Mono } from "next/font/google";
 
+import { routing } from "@/i18n/routing";
+
 import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -23,6 +25,10 @@ export async function generateMetadata(): Promise<Metadata> {
       icon: "/icon.svg",
     },
   };
+}
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
 }
 
 export default async function RootLayout({
