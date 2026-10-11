@@ -1,11 +1,11 @@
 import { Icon } from "@iconify/react";
-import { FutureWeather } from "@/lib/wmo/types";
+import { FutureWeather } from "@/lib/wmo";
 import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
 /** `cards` variant. Spacing and the day-count-driven `flength` branching are frozen by
- *  decision — the original's per-device sizing was validated. Only colour and font changed. */
+ *  decision ??the original's per-device sizing was validated. Only colour and font changed. */
 export default async function ForecastCards({
   locale,
   weather,

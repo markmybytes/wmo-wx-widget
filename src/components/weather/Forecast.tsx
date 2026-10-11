@@ -1,4 +1,4 @@
-import { FutureWeather } from "@/lib/wmo/types";
+import { FutureWeather } from "@/lib/wmo";
 import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";

@@ -1,6 +1,6 @@
-import { TempUnit } from "@/lib/wmo/enums";
+import { TempUnit } from "@/lib/wmo";
 import type { AppLocale } from "@/i18n/routing";
-import * as wmo from "@/lib/wmo/wmo";
+import { getCachedCity, getCachedForecasts, getCachedPresent } from "@/lib/wmo-cached";
 import { Metadata } from "next";
 import Weather from "@/components/weather/Weather";
 import WeatherCards from "@/components/weather/WeatherCards";
@@ -52,7 +52,7 @@ export async function generateMetadata(props: {
   return {
     title: [
       t("titleForecast", {
-        location: (await wmo.city(params.id, locale))?.name || "N/A",
+        location: (await getCachedCity(params.id, locale))?.name || "N/A",
       }),
       process.env.appTitle,
     ].join(" | "),
@@ -70,8 +70,8 @@ export default async function Page(props: {
   const { unit, days, align, style, showWeekday, showDate, weather, forecast } =
     parseWidgetParams(searchParams);
 
-  const city = await wmo.city(params.id, locale);
-  if (city === undefined) {
+  const city = await getCachedCity(params.id, locale);
+  if (city === null) {
     return notFound();
   }
 
@@ -86,13 +86,13 @@ export default async function Page(props: {
           style === "list" ? (
             <Weather
               city={city}
-              weather={await wmo.present(params.id, locale, unit)}
+              weather={await getCachedPresent(params.id, locale, unit)}
               style={style}
             ></Weather>
           ) : (
             <WeatherCards
               city={city}
-              weather={await wmo.present(params.id, locale, unit)}
+              weather={await getCachedPresent(params.id, locale, unit)}
             ></WeatherCards>
           )
         ) : null}
@@ -101,7 +101,7 @@ export default async function Page(props: {
           style === "list" ? (
             <Forecast
               locale={locale}
-              weather={await wmo.forecasts(params.id, locale, unit, days)}
+              weather={await getCachedForecasts(params.id, locale, unit, days)}
               style={style}
               showWeekday={showWeekday}
               showDate={showDate}
@@ -109,7 +109,7 @@ export default async function Page(props: {
           ) : (
             <ForecastCards
               locale={locale}
-              weather={await wmo.forecasts(params.id, locale, unit, days)}
+              weather={await getCachedForecasts(params.id, locale, unit, days)}
               showWeekday={showWeekday}
               showDate={showDate}
             ></ForecastCards>
