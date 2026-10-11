@@ -18,14 +18,9 @@ export default async function WeatherCards({
   return (
     <div className="flex flex-col flex-1 justify-around md:justify-center items-center gap-y-1.5 min-w-54 p-1 border border-outline rounded">
       <div className="w-full text-center">
-        <p className="text-xs sm:text-sm text-muted truncate">
-          <Icon
-            icon="material-symbols:location-on-outline"
-            className="inline"
-            width="1em"
-            height="1em"
-          />{" "}
-          {city.name}
+        <p className="flex items-center justify-center gap-x-1 text-xs sm:text-sm text-muted">
+          <Icon icon="material-symbols:location-on-outline" />
+          <span className="min-w-0 truncate">{city.name}</span>
         </p>
       </div>
 
@@ -52,17 +47,12 @@ export default async function WeatherCards({
           </div>
 
           <div className="flex flex-col sm:flex-row gap-x-2 text-xs sm:text-sm">
-            <span>
-              <Icon
-                icon="material-symbols:water-drop"
-                className="inline"
-                width="1em"
-                height="1em"
-              />{" "}
+            <span className="flex items-center gap-x-1">
+              <Icon icon="material-symbols:water-drop" />
               {`${weather.rh ?? "--"}%`}
             </span>
-            <span>
-              <Icon icon="material-symbols:air" className="inline" width="1em" height="1em" />{" "}
+            <span className="flex items-center gap-x-1">
+              <Icon icon="material-symbols:air" />
               {weather.wind ? `${weather.wind.direction} ${weather.wind.speed ?? "--"} m/s` : "--"}
             </span>
           </div>

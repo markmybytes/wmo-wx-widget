@@ -36,11 +36,11 @@ export default async function Weather({
 
       <div className="flex justify-center gap-x-3 font-mono text-xs text-muted">
         <span className="flex items-center gap-x-1">
-          <Icon icon="material-symbols:water-drop" width="1em" height="1em" />
+          <Icon icon="material-symbols:water-drop" />
           {`${weather.rh ?? "--"}%`}
         </span>
         <span className="flex items-center gap-x-1">
-          <Icon icon="material-symbols:air" width="1em" height="1em" />
+          <Icon icon="material-symbols:air" />
           {weather.wind ? `${weather.wind.direction} ${weather.wind.speed ?? "--"} m/s` : "--"}
         </span>
       </div>
