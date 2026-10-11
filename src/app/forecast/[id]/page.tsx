@@ -36,19 +36,14 @@ function parseWidgetParams(sp: { [key: string]: string } | undefined): {
   weather: boolean;
   forecast: boolean;
 } {
-  const style = sp?.style === "list" ? "list" : "cards";
-  // Style-dependent: `cards` has the room for the day number, `list` doesn't.
-  const dt = sp?.date !== undefined ? str2bool(sp.date.toLowerCase()) : style === "cards";
-
   return {
     locale: parseLocale(sp?.lang),
     unit: TempUnit[sp?.unit?.toUpperCase() as keyof typeof TempUnit] || TempUnit["C"],
     days: parseInt(sp?.days ?? "5"),
     align: sp?.align === "center" || sp?.align === "end" ? sp.align : "start",
-    style,
-    // An all-off request would render a date column nobody can place on a calendar, so the weekday stays on.
-    showWeekday: (sp?.weekday !== undefined ? str2bool(sp.weekday.toLowerCase()) : true) || !dt,
-    showDate: dt,
+    style: sp?.style === "list" ? "list" : "cards",
+    showWeekday: sp?.weekday !== undefined ? str2bool(sp.weekday.toLowerCase()) : true,
+    showDate: sp?.date !== undefined ? str2bool(sp.date.toLowerCase()) : true,
     weather: str2bool(sp?.weather?.toLowerCase() || "true"),
     forecast: str2bool(sp?.forcast?.toLowerCase() || "true"),
   };

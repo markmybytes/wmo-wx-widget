@@ -5,8 +5,7 @@ import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
 /** One row per day at every width. A fixed grid template locks weekday, pictogram
- *  and temps into true columns across rows. The 2.75rem first column is why `list`
- *  can't fit a long weekday, which is why the date default is style-dependent. */
+ *  and temps into true columns across rows. */
 export default async function Forecast({
   locale,
   weather,
