@@ -5,7 +5,8 @@ import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
 /** One row per day at every width. A fixed grid template locks weekday, pictogram
- *  and temps into true columns across rows. */
+ *  and temps into true columns across rows. The 2.75rem first column is why `list`
+ *  can't fit a long weekday, which is why the date default is style-dependent. */
 export default async function Forecast({
   locale,
   weather,
@@ -15,12 +16,10 @@ export default async function Forecast({
   locale: Locale;
   weather: FutureWeather;
   style?: "cards" | "list";
-  showWeekday?: boolean;
-  showDate?: boolean;
+  showWeekday: boolean;
+  showDate: boolean;
 }) {
   const t = await getTranslations("weather");
-  const weekday = showWeekday ?? true; // Off by default in `list`: its 2.75rem column can't fit a long weekday.
-  const dayNum = showDate ?? false;
 
   if (weather.forecasts.length === 0) {
     const tc = await getTranslations("common");
@@ -43,14 +42,14 @@ export default async function Forecast({
             key={fc.date}
           >
             <div className="flex flex-col items-center font-mono text-[11px] text-muted sm:text-xs">
-              {weekday && (
+              {showWeekday && (
                 <span className="truncate">
                   {d.toLocaleString(wmo.wmoToIso639(locale), {
                     weekday: "short",
                   })}
                 </span>
               )}
-              {dayNum && <span className="text-foreground">{d.getDate()}</span>}
+              {showDate && <span className="text-foreground">{d.getDate()}</span>}
             </div>
 
             <WxIcon icon={fc.icon} className="h-9.5 w-12.5" alt={fc.weather ?? ""} />
