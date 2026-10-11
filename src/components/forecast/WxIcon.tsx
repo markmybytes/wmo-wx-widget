@@ -19,10 +19,7 @@ export function WxIcon({
         aria-label={alt}
         className={`flex shrink-0 items-center justify-center text-faint ${className}`}
       >
-        <Icon
-          icon="material-symbols:indeterminate-question-box-rounded"
-          className="size-1/2"
-        />
+        <Icon icon="material-symbols:indeterminate-question-box-rounded" className="size-1/2" />
       </span>
     );
   }

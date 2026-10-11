@@ -44,10 +44,7 @@ export default function Navbar() {
     if (!isDropdownOpen) return;
 
     function handleMouseDown(event: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
       }
     }
@@ -68,9 +65,7 @@ export default function Navbar() {
           <div className="flex items-center gap-x-1">
             {LINKS.map((link) => {
               const isActive =
-                link.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(link.href);
+                link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
 
               return (
                 <Link

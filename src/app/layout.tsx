@@ -35,12 +35,8 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} dir={locale == "ar" ? "rtl" : "ltr"}>
-      <body
-        className={`${inter.variable} ${archivo.variable} ${plexMono.variable} font-sans`}
-      >
-        <NextIntlClientProvider messages={messages}>
-          {children}
-        </NextIntlClientProvider>
+      <body className={`${inter.variable} ${archivo.variable} ${plexMono.variable} font-sans`}>
+        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>
     </html>
   );

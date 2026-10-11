@@ -118,18 +118,14 @@ function CityPicker({
           className="absolute z-20 mt-1.5 max-h-60 w-full overflow-auto rounded-xl border border-outline bg-surface py-1.5 shadow-lg"
         >
           {visible.length === 0 && (
-            <li className="px-3 py-2 text-sm text-faint">
-              {t("cityNoResults")}
-            </li>
+            <li className="px-3 py-2 text-sm text-faint">{t("cityNoResults")}</li>
           )}
           {visible.map((o, i) => (
             <li key={o.value} role="option" aria-selected={o.value === value}>
               <button
                 type="button"
                 className={`flex w-full items-center justify-between px-3 py-2 text-start text-sm ${
-                  i === activeIndex
-                    ? "bg-brand-wash text-foreground"
-                    : "text-muted"
+                  i === activeIndex ? "bg-brand-wash text-foreground" : "text-muted"
                 }`}
                 onMouseDown={(e) => e.preventDefault()}
                 onMouseEnter={() => setActiveIndex(i)}
@@ -178,9 +174,9 @@ export default function Page() {
   const [outUrl, setOutUrl] = useState("");
 
   useEffect(() => {
-    getCity(
-      Locale[locale.toUpperCase() as keyof typeof Locale] || Locale.EN,
-    ).then((cities) => setCityOption(cities ?? []));
+    getCity(Locale[locale.toUpperCase() as keyof typeof Locale] || Locale.EN).then((cities) =>
+      setCityOption(cities ?? []),
+    );
   }, [locale]);
 
   // NaN while the field is empty; both steppers read it as 0.
@@ -195,9 +191,7 @@ export default function Page() {
     setCityError(false);
 
     setOutUrl(
-      `${location.protocol}//${location.host}/forecast/${
-        formData.city
-      }?${new URLSearchParams(
+      `${location.protocol}//${location.host}/forecast/${formData.city}?${new URLSearchParams(
         Object.fromEntries(
           Object.entries(formData)
             .filter(([k, v]) => {
@@ -241,10 +235,7 @@ export default function Page() {
 
         <div className="mt-4 flex flex-col gap-y-6">
           <div>
-            <label
-              htmlFor="locale"
-              className="mb-1.5 block text-sm font-medium text-muted"
-            >
+            <label htmlFor="locale" className="mb-1.5 block text-sm font-medium text-muted">
               {t("language")}
             </label>
 
@@ -395,15 +386,10 @@ export default function Page() {
           </div>
 
           <div>
-            <label
-              htmlFor="days"
-              className="block text-sm font-medium text-muted"
-            >
+            <label htmlFor="days" className="block text-sm font-medium text-muted">
               {t("maxForecastPeriod")}
             </label>
-            <p className="mb-2 mt-1 text-xs text-faint">
-              {t("maxForecastPeriodHelp")}
-            </p>
+            <p className="mb-2 mt-1 text-xs text-faint">{t("maxForecastPeriodHelp")}</p>
 
             <div className="inline-flex items-stretch overflow-hidden rounded-lg border border-outline-strong">
               <button
@@ -551,9 +537,7 @@ export default function Page() {
             </div>
           </div>
 
-          {cityError && (
-            <p className="text-xs text-danger">{t("emptyCityValidation")}</p>
-          )}
+          {cityError && <p className="text-xs text-danger">{t("emptyCityValidation")}</p>}
         </div>
       </section>
     </form>

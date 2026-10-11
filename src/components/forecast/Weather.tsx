@@ -41,9 +41,7 @@ export default async function Weather({
         </span>
         <span className="flex items-center gap-x-1">
           <Icon icon="material-symbols:air" width="1em" height="1em" />
-          {weather.wind
-            ? `${weather.wind.direction} ${weather.wind.speed ?? "--"} m/s`
-            : "--"}
+          {weather.wind ? `${weather.wind.direction} ${weather.wind.speed ?? "--"} m/s` : "--"}
         </span>
       </div>
     </div>

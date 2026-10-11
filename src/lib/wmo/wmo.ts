@@ -51,9 +51,7 @@ export function wmoToIso639(locale: Locale) {
  * @returns The URL of the weather icon.
  */
 function wxIconUrl(id: string, daynightCode: string) {
-  return `${wmoUrl}/images/i${parseInt(
-    id.slice(0, id.length - 2),
-  )}${daynightCode}.png`;
+  return `${wmoUrl}/images/i${parseInt(id.slice(0, id.length - 2))}${daynightCode}.png`;
 }
 
 /** Fetches a URL and parses its JSON body, mapping parse failures to a locale error. */
@@ -108,11 +106,7 @@ function parseSunTime(sundate: string, time: string): Date | null {
 }
 
 /** Picks the requested unit's raw reading and parses it, or null when absent. */
-function parseTemp(
-  celsius: string,
-  fahrenheit: string,
-  unit: TempUnit,
-): number | null {
+function parseTemp(celsius: string, fahrenheit: string, unit: TempUnit): number | null {
   const raw = unit === TempUnit.F ? fahrenheit : celsius;
   return raw === "" ? null : parseInt(raw);
 }
@@ -137,11 +131,7 @@ function toDisplayTemp(celsius: number | "", unit: TempUnit): number | null {
  * @param days - The number of days for the forecast.
  * @returns The forecast data.
  */
-function mapForecasts(
-  json: WmoForecastResponse,
-  unit: TempUnit,
-  days: number,
-): FutureWeather {
+function mapForecasts(json: WmoForecastResponse, unit: TempUnit, days: number): FutureWeather {
   const { forecast } = json.city;
 
   return {
@@ -155,10 +145,7 @@ function mapForecasts(
           min: { unit, val: parseTemp(day.minTemp, day.minTempF, unit) },
           max: { unit, val: parseTemp(day.maxTemp, day.maxTempF, unit) },
         },
-        icon:
-          day.weatherIcon != 0
-            ? wxIconUrl(day.weatherIcon.toString(), "")
-            : null,
+        icon: day.weatherIcon != 0 ? wxIconUrl(day.weatherIcon.toString(), "") : null,
       }))
       .slice(0, Math.max(Math.abs(days), 1)),
   };
@@ -173,11 +160,7 @@ function mapForecasts(
  * @param unit - The temperature unit (Celsius or Fahrenheit).
  * @returns The present weather data.
  */
-function mapPresent(
-  json: WmoPresentWxResponse,
-  cityId: number,
-  unit: TempUnit,
-): PresentWeather {
+function mapPresent(json: WmoPresentWxResponse, cityId: number, unit: TempUnit): PresentWeather {
   const wx = Object.values(json.present).find((v) => v.cityId == cityId);
 
   if (!wx) {
@@ -309,7 +292,5 @@ export async function countries(locale: Locale): Promise<Array<Country>> {
  * @returns A promise that resolves to the city data.
  */
 export async function city(cityId: number, locale: Locale) {
-  return (await countries(locale))
-    .flatMap((c) => c.cities)
-    .find((el) => el.id == cityId);
+  return (await countries(locale)).flatMap((c) => c.cities).find((el) => el.id == cityId);
 }

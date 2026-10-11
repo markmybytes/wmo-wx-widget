@@ -28,9 +28,7 @@ export default async function ForecastCards({
 
     return (
       <div className="flex flex-2 justify-center items-center min-h-20 border border-outline rounded">
-        <span className="font-mono text-xs text-muted">
-          {t("noForecastAvailable")}
-        </span>
+        <span className="font-mono text-xs text-muted">{t("noForecastAvailable")}</span>
       </div>
     );
   }
@@ -58,11 +56,7 @@ export default async function ForecastCards({
 
             <div className="flex justify-center items-center grow my-1">
               <div className="h-9.5 w-12.5">
-                <WxIcon
-                  icon={fc.icon}
-                  className="size-full"
-                  alt={fc.weather ?? ""}
-                />
+                <WxIcon icon={fc.icon} className="size-full" alt={fc.weather ?? ""} />
               </div>
             </div>
 

@@ -37,13 +37,9 @@ function parseWidgetParams(sp: { [key: string]: string } | undefined): {
   forecast: boolean;
 } {
   const style = sp?.style === "list" ? "list" : "cards";
-  const wd =
-    sp?.weekday !== undefined ? str2bool(sp.weekday.toLowerCase()) : true;
+  const wd = sp?.weekday !== undefined ? str2bool(sp.weekday.toLowerCase()) : true;
   // Style-dependent: `cards` has the room for the day number, `list` doesn't.
-  const dt =
-    sp?.date !== undefined
-      ? str2bool(sp.date.toLowerCase())
-      : style === "cards";
+  const dt = sp?.date !== undefined ? str2bool(sp.date.toLowerCase()) : style === "cards";
   // An all-off request would render a date column nobody can place on a
   // calendar, so the weekday stays on.
   const showWeekday = wd || !dt;
@@ -51,9 +47,7 @@ function parseWidgetParams(sp: { [key: string]: string } | undefined): {
 
   return {
     locale: parseLocale(sp?.lang),
-    unit:
-      TempUnit[sp?.unit?.toUpperCase() as keyof typeof TempUnit] ||
-      TempUnit["C"],
+    unit: TempUnit[sp?.unit?.toUpperCase() as keyof typeof TempUnit] || TempUnit["C"],
     days: parseInt(sp?.days ?? "5"),
     align: sp?.align === "center" || sp?.align === "end" ? sp.align : "start",
     style,
@@ -75,9 +69,7 @@ export async function generateMetadata(props: {
   return {
     title: [
       t("titleForecast", {
-        location:
-          (await wmo.city(params.id, parseLocale(searchParams.lang)))?.name ||
-          "N/A",
+        location: (await wmo.city(params.id, parseLocale(searchParams.lang)))?.name || "N/A",
       }),
       process.env.appTitle,
     ].join(" | "),
@@ -88,22 +80,10 @@ export default async function Page(props: {
   params: Promise<{ id: number }>;
   searchParams?: Promise<{ [key: string]: string }>;
 }) {
-  const [params, searchParams] = await Promise.all([
-    props.params,
-    props.searchParams,
-  ]);
+  const [params, searchParams] = await Promise.all([props.params, props.searchParams]);
 
-  const {
-    locale,
-    unit,
-    days,
-    align,
-    style,
-    showWeekday,
-    showDate,
-    weather,
-    forecast,
-  } = parseWidgetParams(searchParams);
+  const { locale, unit, days, align, style, showWeekday, showDate, weather, forecast } =
+    parseWidgetParams(searchParams);
 
   const city = await wmo.city(params.id, locale);
   if (city === undefined) {
