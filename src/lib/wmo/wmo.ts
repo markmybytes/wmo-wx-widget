@@ -1,4 +1,5 @@
-import { Locale, TempUnit } from "./enums";
+import { TempUnit } from "./enums";
+import type { AppLocale } from "@/i18n/routing";
 import {
   Country,
   FutureWeather,
@@ -10,38 +11,22 @@ import {
 
 const wmoUrl = "https://worldweather.wmo.int";
 
-/**
- * Maps an internal locale to the locale used in WMO API URLs.
- * The API uses the country code `kr` for Korean while the internal locale is `ko`.
- */
-function toWmoLocale(locale: Locale): string {
-  return locale === Locale.KO ? "kr" : locale;
-}
-
-/**
- * Converts WMO locale codes to ISO639 codes.
- *
- * @param locale - The WMO locale code to be converted.
- * @returns The corresponding ISO639 code.
- */
-export function wmoToIso639(locale: Locale) {
-  const mapping = {
-    ar: "ar",
-    en: "en",
-    tc: "zh-Hant",
-    zh: "zh-Hans",
-    fr: "fr",
-    de: "de",
-    it: "it",
-    ko: "ko",
-    pl: "pl",
-    pt: "pt",
-    ru: "ru",
-    es: "es",
-  };
-
-  return mapping[locale] || locale;
-}
+// WMO serves Chinese under `tc`/`zh` and Korean under `kr`.
+// Every other code equals the app locale.
+const wmoCode: Record<AppLocale, string> = {
+  ar: "ar",
+  de: "de",
+  en: "en",
+  es: "es",
+  fr: "fr",
+  it: "it",
+  ko: "kr",
+  pl: "pl",
+  pt: "pt",
+  ru: "ru",
+  "zh-Hant": "tc",
+  "zh-Hans": "zh",
+};
 
 /**
  * Generates the URL for a WMO weather icon based on the icon ID.
@@ -54,13 +39,13 @@ function wxIconUrl(id: string, daynightCode: string) {
   return `${wmoUrl}/images/i${parseInt(id.slice(0, id.length - 2))}${daynightCode}.png`;
 }
 
-/** Fetches a URL and parses its JSON body, mapping parse failures to a locale error. */
+/** Fetches a URL and parses its JSON body, mapping parse failures to a descriptive error. */
 async function getJson<T>(url: string): Promise<T> {
   const res = await fetch(url);
   try {
     return await res.json();
   } catch {
-    throw new Error("Invalid Locale");
+    throw new Error(`WMO returned invalid JSON: ${url}`);
   }
 }
 
@@ -237,11 +222,11 @@ function mapCountries(json: WmoCountryResponse): Array<Country> {
  */
 export async function forecasts(
   cityId: number,
-  locale: Locale,
+  locale: AppLocale,
   unit: TempUnit,
   days: number,
 ): Promise<FutureWeather> {
-  const apiLocale = toWmoLocale(locale);
+  const apiLocale = wmoCode[locale];
   const json = await getJson<WmoForecastResponse>(
     `${wmoUrl}/${apiLocale}/json/${cityId}_${apiLocale}.xml`,
   );
@@ -259,12 +244,10 @@ export async function forecasts(
  */
 export async function present(
   cityId: number,
-  locale: Locale,
+  locale: AppLocale,
   unit: TempUnit,
 ): Promise<PresentWeather> {
-  const json = await getJson<WmoPresentWxResponse>(
-    `${wmoUrl}/${toWmoLocale(locale)}/json/present.xml`,
-  );
+  const json = await getJson<WmoPresentWxResponse>(`${wmoUrl}/${wmoCode[locale]}/json/present.xml`);
 
   return mapPresent(json, cityId, unit);
 }
@@ -275,8 +258,8 @@ export async function present(
  * @param locale - The locale code.
  * @returns A promise that resolves to an array of countries.
  */
-export async function countries(locale: Locale): Promise<Array<Country>> {
-  const apiLocale = toWmoLocale(locale);
+export async function countries(locale: AppLocale): Promise<Array<Country>> {
+  const apiLocale = wmoCode[locale];
   const json = await getJson<WmoCountryResponse>(
     `${wmoUrl}/${apiLocale}/json/Country_${apiLocale}.xml`,
   );
@@ -291,6 +274,6 @@ export async function countries(locale: Locale): Promise<Array<Country>> {
  * @param locale - The locale code.
  * @returns A promise that resolves to the city data.
  */
-export async function city(cityId: number, locale: Locale) {
+export async function city(cityId: number, locale: AppLocale) {
   return (await countries(locale)).flatMap((c) => c.cities).find((el) => el.id == cityId);
 }

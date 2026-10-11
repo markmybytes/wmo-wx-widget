@@ -1,25 +1,8 @@
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
+import createMiddleware from "next-intl/middleware";
+import { routing } from "./i18n/routing";
 
-/**
- * Set custom header to override the i18n locale value.
- */
-export default function proxy(req: NextRequest) {
-  const headers = new Headers(req.headers);
-
-  const lang = req.nextUrl.searchParams.get("lang");
-  // `tc`/`zh` are WMO codes remapped to their internal locale.
-  const locale = lang == "tc" ? "zh-Hant" : lang == "zh" ? "zh-Hans" : lang || "en";
-
-  headers.set("x-wx-lang", locale);
-
-  return NextResponse.next({
-    request: {
-      headers: headers,
-    },
-  });
-}
+export default createMiddleware(routing);
 
 export const config = {
-  matcher: "/forecast/:id*",
+  matcher: "/((?!api|_next|_vercel|.*\\..*).*)",
 };

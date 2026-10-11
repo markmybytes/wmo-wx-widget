@@ -1,8 +1,19 @@
+import { hasLocale } from "next-intl";
 import { getRequestConfig } from "next-intl/server";
-import { cookies, headers } from "next/headers";
+import { notFound } from "next/navigation";
+import * as rootParams from "next/root-params";
+import { routing } from "./routing";
 
-export default getRequestConfig(async () => {
-  const locale = (await headers()).get("x-wx-lang") || (await cookies()).get("lang")?.value || "en";
+export default getRequestConfig(async ({ locale }) => {
+  if (!locale) {
+    const requested = await rootParams.locale();
+    if (hasLocale(routing.locales, requested)) {
+      locale = requested;
+    }
+  }
+  if (!locale) {
+    notFound();
+  }
 
   return {
     locale,

@@ -1,7 +1,7 @@
 "use client";
 
 import { Icon } from "@iconify/react";
-import { Locale } from "@/lib/wmo/enums";
+import { routing, type AppLocale } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { getCity } from "./actions";
@@ -152,7 +152,6 @@ function CityPicker({
 export default function Page() {
   const t = useTranslations("common");
   const usrLocale = useLocale();
-  const locale = { "zh-Hant": "tc", "zh-Hans": "zh" }[usrLocale] || usrLocale;
 
   const [cityOption, setCityOption] = useState<CityOption[]>([]);
 
@@ -165,7 +164,7 @@ export default function Page() {
     date: true,
     city: "",
     days: "5",
-    lang: locale,
+    lang: usrLocale,
     unit: "C",
   });
 
@@ -174,10 +173,8 @@ export default function Page() {
   const [outUrl, setOutUrl] = useState("");
 
   useEffect(() => {
-    getCity(Locale[locale.toUpperCase() as keyof typeof Locale] || Locale.EN).then((cities) =>
-      setCityOption(cities ?? []),
-    );
-  }, [locale]);
+    getCity(usrLocale as AppLocale).then((cities) => setCityOption(cities ?? []));
+  }, [usrLocale]);
 
   // NaN while the field is empty; both steppers read it as 0.
   const dayCount = parseInt(formData.days) || 0;
@@ -191,11 +188,13 @@ export default function Page() {
     setCityError(false);
 
     setOutUrl(
-      `${location.protocol}//${location.host}/forecast/${formData.city}?${new URLSearchParams(
+      `${location.protocol}//${location.host}${
+        formData.lang === routing.defaultLocale ? "" : `/${formData.lang}`
+      }/forecast/${formData.city}?${new URLSearchParams(
         Object.fromEntries(
           Object.entries(formData)
             .filter(([k, v]) => {
-              return v !== null && v !== "" && k != "city";
+              return v !== null && v !== "" && k != "city" && k != "lang";
             })
             .map(([k, v]) => [k, v.toString()]),
         ),
@@ -243,7 +242,7 @@ export default function Page() {
               <select
                 id="locale"
                 name="locale"
-                defaultValue={locale}
+                defaultValue={usrLocale}
                 onChange={(e) => {
                   setFormData({ ...formData, lang: e.target.value });
                 }}
@@ -251,8 +250,8 @@ export default function Page() {
               >
                 <option value="ar">لعربية</option>
                 <option value="en">English</option>
-                <option value="tc">繁體中文</option>
-                <option value="zh">简体中文</option>
+                <option value="zh-Hant">繁體中文</option>
+                <option value="zh-Hans">简体中文</option>
                 <option value="fr">Français</option>
                 <option value="de">Deutsch</option>
                 <option value="it">Italiano</option>

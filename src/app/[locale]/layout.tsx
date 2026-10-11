@@ -3,7 +3,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { Inter, Archivo, IBM_Plex_Mono } from "next/font/google";
 
-import "./globals.css";
+import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const archivo = Archivo({ subsets: ["latin"], variable: "--font-archivo" });
