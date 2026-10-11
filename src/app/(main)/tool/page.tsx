@@ -71,7 +71,7 @@ function CityPicker({
         aria-controls="city-listbox"
         aria-labelledby={labelId}
         autoComplete="off"
-        className="wctl-input pe-9 ps-9"
+        className="wctl-input ps-9 pe-9"
         placeholder={t("cityPlaceholder")}
         value={query !== "" ? query : (selected?.label ?? "")}
         onFocus={() => setOpen(true)}
@@ -350,7 +350,7 @@ export default function Page() {
                   ))}
                 </div>
               </fieldset>
-              <p className="mb-2 mt-1 text-xs text-faint">{t("styleHelp")}</p>
+              <p className="mt-1 mb-2 text-xs text-faint">{t("styleHelp")}</p>
             </div>
 
             <div>
@@ -389,7 +389,7 @@ export default function Page() {
             <label htmlFor="days" className="block text-sm font-medium text-muted">
               {t("maxForecastPeriod")}
             </label>
-            <p className="mb-2 mt-1 text-xs text-faint">{t("maxForecastPeriodHelp")}</p>
+            <p className="mt-1 mb-2 text-xs text-faint">{t("maxForecastPeriodHelp")}</p>
 
             <div className="inline-flex items-stretch overflow-hidden rounded-lg border border-outline-strong">
               <button

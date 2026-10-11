@@ -85,7 +85,7 @@
   }
 
   .wctl-input {
-    @apply w-full rounded-lg border border-outline-strong bg-surface px-3 py-2 text-sm text-foreground outline-none transition-colors placeholder:text-faint focus:border-brand-ring focus:ring-4 focus:ring-brand-ring/10;
+    @apply w-full rounded-lg border border-outline-strong bg-surface px-3 py-2 text-sm text-foreground transition-colors outline-none placeholder:text-faint focus:border-brand-ring focus:ring-4 focus:ring-brand-ring/10;
   }
 
   .wctl-check {
