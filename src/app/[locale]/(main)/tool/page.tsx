@@ -190,7 +190,7 @@ export default function Page() {
     setOutUrl(
       `${location.protocol}//${location.host}${
         formData.lang === routing.defaultLocale ? "" : `/${formData.lang}`
-      }/forecast/${formData.city}?${new URLSearchParams(
+      }/weather/${formData.city}?${new URLSearchParams(
         Object.fromEntries(
           Object.entries(formData)
             .filter(([k, v]) => {

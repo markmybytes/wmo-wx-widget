@@ -2,11 +2,11 @@ import { TempUnit } from "@/lib/wmo/enums";
 import type { AppLocale } from "@/i18n/routing";
 import * as wmo from "@/lib/wmo/wmo";
 import { Metadata } from "next";
-import Weather from "@/components/forecast/Weather";
-import WeatherCards from "@/components/forecast/WeatherCards";
+import Weather from "@/components/weather/Weather";
+import WeatherCards from "@/components/weather/WeatherCards";
 import { getLocale, getTranslations } from "next-intl/server";
-import Forecast from "@/components/forecast/Forecast";
-import ForecastCards from "@/components/forecast/ForecastCards";
+import Forecast from "@/components/weather/Forecast";
+import ForecastCards from "@/components/weather/ForecastCards";
 import { notFound } from "next/navigation";
 
 function str2bool(s: string): boolean {
