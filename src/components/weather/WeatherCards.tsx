@@ -1,9 +1,9 @@
 import { Icon } from "@iconify/react";
-import { City, PresentWeather } from "@/lib/wmo/types";
+import { City, PresentWeather } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
-/** `cards` variant. Spacing and sizing are frozen by decision, not accident — the
+/** `cards` variant. Spacing and sizing are frozen by decision, not accident - the
  *  original's per-device proportions were validated. Only colour and font changed. */
 export default async function WeatherCards({
   city,

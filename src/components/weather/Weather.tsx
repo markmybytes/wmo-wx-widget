@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { City, PresentWeather } from "@/lib/wmo/types";
+import { City, PresentWeather } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
