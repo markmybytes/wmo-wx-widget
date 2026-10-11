@@ -1,8 +1,7 @@
 "use client";
 
 import { Icon } from "@iconify/react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
@@ -109,8 +108,7 @@ export default function Navbar() {
                   className="flex w-full items-center justify-between px-4 py-2 text-sm text-muted hover:bg-fill hover:text-foreground"
                   onClick={() => {
                     setIsDropdownOpen(false);
-                    document.cookie = `lang=${v.locale}; path=/; max-age=31536000; samesite=lax`;
-                    router.refresh();
+                    router.replace(pathname, { locale: v.locale });
                   }}
                 >
                   {v.name}

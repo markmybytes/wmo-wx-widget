@@ -1,7 +1,6 @@
 import { Icon } from "@iconify/react";
 import { FutureWeather } from "@/lib/wmo/types";
-import { Locale } from "@/lib/wmo/enums";
-import * as wmo from "@/lib/wmo/wmo";
+import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
@@ -13,7 +12,7 @@ export default async function ForecastCards({
   showWeekday,
   showDate,
 }: {
-  locale: Locale;
+  locale: AppLocale;
   weather: FutureWeather;
   style?: "cards" | "list"; // ignored; kept so both variants share one call site
   showWeekday: boolean;
@@ -44,7 +43,7 @@ export default async function ForecastCards({
             <div className="flex min-w-3/10 flex-col items-center justify-center font-mono text-xs">
               {showWeekday && (
                 <span className="max-w-32 truncate text-muted">
-                  {date.toLocaleString(wmo.wmoToIso639(locale), {
+                  {date.toLocaleString(locale, {
                     weekday: "long",
                   })}
                 </span>

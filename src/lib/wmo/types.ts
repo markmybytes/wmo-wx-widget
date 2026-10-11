@@ -108,34 +108,37 @@ export type WmoForecastResponse = {
  * Represents the response structure for a country information from `/{local}/json/Country_{local}.xml`.
  */
 export type WmoCountryResponse = {
-  member: Array<{
-    city?: Array<{
-      cityId: number;
-      cityLatitude: string;
-      cityLongitude: string;
-      cityName: string;
-      climate: "Y" | "N";
-      enName: string;
-      forecast: "Y" | "N";
-      isCapital: boolean;
-      isDep: boolean;
-      stationName: string;
-      timeZone: string;
-      tourismURL: string;
-      tourismBoardName: string;
-    }>;
-    countryLatitude: string;
-    countryLongitude: string;
-    logo: string;
-    memId: number;
-    memName: string;
-    orgName: string;
-    ra: number;
-    shortMemName: string;
-    szmlv: number;
-    url: string;
-    zoomlv: 6;
-  }>;
+  member: Record<
+    string,
+    {
+      city?: Array<{
+        cityId: number;
+        cityLatitude: string;
+        cityLongitude: string;
+        cityName: string;
+        climate: "Y" | "N";
+        enName: string;
+        forecast: "Y" | "N";
+        isCapital: boolean;
+        isDep: boolean;
+        stationName: string;
+        timeZone: string;
+        tourismURL: string;
+        tourismBoardName: string;
+      }>;
+      countryLatitude: string;
+      countryLongitude: string;
+      logo: string;
+      memId: number;
+      memName: string;
+      orgName: string;
+      ra: number;
+      shortMemName: string;
+      szmlv: number;
+      url: string;
+      zoomlv: 6;
+    }
+  >;
 };
 
 /**

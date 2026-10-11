@@ -1,6 +1,5 @@
 import { FutureWeather } from "@/lib/wmo/types";
-import { Locale } from "@/lib/wmo/enums";
-import * as wmo from "@/lib/wmo/wmo";
+import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
@@ -12,7 +11,7 @@ export default async function Forecast({
   showWeekday,
   showDate,
 }: {
-  locale: Locale;
+  locale: AppLocale;
   weather: FutureWeather;
   style?: "cards" | "list";
   showWeekday: boolean;
@@ -43,7 +42,7 @@ export default async function Forecast({
             <div className="flex flex-col items-center font-mono text-[11px] text-muted sm:text-xs">
               {showWeekday && (
                 <span className="truncate">
-                  {d.toLocaleString(wmo.wmoToIso639(locale), {
+                  {d.toLocaleString(locale, {
                     weekday: "short",
                   })}
                 </span>

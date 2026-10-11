@@ -1,19 +1,13 @@
-import { Locale, TempUnit } from "@/lib/wmo/enums";
+import { TempUnit } from "@/lib/wmo/enums";
+import type { AppLocale } from "@/i18n/routing";
 import * as wmo from "@/lib/wmo/wmo";
 import { Metadata } from "next";
 import Weather from "@/components/forecast/Weather";
 import WeatherCards from "@/components/forecast/WeatherCards";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import Forecast from "@/components/forecast/Forecast";
 import ForecastCards from "@/components/forecast/ForecastCards";
 import { notFound } from "next/navigation";
-
-function parseLocale(locale: string | null | undefined): Locale {
-  if (!locale) {
-    return Locale.EN;
-  }
-  return Locale[locale.toUpperCase() as keyof typeof Locale] as Locale;
-}
 
 function str2bool(s: string): boolean {
   return ["true", "yes", "1"].includes(s);
@@ -26,7 +20,6 @@ const alignClass: Record<string, string> = {
 };
 
 function parseWidgetParams(sp: { [key: string]: string } | undefined): {
-  locale: Locale;
   unit: TempUnit;
   days: number;
   align: "start" | "center" | "end";
@@ -37,7 +30,6 @@ function parseWidgetParams(sp: { [key: string]: string } | undefined): {
   forecast: boolean;
 } {
   return {
-    locale: parseLocale(sp?.lang),
     unit: TempUnit[sp?.unit?.toUpperCase() as keyof typeof TempUnit] || TempUnit["C"],
     days: parseInt(sp?.days ?? "5"),
     align: sp?.align === "center" || sp?.align === "end" ? sp.align : "start",
@@ -45,22 +37,22 @@ function parseWidgetParams(sp: { [key: string]: string } | undefined): {
     showWeekday: sp?.weekday !== undefined ? str2bool(sp.weekday.toLowerCase()) : true,
     showDate: sp?.date !== undefined ? str2bool(sp.date.toLowerCase()) : true,
     weather: str2bool(sp?.weather?.toLowerCase() || "true"),
+    // The misspelled key "forcast" is the public URL contract.
     forecast: str2bool(sp?.forcast?.toLowerCase() || "true"),
   };
 }
 
 export async function generateMetadata(props: {
   params: Promise<{ id: number }>;
-  searchParams: Promise<{ lang?: string }>;
 }): Promise<Metadata> {
-  const searchParams = await props.searchParams;
   const params = await props.params;
+  const locale = (await getLocale()) as AppLocale;
   const t = await getTranslations("meta");
 
   return {
     title: [
       t("titleForecast", {
-        location: (await wmo.city(params.id, parseLocale(searchParams.lang)))?.name || "N/A",
+        location: (await wmo.city(params.id, locale))?.name || "N/A",
       }),
       process.env.appTitle,
     ].join(" | "),
@@ -73,7 +65,9 @@ export default async function Page(props: {
 }) {
   const [params, searchParams] = await Promise.all([props.params, props.searchParams]);
 
-  const { locale, unit, days, align, style, showWeekday, showDate, weather, forecast } =
+  const locale = (await getLocale()) as AppLocale;
+
+  const { unit, days, align, style, showWeekday, showDate, weather, forecast } =
     parseWidgetParams(searchParams);
 
   const city = await wmo.city(params.id, locale);

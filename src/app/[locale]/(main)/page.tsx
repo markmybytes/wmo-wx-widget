@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { getLocale, getTranslations } from "next-intl/server";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 export default async function Home() {
   const t = await getTranslations("home");
