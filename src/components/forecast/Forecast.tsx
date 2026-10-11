@@ -57,7 +57,7 @@ export default async function Forecast({
               {fc.weather ? t(fc.weather) : ""}
             </p>
 
-            <div className="flex items-baseline justify-self-end gap-x-1 font-mono text-xs sm:text-sm">
+            <div className="flex items-baseline gap-x-1 justify-self-end font-mono text-xs sm:text-sm">
               <span className="text-muted">{`${fc.temp.min.val ?? "--"}°`}</span>
               <span className="text-muted">/</span>
               <span className="font-medium text-foreground">

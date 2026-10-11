@@ -16,7 +16,7 @@ export default async function Weather({
   return (
     // The 240px cap makes this a sidebar at md+, so `only:` drops it when the card is
     // alone. A sibling appearing later reverts to the sidebar, which is wanted anyway.
-    <div className="flex w-full shrink-0 flex-col items-center gap-y-2 rounded-lg border border-outline bg-surface p-3 shadow-sm md:justify-center md:max-w-60 md:only:max-w-none">
+    <div className="flex w-full shrink-0 flex-col items-center gap-y-2 rounded-lg border border-outline bg-surface p-3 shadow-sm md:max-w-60 md:justify-center md:only:max-w-none">
       <p className="truncate font-mono text-xs text-muted">{city.name}</p>
 
       <div className="flex items-center gap-x-2">
@@ -25,7 +25,7 @@ export default async function Weather({
           className="h-12.5 w-17.5 shrink-0"
           alt={weather.weather ?? ""}
         />
-        <p className="whitespace-nowrap font-mono text-2xl font-medium text-foreground">
+        <p className="font-mono text-2xl font-medium whitespace-nowrap text-foreground">
           {`${weather.temp.val ?? "--"}${weather.temp.unit}`}
         </p>
       </div>

@@ -25,25 +25,25 @@ export default async function ForecastCards({
     const t = await getTranslations("common");
 
     return (
-      <div className="flex flex-2 justify-center items-center min-h-20 border border-outline bg-surface shadow-sm rounded">
+      <div className="flex min-h-20 flex-2 items-center justify-center rounded border border-outline bg-surface shadow-sm">
         <span className="font-mono text-xs text-muted">{t("noForecastAvailable")}</span>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col sm:flex-row flex-2 items-center gap-y-1.5 sm:p-1 sm:border border-outline bg-surface shadow-sm rounded">
+    <div className="flex flex-2 flex-col items-center gap-y-1.5 rounded border-outline bg-surface shadow-sm sm:flex-row sm:border sm:p-1">
       {weather.forecasts.map((fc) => {
         const date = new Date(fc.date);
 
         return (
           <div
-            className="flex sm:flex-col items-center grow w-full border sm:border-none border-outline rounded"
+            className="flex w-full grow items-center rounded border border-outline sm:flex-col sm:border-none"
             key={fc.date}
           >
-            <div className="flex flex-col justify-center items-center min-w-3/10 text-xs font-mono">
+            <div className="flex min-w-3/10 flex-col items-center justify-center font-mono text-xs">
               {showWeekday && (
-                <span className="max-w-32 text-muted truncate">
+                <span className="max-w-32 truncate text-muted">
                   {date.toLocaleString(wmo.wmoToIso639(locale), {
                     weekday: "long",
                   })}
@@ -52,26 +52,26 @@ export default async function ForecastCards({
               {showDate && <span>{date.getDate()}</span>}
             </div>
 
-            <div className="flex justify-center items-center grow my-1">
+            <div className="my-1 flex grow items-center justify-center">
               <div className="h-9.5 w-12.5">
                 <WxIcon icon={fc.icon} className="size-full" alt={fc.weather ?? ""} />
               </div>
             </div>
 
             <div
-              className={`flex flex-col justify-center items-center gap-x-1 min-w-3/10  ${
+              className={`flex min-w-3/10 flex-col items-center justify-center gap-x-1 ${
                 flength >= 7 ? "xl:flex-row" : "lg:flex-row"
               }`}
             >
               {flength < 8 ? (
                 <>
-                  <div className="flex items-center justify-around min-w-13 text-temp-low">
+                  <div className="flex min-w-13 items-center justify-around text-temp-low">
                     <Icon icon="bi:thermometer-low" className="size-3.5" />
                     <span className="grow text-center font-mono text-sm">
                       {`${fc.temp.min.val ?? "--"}${fc.temp.min.unit}`}
                     </span>
                   </div>
-                  <div className="flex items-center justify-around min-w-13 text-temp-high">
+                  <div className="flex min-w-13 items-center justify-around text-temp-high">
                     <Icon icon="bi:thermometer-high" className="size-3.5" />
                     <span className="grow text-center font-mono text-sm">
                       {`${fc.temp.max.val ?? "--"}${fc.temp.max.unit}`}
@@ -80,13 +80,13 @@ export default async function ForecastCards({
                 </>
               ) : (
                 <>
-                  <div className="flex items-center justify-around xl:justify-end min-w-13 text-temp-low">
+                  <div className="flex min-w-13 items-center justify-around text-temp-low xl:justify-end">
                     <Icon icon="bi:thermometer-low" className="size-3.5 sm:hidden" />
                     <span className="grow text-center font-mono text-sm">
                       {`${fc.temp.min.val ?? "--"}${fc.temp.min.unit}`}
                     </span>
                   </div>
-                  <div className="flex items-center justify-around xl:justify-start min-w-13 text-temp-high">
+                  <div className="flex min-w-13 items-center justify-around text-temp-high xl:justify-start">
                     <Icon icon="bi:thermometer-high" className="size-3.5 sm:hidden" />
                     <span className="grow text-center font-mono text-sm">
                       {`${fc.temp.max.val ?? "--"}${fc.temp.max.unit}`}

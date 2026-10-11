@@ -20,7 +20,7 @@ export default async function Home() {
 
       <section className="grid gap-x-12 gap-y-10 py-10 sm:grid-cols-[1fr_auto] sm:items-center sm:py-14">
         <div className="max-w-lg">
-          <h1 className="text-balance font-display text-2xl font-bold leading-[1.15] tracking-tight text-foreground sm:text-3xl">
+          <h1 className="font-display text-2xl leading-[1.15] font-bold tracking-tight text-balance text-foreground sm:text-3xl">
             {t("heroTitle")}
           </h1>
 
@@ -73,7 +73,7 @@ export default async function Home() {
         className="group grid gap-x-8 gap-y-3 rounded-xl border border-outline bg-surface px-5 py-5 shadow-sm transition-colors hover:border-brand/50 hover:bg-brand-wash/80 sm:grid-cols-[1fr_auto] sm:items-end sm:px-7 sm:py-6"
       >
         <div>
-          <p className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-brand">
+          <p className="font-mono text-[11px] font-medium tracking-[0.16em] text-brand uppercase">
             {ct("widgetCustomiser")}
           </p>
 
@@ -98,7 +98,7 @@ export default async function Home() {
       </Link>
 
       <section className="mt-12 border-t border-outline pt-5 sm:mt-16">
-        <h2 className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-muted">
+        <h2 className="font-mono text-[11px] font-medium tracking-[0.16em] text-muted uppercase">
           {t("aboutTitle")}
         </h2>
 
