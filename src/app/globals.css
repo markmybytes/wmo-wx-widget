@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+/* Plain @theme, never inline: inline would bake the values into the utilities,
+   and the dark override below redefines these names. */
+@theme {
+  --color-foreground: var(--color-zinc-900);
+  --color-muted: var(--color-zinc-600);
+  --color-faint: var(--color-zinc-500);
+
+  --color-outline: var(--color-zinc-200);
+  --color-outline-strong: var(--color-zinc-300);
+
+  --color-fill: var(--color-zinc-100);
+  --color-fill-faint: var(--color-zinc-50);
+
+  /* `background` is the page behind the cards, `surface` the cards themselves. */
+  --color-background: #ffffff;
+  --color-surface: #ffffff;
+
+  /* Solid steps sit darker than sky-600/sky-500: white on sky-600 measured
+     4.06:1, an AA failure inherited from the pre-token button. */
+  --color-brand: var(--color-sky-700);
+  --color-brand-solid: var(--color-sky-700);
+  --color-brand-hover: var(--color-sky-800);
+  --color-brand-ring: var(--color-sky-500);
+  --color-brand-wash: var(--color-sky-50);
+  --color-on-brand: #ffffff;
+
+  --color-danger: var(--color-red-600);
+  --color-success: var(--color-green-600);
+
+  /* A data pair marking the cards min/max reading, not UI roles. */
+  --color-temp-low: var(--color-sky-700);
+  --color-temp-high: #dc2626;
+
+  /* Type: Inter for body, Archivo as display, Plex Mono as the bulletin face. */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-archivo), var(--font-inter), ui-sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  --animate-fade-up: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      /* End at `none` so fill-mode doesn't leave a permanent transform, which
+         would keep a stacking context on every animated section and trap
+         positioned children (e.g. the city combobox dropdown) inside it. */
+      transform: none;
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #0f0f12;
+    --color-surface: var(--color-zinc-900);
+    --color-fill: var(--color-zinc-800);
+    --color-fill-faint: var(--color-zinc-950);
+    --color-outline: var(--color-zinc-700);
+    --color-outline-strong: var(--color-zinc-600);
+    --color-foreground: var(--color-zinc-100);
+    --color-muted: var(--color-zinc-400);
+    --color-faint: var(--color-zinc-400);
+    --color-brand: var(--color-sky-400);
+    --color-brand-solid: var(--color-sky-500);
+    --color-brand-hover: var(--color-sky-400);
+    --color-brand-ring: var(--color-sky-400);
+    --color-brand-wash: var(--color-sky-950);
+    --color-on-brand: #0f0f12;
+    --color-danger: var(--color-red-400);
+    --color-success: var(--color-green-400);
+    --color-temp-low: var(--color-sky-400);
+    --color-temp-high: var(--color-red-400);
+  }
+}
+
+@layer components {
+  .wctl-section {
+    @apply rounded-2xl border border-outline bg-surface p-6;
+  }
+
+  .wctl-input {
+    @apply w-full rounded-lg border border-outline-strong bg-surface px-3 py-2 text-sm text-foreground transition-colors outline-none placeholder:text-faint focus:border-brand-ring focus:ring-4 focus:ring-brand-ring/10;
+  }
+
+  .wctl-check {
+    @apply size-4 accent-brand-solid;
+  }
+
+  .wctl-heading {
+    @apply text-lg font-semibold text-foreground;
+  }
+
+  .wctl-legend {
+    @apply mb-2 text-sm font-medium text-muted;
+  }
+
+  .wctl-option {
+    @apply flex items-center gap-x-2 text-sm text-muted;
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-temp-low);
+    outline-offset: 2px;
+  }
+
+  /* The days stepper renders its own -/+ buttons; hide the native spinner. */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
