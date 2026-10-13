@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { City, PresentWeather } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
+import { translateWxdesc } from "@/lib/wxdesc";
 import { getTranslations } from "next-intl/server";
 
 /** `cards` variant. Spacing and sizing are frozen by decision, not accident - the
@@ -42,7 +43,7 @@ export default async function WeatherCards({
         <div className="flex flex-col items-center md:w-full">
           <div className="hidden w-full max-w-50 text-center sm:block">
             <p className="truncate bg-fill text-xs text-foreground">
-              {weather.weather ? t(weather.weather) : ""}
+              {weather.weather ? translateWxdesc(t, weather.weather) : ""}
             </p>
           </div>
 

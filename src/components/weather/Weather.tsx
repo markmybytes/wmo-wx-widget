@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { City, PresentWeather } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
+import { translateWxdesc } from "@/lib/wxdesc";
 import { getTranslations } from "next-intl/server";
 
 export default async function Weather({
@@ -31,7 +32,7 @@ export default async function Weather({
       </div>
 
       <p className="max-w-52 truncate bg-fill px-2 py-0.5 text-xs text-foreground">
-        {weather.weather ? t(weather.weather) : ""}
+        {weather.weather ? translateWxdesc(t, weather.weather) : ""}
       </p>
 
       <div className="flex justify-center gap-x-3 font-mono text-xs text-muted">

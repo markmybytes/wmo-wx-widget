@@ -1,6 +1,7 @@
 import { FutureWeather } from "@/lib/wmo";
 import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
+import { translateWxdesc } from "@/lib/wxdesc";
 import { getTranslations } from "next-intl/server";
 
 /** One row per day at every width. A fixed grid template locks weekday, pictogram
@@ -53,7 +54,7 @@ export default async function Forecast({
             <WxIcon icon={fc.icon} className="h-9.5 w-12.5" alt={fc.weather ?? ""} />
 
             <p className="hidden min-w-0 truncate text-xs text-muted sm:block">
-              {fc.weather ? t(fc.weather) : ""}
+              {fc.weather ? translateWxdesc(t, fc.weather) : ""}
             </p>
 
             <div className="flex items-baseline gap-x-1 justify-self-end font-mono text-xs sm:text-sm">
