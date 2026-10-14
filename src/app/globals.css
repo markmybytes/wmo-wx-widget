@@ -13,7 +13,7 @@
   --color-fill: var(--color-zinc-100);
   --color-fill-faint: var(--color-zinc-50);
 
-  /* `background` is the page behind the cards, `surface` the cards themselves. */
+  /* `background` is the page behind the widget, `surface` the widgets themselves. */
   --color-background: #ffffff;
   --color-surface: #ffffff;
 
@@ -29,7 +29,7 @@
   --color-danger: var(--color-red-600);
   --color-success: var(--color-green-600);
 
-  /* A data pair marking the cards min/max reading, not UI roles. */
+  /* A data pair marking the widget min/max reading, not UI roles. */
   --color-temp-low: var(--color-sky-700);
   --color-temp-high: #dc2626;
 

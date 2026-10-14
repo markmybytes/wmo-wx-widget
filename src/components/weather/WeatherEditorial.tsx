@@ -3,9 +3,9 @@ import { City, PresentWeather } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
-/** `new-2` variant: light editorial publication style — refined uppercase
+/** `editorial` variant: light editorial publication style — refined uppercase
  *  masthead, prominent display-face hero reading, and a delicate hairline rule. */
-export default async function WeatherNew2({
+export default async function WeatherEditorial({
   city,
   weather,
 }: {
@@ -17,13 +17,13 @@ export default async function WeatherNew2({
 
   return (
     <div className="flex min-w-54 flex-1 flex-col justify-between gap-y-5 rounded-xl border border-outline bg-surface p-4 shadow-xs sm:p-5 md:justify-center md:gap-y-6">
-      <p className="truncate font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-faint">
+      <p className="truncate font-sans text-[11px] font-semibold tracking-[0.18em] text-faint uppercase">
         {city.name}
       </p>
 
       <div className="flex items-end justify-between gap-3">
         <div className="min-w-0">
-          <p className="flex items-baseline font-display text-5xl font-bold leading-none tracking-tight text-foreground tabular-nums sm:text-6xl">
+          <p className="flex items-baseline font-display text-5xl leading-none font-bold tracking-tight text-foreground tabular-nums sm:text-6xl">
             {weather.temp.val !== null ? weather.temp.val : "--"}
             {weather.temp.val !== null && (
               <span className="ms-1 font-sans text-xl font-normal text-muted sm:text-2xl">
@@ -39,13 +39,13 @@ export default async function WeatherNew2({
         <div className="h-12.5 w-17.5 shrink-0">
           <WxIcon
             icon={weather.icon}
-            className="size-full"
+            className="size-full object-contain"
             alt={weather.weather ? t(weather.weather) : ""}
           />
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-x-4 border-t border-outline/80 pt-3 text-xs text-muted sm:pt-4">
+      <div className="flex items-center justify-start gap-x-5 border-t border-outline/80 pt-3 text-xs text-muted sm:pt-4">
         <span className="flex shrink-0 items-center gap-x-1.5">
           <Icon icon="material-symbols:water-drop" className="size-3.5 text-faint" />
           <span>{weather.rh !== null ? `${weather.rh}%` : "--"}</span>

@@ -2,20 +2,37 @@ import { TempUnit } from "@/lib/wmo";
 import type { AppLocale } from "@/i18n/routing";
 import { getCachedCity, getCachedForecasts, getCachedPresent } from "@/lib/wmo-cached";
 import { Metadata } from "next";
-import Weather from "@/components/weather/Weather";
 import WeatherCards from "@/components/weather/WeatherCards";
-import WeatherNew1 from "@/components/weather/WeatherNew1";
-import WeatherNew2 from "@/components/weather/WeatherNew2";
-import WeatherNew3 from "@/components/weather/WeatherNew3";
+import WeatherEditorial from "@/components/weather/WeatherEditorial";
+import WeatherBars from "@/components/weather/WeatherBars";
+import WeatherSwiss from "@/components/weather/WeatherSwiss";
+import WeatherPills from "@/components/weather/WeatherPills";
+import WeatherTelemetry from "@/components/weather/WeatherTelemetry";
 import { getLocale, getTranslations } from "next-intl/server";
-import Forecast from "@/components/weather/Forecast";
 import ForecastCards from "@/components/weather/ForecastCards";
-import ForecastNew1 from "@/components/weather/ForecastNew1";
-import ForecastNew2 from "@/components/weather/ForecastNew2";
-import ForecastNew3 from "@/components/weather/ForecastNew3";
+import ForecastEditorial from "@/components/weather/ForecastEditorial";
+import ForecastBars from "@/components/weather/ForecastBars";
+import ForecastSwiss from "@/components/weather/ForecastSwiss";
+import ForecastPills from "@/components/weather/ForecastPills";
+import ForecastTelemetry from "@/components/weather/ForecastTelemetry";
 import { notFound } from "next/navigation";
 
-type WidgetStyle = "cards" | "list" | "new-1" | "new-2" | "new-3";
+type WidgetStyle = "cards" | "editorial" | "bars" | "swiss" | "pills" | "telemetry";
+
+// Swiss precision is the default style: clean 2-band hierarchy, balanced contrast,
+// and optimal vertical footprint across narrow and wide viewport embeds.
+const DEFAULT_STYLE: WidgetStyle = "swiss";
+
+// Allowlist of recognized styles. No backwards-compatibility aliases;
+// missing or unrecognized style params opt into default "swiss".
+const VALID_STYLES: Record<string, WidgetStyle> = {
+  cards: "cards",
+  editorial: "editorial",
+  bars: "bars",
+  swiss: "swiss",
+  pills: "pills",
+  telemetry: "telemetry",
+};
 
 function str2bool(s: string): boolean {
   return ["true", "yes", "1"].includes(s);
@@ -41,16 +58,7 @@ function parseWidgetParams(sp: { [key: string]: string } | undefined): {
     unit: TempUnit[sp?.unit?.toUpperCase() as keyof typeof TempUnit] || TempUnit["C"],
     days: parseInt(sp?.days ?? "5"),
     align: sp?.align === "center" || sp?.align === "end" ? sp.align : "start",
-    style:
-      sp?.style === "list"
-        ? "list"
-        : sp?.style === "new-1"
-          ? "new-1"
-          : sp?.style === "new-2"
-            ? "new-2"
-            : sp?.style === "new-3"
-              ? "new-3"
-              : "cards",
+    style: (sp?.style && VALID_STYLES[sp.style]) || DEFAULT_STYLE,
     showWeekday: sp?.weekday !== undefined ? str2bool(sp.weekday.toLowerCase()) : true,
     showDate: sp?.date !== undefined ? str2bool(sp.date.toLowerCase()) : true,
     weather: str2bool(sp?.weather?.toLowerCase() || "true"),
@@ -100,78 +108,94 @@ export default async function Page(props: {
     >
       <div className="flex w-full flex-col items-stretch gap-2 p-2 md:flex-row md:gap-x-2">
         {weather ? (
-          style === "list" ? (
-            <Weather
-              city={city}
-              weather={await getCachedPresent(params.id, locale, unit)}
-              style={style}
-            ></Weather>
-          ) : style === "new-1" ? (
-            <WeatherNew1
-              city={city}
-              weather={await getCachedPresent(params.id, locale, unit)}
-              style={style}
-            ></WeatherNew1>
-          ) : style === "new-2" ? (
-            <WeatherNew2
-              city={city}
-              weather={await getCachedPresent(params.id, locale, unit)}
-              style={style}
-            ></WeatherNew2>
-          ) : style === "new-3" ? (
-            <WeatherNew3
-              city={city}
-              weather={await getCachedPresent(params.id, locale, unit)}
-              style={style}
-            ></WeatherNew3>
-          ) : (
+          style === "cards" ? (
             <WeatherCards
               city={city}
               weather={await getCachedPresent(params.id, locale, unit)}
-            ></WeatherCards>
+              style={style}
+            />
+          ) : style === "editorial" ? (
+            <WeatherEditorial
+              city={city}
+              weather={await getCachedPresent(params.id, locale, unit)}
+              style={style}
+            />
+          ) : style === "bars" ? (
+            <WeatherBars
+              city={city}
+              weather={await getCachedPresent(params.id, locale, unit)}
+              style={style}
+            />
+          ) : style === "pills" ? (
+            <WeatherPills
+              city={city}
+              weather={await getCachedPresent(params.id, locale, unit)}
+              style={style}
+            />
+          ) : style === "telemetry" ? (
+            <WeatherTelemetry
+              city={city}
+              weather={await getCachedPresent(params.id, locale, unit)}
+              style={style}
+            />
+          ) : (
+            <WeatherSwiss
+              city={city}
+              weather={await getCachedPresent(params.id, locale, unit)}
+              style={style}
+            />
           )
         ) : null}
 
         {forecast ? (
-          style === "list" ? (
-            <Forecast
-              locale={locale}
-              weather={await getCachedForecasts(params.id, locale, unit, days)}
-              style={style}
-              showWeekday={showWeekday}
-              showDate={showDate}
-            ></Forecast>
-          ) : style === "new-1" ? (
-            <ForecastNew1
-              locale={locale}
-              weather={await getCachedForecasts(params.id, locale, unit, days)}
-              style={style}
-              showWeekday={showWeekday}
-              showDate={showDate}
-            ></ForecastNew1>
-          ) : style === "new-2" ? (
-            <ForecastNew2
-              locale={locale}
-              weather={await getCachedForecasts(params.id, locale, unit, days)}
-              style={style}
-              showWeekday={showWeekday}
-              showDate={showDate}
-            ></ForecastNew2>
-          ) : style === "new-3" ? (
-            <ForecastNew3
-              locale={locale}
-              weather={await getCachedForecasts(params.id, locale, unit, days)}
-              style={style}
-              showWeekday={showWeekday}
-              showDate={showDate}
-            ></ForecastNew3>
-          ) : (
+          style === "cards" ? (
             <ForecastCards
               locale={locale}
               weather={await getCachedForecasts(params.id, locale, unit, days)}
+              style={style}
               showWeekday={showWeekday}
               showDate={showDate}
-            ></ForecastCards>
+            />
+          ) : style === "editorial" ? (
+            <ForecastEditorial
+              locale={locale}
+              weather={await getCachedForecasts(params.id, locale, unit, days)}
+              style={style}
+              showWeekday={showWeekday}
+              showDate={showDate}
+            />
+          ) : style === "bars" ? (
+            <ForecastBars
+              locale={locale}
+              weather={await getCachedForecasts(params.id, locale, unit, days)}
+              style={style}
+              showWeekday={showWeekday}
+              showDate={showDate}
+            />
+          ) : style === "pills" ? (
+            <ForecastPills
+              locale={locale}
+              weather={await getCachedForecasts(params.id, locale, unit, days)}
+              style={style}
+              showWeekday={showWeekday}
+              showDate={showDate}
+            />
+          ) : style === "telemetry" ? (
+            <ForecastTelemetry
+              locale={locale}
+              weather={await getCachedForecasts(params.id, locale, unit, days)}
+              style={style}
+              showWeekday={showWeekday}
+              showDate={showDate}
+            />
+          ) : (
+            <ForecastSwiss
+              locale={locale}
+              weather={await getCachedForecasts(params.id, locale, unit, days)}
+              style={style}
+              showWeekday={showWeekday}
+              showDate={showDate}
+            />
           )
         ) : null}
       </div>

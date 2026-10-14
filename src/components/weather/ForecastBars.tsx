@@ -3,9 +3,9 @@ import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
-/** `new-3` variant: compact forecast rows with Apple-style temperature
+/** `bars` variant: compact forecast rows with Apple-style temperature
  *  range bars normalized across the visible forecast period. */
-export default async function ForecastNew3({
+export default async function ForecastBars({
   locale,
   weather,
   showWeekday,
@@ -43,7 +43,7 @@ export default async function ForecastNew3({
   const span = gMax - gMin;
 
   return (
-    <div className="flex flex-2 flex-col gap-1 rounded-lg border border-outline bg-surface p-1.5 shadow-xs sm:gap-0 sm:divide-y sm:divide-outline/70 sm:p-1">
+    <div className="flex flex-2 flex-col divide-y divide-outline/70 rounded-lg border border-outline bg-surface p-1 shadow-xs">
       {weather.forecasts.map((fc) => {
         const min = fc.temp.min.val;
         const max = fc.temp.max.val;
@@ -68,10 +68,7 @@ export default async function ForecastNew3({
         const d = new Date(fc.date);
 
         return (
-          <div
-            key={fc.date}
-            className="flex items-center gap-x-2 rounded-md bg-fill-faint px-2 py-1.5 shadow-2xs sm:rounded-none sm:bg-transparent sm:px-2.5 sm:py-2 sm:shadow-none"
-          >
+          <div key={fc.date} className="flex items-center gap-x-2 px-2.5 py-2">
             {(showWeekday || showDate) && (
               <div className="flex w-10 shrink-0 flex-col items-center font-mono text-[11px] sm:w-12">
                 {showWeekday && (
@@ -79,24 +76,26 @@ export default async function ForecastNew3({
                     {d.toLocaleString(locale, { weekday: "short" })}
                   </span>
                 )}
-                {showDate && (
-                  <span className="font-medium text-foreground">{d.getDate()}</span>
-                )}
+                {showDate && <span className="font-medium text-foreground">{d.getDate()}</span>}
               </div>
             )}
 
             <WxIcon
               icon={fc.icon}
-              className="h-7 w-9.5 shrink-0"
+              className="h-7 w-9.5 shrink-0 object-contain"
               alt={fc.weather ? t(fc.weather) : ""}
             />
 
-            <div className="flex min-w-0 grow items-center gap-x-2">
-              <span className="w-8 shrink-0 text-end font-mono text-[11px] tabular-nums text-muted sm:w-9">
+            {/* Min-first temperature cluster capped at max-w-32/sm:max-w-44 */}
+            <div className="ms-auto flex w-full max-w-48 min-w-0 items-center gap-x-2 sm:max-w-56">
+              <span className="w-8 shrink-0 text-end font-mono text-[11px] text-muted tabular-nums sm:w-9">
                 {min !== null ? `${min}°` : "--"}
               </span>
 
-              <div aria-hidden className="relative h-1.5 grow rounded-full bg-outline/80 dark:bg-fill">
+              <div
+                aria-hidden
+                className="relative h-1.5 max-w-32 grow rounded-full bg-outline/80 sm:max-w-44 dark:bg-fill"
+              >
                 {hasBar && (
                   <div
                     className="absolute inset-y-0 rounded-full bg-gradient-to-r from-temp-low to-temp-high shadow-xs"
@@ -105,7 +104,7 @@ export default async function ForecastNew3({
                 )}
               </div>
 
-              <span className="w-8 shrink-0 text-start font-mono text-[11px] tabular-nums font-medium text-foreground sm:w-9">
+              <span className="w-8 shrink-0 text-start font-mono text-[11px] font-medium text-foreground tabular-nums sm:w-9">
                 {max !== null ? `${max}°` : "--"}
               </span>
             </div>

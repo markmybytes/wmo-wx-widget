@@ -18,7 +18,7 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
     weather: true,
     forcast: true,
     align: "start",
-    style: "cards",
+    style: "swiss",
     weekday: true,
     date: true,
     city: "",
@@ -177,34 +177,35 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
             </fieldset>
 
             <div>
-              <fieldset>
-                <legend className="wctl-legend">{t("widgetStyle")}</legend>
+              <label htmlFor="style" className="mb-1.5 block text-sm font-medium text-muted">
+                {t("widgetStyle")}
+              </label>
 
-                <div className="flex flex-wrap gap-x-4 gap-y-2">
-                  {Object.entries({
-                    cards: t("styleCards"),
-                    list: t("styleList"),
-                    // New variants ship without locale keys on purpose; plain
-                    // string labels until they graduate.
-                    "new-1": "New 1",
-                    "new-2": "New 2",
-                    "new-3": "New 3",
-                  }).map(([k, text]) => (
-                    <label className="wctl-option" key={k}>
-                      <input
-                        type="radio"
-                        name="style"
-                        value={k}
-                        checked={formData.style == k}
-                        onChange={() => setFormData({ ...formData, style: k })}
-                        className="wctl-check"
-                      />
-                      {text}
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
-              <p className="mt-1 mb-2 text-xs text-faint">{t("styleHelp")}</p>
+              <div className="relative sm:w-60">
+                <select
+                  id="style"
+                  name="style"
+                  value={formData.style}
+                  onChange={(e) => {
+                    setFormData({ ...formData, style: e.target.value });
+                  }}
+                  className="wctl-input appearance-none pe-9"
+                >
+                  {/* Style names are proper nouns; plain string labels rather than locale keys */}
+                  <option value="cards">Cards</option>
+                  <option value="editorial">Editorial</option>
+                  <option value="bars">Bars</option>
+                  <option value="swiss">Swiss</option>
+                  <option value="pills">Pills</option>
+                  <option value="telemetry">Telemetry</option>
+                </select>
+                <Icon
+                  icon="material-symbols:keyboard-arrow-down"
+                  className="pointer-events-none absolute inset-e-3 top-1/2 -translate-y-1/2 text-faint"
+                  width="18"
+                  height="18"
+                />
+              </div>
             </div>
 
             <div>

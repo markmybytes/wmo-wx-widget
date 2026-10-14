@@ -3,9 +3,9 @@ import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
-/** `new-2` variant: editorial list — soft card tiles at mobile width, hairline-divided
- *  rows with room for localized condition text from `sm:` up. */
-export default async function ForecastNew2({
+/** `editorial` variant: editorial publication style — hairline-divided rows with room for
+ *  localized condition text from `sm:` up. */
+export default async function ForecastEditorial({
   locale,
   weather,
   showWeekday,
@@ -30,19 +30,16 @@ export default async function ForecastNew2({
   const t = await getTranslations("weather");
 
   return (
-    <div className="flex flex-2 flex-col gap-1.5 rounded-xl border border-outline bg-surface p-2 shadow-xs sm:gap-0 sm:divide-y sm:divide-outline/80 sm:p-1">
+    <div className="flex flex-2 flex-col divide-y divide-outline/80 rounded-xl border border-outline bg-surface p-1 shadow-xs">
       {weather.forecasts.map((fc) => {
         const d = new Date(fc.date);
 
         return (
-          <div
-            key={fc.date}
-            className="flex items-center gap-x-3 rounded-lg bg-fill-faint p-2.5 shadow-2xs sm:rounded-none sm:bg-transparent sm:px-3 sm:py-2.5 sm:shadow-none"
-          >
+          <div key={fc.date} className="flex items-center gap-x-3 px-2.5 py-2.5 sm:px-3">
             {(showWeekday || showDate) && (
               <div className="flex w-12 shrink-0 flex-col font-mono text-xs sm:w-16">
                 {showWeekday && (
-                  <span className="truncate font-sans text-[11px] font-semibold uppercase tracking-wider text-muted">
+                  <span className="truncate font-sans text-[11px] font-semibold tracking-wider text-muted uppercase">
                     {d.toLocaleString(locale, { weekday: "short" })}
                   </span>
                 )}
@@ -54,7 +51,7 @@ export default async function ForecastNew2({
 
             <WxIcon
               icon={fc.icon}
-              className="h-9.5 w-12.5 shrink-0"
+              className="h-9.5 w-12.5 shrink-0 object-contain"
               alt={fc.weather ? t(fc.weather) : ""}
             />
 
@@ -62,6 +59,7 @@ export default async function ForecastNew2({
               {fc.weather ? t(fc.weather) : ""}
             </p>
 
+            {/* Min-first temperature order */}
             <div className="ms-auto flex shrink-0 items-baseline gap-x-1.5 font-mono text-xs sm:text-sm">
               <span className="text-muted">
                 {fc.temp.min.val !== null ? `${fc.temp.min.val}°` : "--"}
