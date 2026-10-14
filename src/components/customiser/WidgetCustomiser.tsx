@@ -180,10 +180,15 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
               <fieldset>
                 <legend className="wctl-legend">{t("widgetStyle")}</legend>
 
-                <div className="flex gap-x-4">
+                <div className="flex flex-wrap gap-x-4 gap-y-2">
                   {Object.entries({
                     cards: t("styleCards"),
                     list: t("styleList"),
+                    // New variants ship without locale keys on purpose; plain
+                    // string labels until they graduate.
+                    "new-1": "New 1",
+                    "new-2": "New 2",
+                    "new-3": "New 3",
                   }).map(([k, text]) => (
                     <label className="wctl-option" key={k}>
                       <input
@@ -191,12 +196,7 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
                         name="style"
                         value={k}
                         checked={formData.style == k}
-                        onChange={() =>
-                          setFormData({
-                            ...formData,
-                            style: k as "cards" | "list",
-                          })
-                        }
+                        onChange={() => setFormData({ ...formData, style: k })}
                         className="wctl-check"
                       />
                       {text}
