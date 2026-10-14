@@ -5,10 +5,13 @@ import { routing } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import CityPicker, { type CityOption } from "./CityPicker";
+import WidgetStylePreview from "./WidgetStylePreview";
 
 // The WMO feed never returns more than nine days, so anything above this
 // only widens the URL without changing the widget.
 const MAX_DAYS = 9;
+
+type TabId = "display" | "unit" | "layout";
 
 export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOption[] }) {
   const t = useTranslations("common");
@@ -30,6 +33,7 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
   const [copied, setCopied] = useState(false);
   const [cityError, setCityError] = useState(false);
   const [outUrl, setOutUrl] = useState("");
+  const [tab, setTab] = useState<TabId>("display");
 
   // NaN while the field is empty; both steppers read it as 0.
   const dayCount = parseInt(formData.days) || 0;
@@ -56,6 +60,31 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
       )}`,
     );
   }
+
+  const tabs: Array<[TabId, string]> = [
+    ["display", t("displaySettings")],
+    ["unit", t("unitSettings")],
+    ["layout", t("widgetAlignment")],
+  ];
+
+  const tabButton = (id: TabId, label: string) => (
+    <button
+      key={id}
+      type="button"
+      role="tab"
+      aria-selected={tab === id}
+      aria-controls={`wctl-panel-${id}`}
+      id={`wctl-tab-${id}`}
+      onClick={() => setTab(id)}
+      className={`min-w-0 truncate rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+        tab === id
+          ? "bg-surface text-foreground shadow-xs ring-1 ring-outline"
+          : "text-muted hover:text-foreground"
+      }`}
+    >
+      {label}
+    </button>
+  );
 
   return (
     <form className="flex flex-col gap-y-6">
@@ -84,10 +113,48 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
         </div>
       </section>
 
+      {/* Style: promoted out of the tabs so the look choice sits next to its preview */}
       <section className="wctl-section">
-        <h2 className="wctl-heading">{t("displaySettings")}</h2>
+        <h2 className="wctl-heading">{t("widgetStyle")}</h2>
+        <div className="relative mt-4 w-full sm:w-60">
+          <select
+            id="style"
+            name="style"
+            value={formData.style}
+            onChange={(e) => {
+              setFormData({ ...formData, style: e.target.value });
+            }}
+            className="wctl-input appearance-none pe-9"
+          >
+            {/* Style names are proper nouns; plain string labels rather than locale keys */}
+            <option value="cards">Cards</option>
+            <option value="editorial">Editorial</option>
+            <option value="bars">Bars</option>
+            <option value="swiss">Swiss</option>
+            <option value="pills">Pills</option>
+            <option value="telemetry">Telemetry</option>
+          </select>
+          <Icon
+            icon="material-symbols:keyboard-arrow-down"
+            className="pointer-events-none absolute inset-e-3 top-1/2 -translate-y-1/2 text-faint"
+            width="18"
+            height="18"
+          />
+        </div>
+      </section>
 
-        <div className="mt-4 flex flex-col gap-y-6">
+      <hr className="border-outline" />
+
+      {/* Tabs + preview side by side on wide screens, stacked on mobile */}
+      <div className="min-w-0 grid gap-y-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-x-8">
+        <div className="flex min-w-0 flex-col gap-y-6">
+          <div role="tablist" aria-label={t("displaySettings")} className="grid grid-cols-3 gap-1 rounded-xl border border-outline bg-fill-faint p-1">
+            {tabs.map(([id, label]) => tabButton(id, label))}
+          </div>
+
+      {/* Display: what data shows */}
+      {tab === "display" && (
+        <div role="tabpanel" id="wctl-panel-display" aria-labelledby="wctl-tab-display" className="flex flex-col gap-y-6">
           <div>
             <label htmlFor="locale" className="mb-1.5 block text-sm font-medium text-muted">
               {t("language")}
@@ -125,120 +192,31 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-x-10 gap-y-6">
-            <fieldset>
-              <legend className="wctl-legend">{t("displayedComponent")}</legend>
+          <fieldset>
+            <legend className="wctl-legend">{t("displayedComponent")}</legend>
 
-              <div className="flex gap-x-4">
-                {Object.entries({
-                  weather: t("presentWeather"),
-                  forcast: t("futureWeather"),
-                }).map(([k, text]) => (
-                  <label className="wctl-option" key={k}>
-                    <input
-                      type="checkbox"
-                      name="unit"
-                      value={k}
-                      checked={formData[k as keyof typeof formData] as boolean}
-                      onChange={() => {
-                        const key = k as "weather" | "forcast";
-                        setFormData({ ...formData, [key]: !formData[key] });
-                      }}
-                      className="wctl-check"
-                    />
-                    {text}
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-
-            <fieldset>
-              <legend className="wctl-legend">{t("widgetAlignment")}</legend>
-
-              <div className="flex gap-x-4">
-                {Object.entries({
-                  start: t("start"),
-                  center: t("center"),
-                  end: t("end"),
-                }).map(([k, text]) => (
-                  <label className="wctl-option" key={k}>
-                    <input
-                      type="radio"
-                      name="align"
-                      value={k}
-                      checked={formData.align == k}
-                      onChange={() => setFormData({ ...formData, align: k })}
-                      className="wctl-check"
-                    />
-                    {text}
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-
-            <div>
-              <label htmlFor="style" className="mb-1.5 block text-sm font-medium text-muted">
-                {t("widgetStyle")}
-              </label>
-
-              <div className="relative sm:w-60">
-                <select
-                  id="style"
-                  name="style"
-                  value={formData.style}
-                  onChange={(e) => {
-                    setFormData({ ...formData, style: e.target.value });
-                  }}
-                  className="wctl-input appearance-none pe-9"
-                >
-                  {/* Style names are proper nouns; plain string labels rather than locale keys */}
-                  <option value="cards">Cards</option>
-                  <option value="editorial">Editorial</option>
-                  <option value="bars">Bars</option>
-                  <option value="swiss">Swiss</option>
-                  <option value="pills">Pills</option>
-                  <option value="telemetry">Telemetry</option>
-                </select>
-                <Icon
-                  icon="material-symbols:keyboard-arrow-down"
-                  className="pointer-events-none absolute inset-e-3 top-1/2 -translate-y-1/2 text-faint"
-                  width="18"
-                  height="18"
-                />
-              </div>
+            <div className="flex gap-x-4">
+              {Object.entries({
+                weather: t("presentWeather"),
+                forcast: t("futureWeather"),
+              }).map(([k, text]) => (
+                <label className="wctl-option" key={k}>
+                  <input
+                    type="checkbox"
+                    name={k}
+                    value={k}
+                    checked={formData[k as keyof typeof formData] as boolean}
+                    onChange={() => {
+                      const key = k as "weather" | "forcast";
+                      setFormData({ ...formData, [key]: !formData[key] });
+                    }}
+                    className="wctl-check"
+                  />
+                  {text}
+                </label>
+              ))}
             </div>
-
-            <div>
-              <fieldset>
-                <legend className="wctl-legend">{t("dateDisplay")}</legend>
-
-                <div className="flex gap-x-4">
-                  {Object.entries({
-                    weekday: t("showWeekday"),
-                    date: t("showDate"),
-                  }).map(([k, text]) => (
-                    <label className="wctl-option" key={k}>
-                      <input
-                        type="checkbox"
-                        name={k}
-                        value={k}
-                        checked={formData[k as "weekday" | "date"]}
-                        onChange={() => {
-                          const key = k as "weekday" | "date";
-                          setFormData({
-                            ...formData,
-                            [key]: !formData[key],
-                          });
-                        }}
-                        className="wctl-check"
-                      />
-                      {text}
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
-            </div>
-          </div>
+          </fieldset>
 
           <div>
             <label htmlFor="days" className="block text-sm font-medium text-muted">
@@ -302,36 +280,117 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
             </div>
           </div>
         </div>
-      </section>
+      )}
 
-      <section className="wctl-section">
-        <h2 className="wctl-heading">{t("unitSettings")}</h2>
+      {/* Unit: temperature */}
+      {tab === "unit" && (
+        <div role="tabpanel" id="wctl-panel-unit" aria-labelledby="wctl-tab-unit" className="flex flex-col gap-y-6">
+          <fieldset>
+            <legend className="wctl-legend">{t("temperatureUnit")}</legend>
 
-        <fieldset className="mt-4">
-          <legend className="wctl-legend">{t("temperatureUnit")}</legend>
+            <div className="flex gap-x-4">
+              {Object.entries({
+                C: `${t("celsius")} (°C)`,
+                F: `${t("fahrenheit")} (°F)`,
+              }).map(([k, text]) => (
+                <label className="wctl-option" key={k}>
+                  <input
+                    type="radio"
+                    name="unit"
+                    value={k}
+                    checked={formData.unit == k}
+                    onChange={() => {
+                      setFormData({ ...formData, unit: k });
+                    }}
+                    className="wctl-check"
+                  />
+                  {text}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        </div>
+      )}
 
-          <div className="flex gap-x-4">
-            {Object.entries({
-              C: `${t("celsius")} (°C)`,
-              F: `${t("fahrenheit")} (°F)`,
-            }).map(([k, text]) => (
-              <label className="wctl-option" key={k}>
-                <input
-                  type="radio"
-                  name="unit"
-                  value={k}
-                  checked={formData.unit == k}
-                  onChange={() => {
-                    setFormData({ ...formData, unit: k });
-                  }}
-                  className="wctl-check"
-                />
-                {text}
-              </label>
-            ))}
+      {/* Layout: alignment + date display */}
+      {tab === "layout" && (
+        <div role="tabpanel" id="wctl-panel-layout" aria-labelledby="wctl-tab-layout" className="flex flex-col gap-y-6">
+          <fieldset>
+            <legend className="wctl-legend">{t("widgetAlignment")}</legend>
+
+            <div className="flex gap-x-4">
+              {Object.entries({
+                start: t("start"),
+                center: t("center"),
+                end: t("end"),
+              }).map(([k, text]) => (
+                <label className="wctl-option" key={k}>
+                  <input
+                    type="radio"
+                    name="align"
+                    value={k}
+                    checked={formData.align == k}
+                    onChange={() => setFormData({ ...formData, align: k })}
+                    className="wctl-check"
+                  />
+                  {text}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend className="wctl-legend">{t("dateDisplay")}</legend>
+
+            <div className="flex gap-x-4">
+              {Object.entries({
+                weekday: t("showWeekday"),
+                date: t("showDate"),
+              }).map(([k, text]) => (
+                <label className="wctl-option" key={k}>
+                  <input
+                    type="checkbox"
+                    name={k}
+                    value={k}
+                    checked={formData[k as "weekday" | "date"]}
+                    onChange={() => {
+                      const key = k as "weekday" | "date";
+                      setFormData({
+                        ...formData,
+                        [key]: !formData[key],
+                      });
+                    }}
+                    className="wctl-check"
+                  />
+                  {text}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        </div>
+      )}
+
+      {/* Preview column: the result surface every tab feeds (unit → temps,
+          layout → align/date, display → days/toggles, style → whole look).
+          Sticky on desktop, below controls when stacked on mobile. */}
+        </div>
+
+        <aside className="min-w-0">
+          <div className="lg:sticky lg:top-6">
+            <WidgetStylePreview
+              style={formData.style}
+              unit={formData.unit}
+              align={formData.align}
+              weekday={formData.weekday}
+              date={formData.date}
+              weather={formData.weather}
+              forecast={formData.forcast}
+              days={dayCount}
+              locale={formData.lang}
+            />
           </div>
-        </fieldset>
-      </section>
+        </aside>
+      </div>
 
       <section className="wctl-section">
         <h2 className="wctl-heading">URL</h2>
