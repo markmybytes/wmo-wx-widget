@@ -19,13 +19,17 @@ export function translateWxdesc(t: T, raw: string): string {
   return raw
     .split(",")
     .map((segment) => {
-      const s = segment
-        .replace(/([a-z])([A-Z])/g, "$1 $2")
-        .trim()
-        .toLowerCase()
-        .replace(/(^| )\p{L}/gu, (c) => c.toUpperCase());
+      const s = segment.replace(/([a-z])([A-Z])/g, "$1 $2").trim();
       if (!s) return "";
-      return t.has(s as Key) ? t(s as Key) : segment.trim();
+      const cap = s.toLowerCase().replace(/(^|[\s/])\p{L}/gu, (c) => c.toUpperCase());
+      // taxonomy keys keep small words lowercased ("Thunderstorm in Vicinity")
+      const lowered = cap.replace(/ (In|Of|With|On|At)(?= )/g, (w) => w.toLowerCase());
+      const key = t.has(cap as Key)
+        ? (cap as Key)
+        : t.has(lowered as Key)
+          ? (lowered as Key)
+          : null;
+      return key ? t(key) : s;
     })
     .filter(Boolean)
     .join(", ");
