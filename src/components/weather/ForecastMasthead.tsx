@@ -1,11 +1,12 @@
 import { FutureWeather } from "@/lib/wmo";
 import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
-import { getTranslations } from "next-intl/server";
+import { utcWeekday, utcDayNumber } from "@/lib/date";
+import { useTranslations } from "next-intl";
 
 /** `masthead` variant: editorial publication style — hairline-divided rows with room for
- *  localized condition text from `sm:` up. */
-export default async function ForecastMasthead({
+ *  localized condition text from `@min-[theme(--breakpoint-sm)]:` up. */
+export default function ForecastMasthead({
   locale,
   weather,
   showWeekday,
@@ -17,9 +18,10 @@ export default async function ForecastMasthead({
   showWeekday: boolean;
   showDate: boolean;
 }) {
-  if (weather.forecasts.length === 0) {
-    const tc = await getTranslations("common");
+  const tc = useTranslations("common");
+  const t = useTranslations("weather");
 
+  if (weather.forecasts.length === 0) {
     return (
       <div className="flex min-h-20 flex-2 items-center justify-center rounded-xl border border-outline bg-surface p-6 shadow-xs">
         <span className="font-mono text-xs text-muted">{tc("noForecastAvailable")}</span>
@@ -27,24 +29,20 @@ export default async function ForecastMasthead({
     );
   }
 
-  const t = await getTranslations("weather");
-
   return (
     <div className="flex flex-2 flex-col divide-y divide-outline/80 rounded-xl border border-outline bg-surface p-1 shadow-xs">
       {weather.forecasts.map((fc) => {
-        const d = new Date(fc.date);
-
         return (
-          <div key={fc.date} className="flex items-center gap-x-3 px-2.5 py-2.5 sm:px-3">
+          <div key={fc.date} className="flex items-center gap-x-3 px-2.5 py-2.5 @min-[theme(--breakpoint-sm)]:px-3">
             {(showWeekday || showDate) && (
-              <div className="flex w-12 shrink-0 flex-col font-mono text-xs sm:w-16">
+              <div className="flex w-12 shrink-0 flex-col font-mono text-xs @min-[theme(--breakpoint-sm)]:w-16">
                 {showWeekday && (
                   <span className="truncate font-sans text-[11px] font-semibold tracking-wider text-muted uppercase">
-                    {d.toLocaleString(locale, { weekday: "short" })}
+                    {utcWeekday(fc.date, locale)}
                   </span>
                 )}
                 {showDate && (
-                  <span className="text-xs font-medium text-foreground">{d.getDate()}</span>
+                  <span className="text-xs font-medium text-foreground">{utcDayNumber(fc.date)}</span>
                 )}
               </div>
             )}
@@ -55,12 +53,12 @@ export default async function ForecastMasthead({
               alt={fc.weather ? t(fc.weather) : ""}
             />
 
-            <p className="hidden min-w-0 grow truncate text-xs text-muted sm:block sm:ps-2">
+            <p className="hidden min-w-0 grow truncate text-xs text-muted @min-[theme(--breakpoint-sm)]:block @min-[theme(--breakpoint-sm)]:ps-2">
               {fc.weather ? t(fc.weather) : ""}
             </p>
 
             {/* Min-first temperature order */}
-            <div className="ms-auto flex shrink-0 items-baseline gap-x-1.5 font-mono text-xs sm:text-sm">
+            <div className="ms-auto flex shrink-0 items-baseline gap-x-1.5 font-mono text-xs @min-[theme(--breakpoint-sm)]:text-sm">
               <span className="text-muted">
                 {fc.temp.min.val !== null ? `${fc.temp.min.val}°` : "--"}
               </span>

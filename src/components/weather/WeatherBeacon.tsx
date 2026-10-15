@@ -1,12 +1,12 @@
 import { Icon } from "@iconify/react";
 import { City, PresentWeather, TempUnit } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
 /** `beacon` variant: Compact Telemetry & Tactical Cockpit.
  *  High-density, space-efficient telemetry block engineered for tight embed columns (~260–300px).
  *  Monospace accents, status beacons, and zero wasted margins. */
-export default async function WeatherBeacon({
+export default function WeatherBeacon({
   city,
   weather,
 }: {
@@ -14,7 +14,7 @@ export default async function WeatherBeacon({
   weather: PresentWeather;
   style?: string; // ignored; kept so all variants share one call site
 }) {
-  const t = await getTranslations("weather");
+  const t = useTranslations("weather");
   const tempVal = weather.temp.val;
   const tempUnit = weather.temp.unit;
   const condText = weather.weather ? t(weather.weather) : "";
@@ -65,7 +65,7 @@ export default async function WeatherBeacon({
       <div className="my-2 flex items-center justify-between gap-2">
         <div className="flex min-w-0 flex-1 flex-col">
           <div className="flex items-baseline font-mono font-bold text-foreground">
-            <span className="text-3xl tracking-tighter sm:text-4xl">{tempVal ?? "--"}</span>
+            <span className="text-3xl tracking-tighter @min-[theme(--breakpoint-sm)]:text-4xl">{tempVal ?? "--"}</span>
             {tempVal !== null && (
               <span className="ml-1 text-sm font-semibold text-muted">{tempUnit}</span>
             )}

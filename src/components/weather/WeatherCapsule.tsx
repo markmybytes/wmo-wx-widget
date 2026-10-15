@@ -1,12 +1,12 @@
 import { Icon } from "@iconify/react";
 import { City, PresentWeather } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
 /** `capsule` variant: Glass Pill & Soft Tech Dashboard.
  *  Rounded pill geometry, nested soft capsule chips, and modern floating metrics.
  *  Fluid, friendly, and ultra-crisp across narrow ~300px sidebars and wide containers. */
-export default async function WeatherCapsule({
+export default function WeatherCapsule({
   city,
   weather,
 }: {
@@ -14,13 +14,13 @@ export default async function WeatherCapsule({
   weather: PresentWeather;
   style?: string; // ignored; kept so all variants share one call site
 }) {
-  const t = await getTranslations("weather");
+  const t = useTranslations("weather");
   const tempVal = weather.temp.val;
   const tempUnit = weather.temp.unit;
   const condText = weather.weather ? t(weather.weather) : "";
 
   return (
-    <article className="flex min-w-54 flex-1 flex-col justify-between rounded-2xl border border-outline bg-surface p-4 shadow-sm md:p-5">
+    <article className="flex min-w-54 flex-1 flex-col justify-between rounded-2xl border border-outline bg-surface p-4 shadow-sm @min-[theme(--breakpoint-md)]:p-5">
       {/* Pill header: City pill & condition sharing space fluidly */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex max-w-[65%] min-w-0 shrink-0 items-center gap-1.5 rounded-full border border-outline bg-fill-faint px-2.5 py-1">
@@ -38,13 +38,13 @@ export default async function WeatherCapsule({
       </div>
 
       {/* Hero display: Asymmetric temperature & weather pictogram */}
-      <div className="my-3 flex items-center justify-between sm:my-4">
+      <div className="my-3 flex items-center justify-between @min-[theme(--breakpoint-sm)]:my-4">
         <div className="flex items-baseline">
-          <span className="font-display text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
+          <span className="font-display text-4xl font-extrabold tracking-tight text-foreground @min-[theme(--breakpoint-sm)]:text-5xl">
             {tempVal ?? "--"}
           </span>
           {tempVal !== null && (
-            <span className="ml-0.5 text-xl font-bold text-brand sm:text-2xl">{tempUnit}</span>
+            <span className="ml-0.5 text-xl font-bold text-brand @min-[theme(--breakpoint-sm)]:text-2xl">{tempUnit}</span>
           )}
         </div>
 

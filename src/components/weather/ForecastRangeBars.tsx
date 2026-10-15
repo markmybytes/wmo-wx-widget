@@ -1,11 +1,12 @@
 import { FutureWeather } from "@/lib/wmo";
 import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
-import { getTranslations } from "next-intl/server";
+import { utcWeekday, utcDayNumber } from "@/lib/date";
+import { useTranslations } from "next-intl";
 
 /** `range-bars` variant: compact forecast rows with Apple-style temperature
  *  range bars normalized across the visible forecast period. */
-export default async function ForecastRangeBars({
+export default function ForecastRangeBars({
   locale,
   weather,
   showWeekday,
@@ -17,17 +18,16 @@ export default async function ForecastRangeBars({
   showWeekday: boolean;
   showDate: boolean;
 }) {
-  if (weather.forecasts.length === 0) {
-    const tc = await getTranslations("common");
+  const tc = useTranslations("common");
+  const t = useTranslations("weather");
 
+  if (weather.forecasts.length === 0) {
     return (
       <div className="flex min-h-20 flex-2 items-center justify-center rounded-lg border border-outline bg-surface p-6 shadow-xs">
         <span className="font-mono text-xs text-muted">{tc("noForecastAvailable")}</span>
       </div>
     );
   }
-
-  const t = await getTranslations("weather");
 
   // Collect all valid readings to determine the overall forecast range
   const reads = weather.forecasts.flatMap((fc) => {
@@ -65,18 +65,16 @@ export default async function ForecastRangeBars({
           }
         }
 
-        const d = new Date(fc.date);
-
         return (
           <div key={fc.date} className="flex items-center gap-x-2 px-2.5 py-2">
             {(showWeekday || showDate) && (
-              <div className="flex w-10 shrink-0 flex-col items-center font-mono text-[11px] sm:w-12">
+              <div className="flex w-10 shrink-0 flex-col items-center font-mono text-[11px] @min-[theme(--breakpoint-sm)]:w-12">
                 {showWeekday && (
                   <span className="truncate text-muted">
-                    {d.toLocaleString(locale, { weekday: "short" })}
+                    {utcWeekday(fc.date, locale)}
                   </span>
                 )}
-                {showDate && <span className="font-medium text-foreground">{d.getDate()}</span>}
+                {showDate && <span className="font-medium text-foreground">{utcDayNumber(fc.date)}</span>}
               </div>
             )}
 
@@ -86,15 +84,15 @@ export default async function ForecastRangeBars({
               alt={fc.weather ? t(fc.weather) : ""}
             />
 
-            {/* Min-first temperature cluster capped at max-w-32/sm:max-w-44 */}
-            <div className="ms-auto flex w-full max-w-48 min-w-0 items-center gap-x-2 sm:max-w-56">
-              <span className="w-8 shrink-0 text-end font-mono text-[11px] text-muted tabular-nums sm:w-9">
+            {/* Min-first temperature cluster capped at max-w-32/@min-[theme(--breakpoint-sm)]:max-w-44 */}
+            <div className="ms-auto flex w-full max-w-48 min-w-0 items-center gap-x-2 @min-[theme(--breakpoint-sm)]:max-w-56">
+              <span className="w-8 shrink-0 text-end font-mono text-[11px] text-muted tabular-nums @min-[theme(--breakpoint-sm)]:w-9">
                 {min !== null ? `${min}°` : "--"}
               </span>
 
               <div
                 aria-hidden
-                className="relative h-1.5 max-w-32 grow rounded-full bg-outline/80 sm:max-w-44 dark:bg-fill"
+                className="relative h-1.5 max-w-32 grow rounded-full bg-outline/80 @min-[theme(--breakpoint-sm)]:max-w-44 dark:bg-fill"
               >
                 {hasBar && (
                   <div
@@ -104,7 +102,7 @@ export default async function ForecastRangeBars({
                 )}
               </div>
 
-              <span className="w-8 shrink-0 text-start font-mono text-[11px] font-medium text-foreground tabular-nums sm:w-9">
+              <span className="w-8 shrink-0 text-start font-mono text-[11px] font-medium text-foreground tabular-nums @min-[theme(--breakpoint-sm)]:w-9">
                 {max !== null ? `${max}°` : "--"}
               </span>
             </div>

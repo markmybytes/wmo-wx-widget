@@ -1,12 +1,12 @@
 import { Icon } from "@iconify/react";
 import { City, PresentWeather } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
 /** `precision` variant: Editorial Swiss Precision.
  *  Crisp typographic hierarchy, structured hairline dividers, and high-contrast data rows.
  *  Compact two-band layout optimized for tight vertical embedding. */
-export default async function WeatherPrecision({
+export default function WeatherPrecision({
   city,
   weather,
 }: {
@@ -14,11 +14,11 @@ export default async function WeatherPrecision({
   weather: PresentWeather;
   style?: string; // ignored; kept so all variants share one call site
 }) {
-  const t = await getTranslations("weather");
+  const t = useTranslations("weather");
   const condText = weather.weather ? t(weather.weather) : "";
 
   return (
-    <article className="flex min-w-54 flex-1 flex-col justify-between rounded-xl border border-outline bg-surface p-3.5 shadow-xs transition-colors md:p-4">
+    <article className="flex min-w-54 flex-1 flex-col justify-between rounded-xl border border-outline bg-surface p-3.5 shadow-xs transition-colors @min-[theme(--breakpoint-md)]:p-4">
       {/* Top row: Location & Condition */}
       <div className="flex items-start justify-between gap-2 border-b border-outline pb-2.5">
         <div className="min-w-0 flex-1">
@@ -27,7 +27,7 @@ export default async function WeatherPrecision({
             <span className="truncate">{city.name}</span>
           </p>
           {condText ? (
-            <p className="mt-0.5 truncate text-xs font-medium text-foreground sm:text-sm">
+            <p className="mt-0.5 truncate text-xs font-medium text-foreground @min-[theme(--breakpoint-sm)]:text-sm">
               {condText}
             </p>
           ) : null}
@@ -41,11 +41,11 @@ export default async function WeatherPrecision({
       {/* Main readout: Big temperature + telemetry in freed space */}
       <div className="mt-3 flex items-end justify-between gap-2">
         <div className="flex items-baseline gap-1">
-          <span className="font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+          <span className="font-display text-4xl font-bold tracking-tight text-foreground @min-[theme(--breakpoint-sm)]:text-5xl">
             {weather.temp.val !== null ? weather.temp.val : "--"}
           </span>
           {weather.temp.val !== null && (
-            <span className="text-lg font-medium text-muted sm:text-xl">{weather.temp.unit}</span>
+            <span className="text-lg font-medium text-muted @min-[theme(--breakpoint-sm)]:text-xl">{weather.temp.unit}</span>
           )}
         </div>
 

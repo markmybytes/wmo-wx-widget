@@ -1,11 +1,11 @@
 import { Icon } from "@iconify/react";
 import { City, PresentWeather } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
 /** `range-bars` variant: compact minimal — tight spacing, high data density,
  *  disciplined typography without decorative clutter. */
-export default async function WeatherRangeBars({
+export default function WeatherRangeBars({
   city,
   weather,
 }: {
@@ -13,7 +13,7 @@ export default async function WeatherRangeBars({
   weather: PresentWeather;
   style?: string; // ignored; kept so variants share one call site
 }) {
-  const t = await getTranslations("weather");
+  const t = useTranslations("weather");
 
   return (
     <div className="flex min-w-54 flex-1 flex-col justify-between gap-y-2.5 rounded-lg border border-outline bg-surface p-3 shadow-xs">
