@@ -9,42 +9,63 @@ import WidgetStylePreview from "./WidgetStylePreview";
 
 const MAX_DAYS = 9;
 
-// Icons grounded in src/components/weather/Weather{Classic,Masthead,RangeBars,
-// Precision,Capsule,Beacon}.tsx ??each names the style's actual visual character.
-const STYLE_OPTIONS = [
-  { id: "precision", label: "Precision", icon: "material-symbols:border-all" },
-  { id: "classic", label: "Classic", icon: "material-symbols:crop-portrait" },
-  { id: "masthead", label: "Masthead", icon: "material-symbols:title" },
-  { id: "range-bars", label: "Range Bars", icon: "material-symbols:linear-scale" },
-  { id: "capsule", label: "Capsule", icon: "material-symbols:pill" },
-  { id: "beacon", label: "Beacon", icon: "material-symbols:terminal" },
-] as const;
+/* Chip: the one toggle face in the bar. Selected state is a single className
+   conditional so on/off faces never fight Tailwind's stylesheet ordering. */
+function Chip({
+  selected,
+  icon,
+  label,
+  title,
+  className,
+  onClick,
+}: {
+  selected: boolean;
+  icon?: string;
+  label: React.ReactNode;
+  title?: string;
+  className?: string;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}) {
+  return (
+    <button
+      type="button"
+      title={title}
+      onClick={onClick}
+      className={`flex h-9 shrink-0 items-center gap-1.5 rounded-lg border px-2.5 text-xs transition-colors outline-none ${
+        selected
+          ? "border-brand-solid bg-brand-wash font-semibold text-foreground ring-1 ring-brand-solid"
+          : "border-outline bg-surface text-muted hover:border-outline-strong hover:text-foreground"
+      }${className ? ` ${className}` : ""}`}
+    >
+      {icon && (
+        <Icon
+          icon={icon}
+          width="15"
+          height="15"
+          className={selected ? "text-brand-solid" : "text-faint"}
+        />
+      )}
+      <span>{label}</span>
+    </button>
+  );
+}
 
-/* One chip language for every toggle in the bar. CHIP carries structure only;
-   faces are separate constants so selected/off classes never fight Tailwind's
-   stylesheet ordering. Selected = brand ring + wash, everywhere. */
-const CHIP =
-  "flex h-9 shrink-0 items-center gap-1.5 rounded-lg border px-2.5 text-xs transition-colors outline-none";
-const CHIP_ON = "border-brand-solid bg-brand-wash font-semibold text-foreground ring-1 ring-brand-solid";
-const CHIP_OFF =
-  "border-outline bg-surface text-muted hover:border-outline-strong hover:text-foreground";
-
-/* Cluster: a micro-label row, then its control row ??titles always sit on
-   their own line above the controls; rows stack vertically in the pane.
-   gap-1.5 = title -> controls, peeking at the borrowed scale. */
-const CLUSTER = "flex flex-col gap-1.5";
+/* Cluster: a micro-label row, then its control row — rows stack in the pane. */
+function Cluster({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <span className="wctl-micro">{label}</span>
+      {children}
+    </div>
+  );
+}
 
 /* Every tab panel lives in the same grid cell, so the input section always
    sizes to the tallest panel and switching tabs can never resize the layout. */
 const STACKED_PANEL = "col-start-1 row-start-1 min-w-0";
 
-// Thin horizontal scrollbar for the single-row styling panel, dark & light.
-const THIN_SCROLLBAR =
-  "[scrollbar-width:thin] [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-outline-strong [&::-webkit-scrollbar-track]:bg-transparent";
-
 export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOption[] }) {
   const t = useTranslations("common");
-  const usrLocale = useLocale();
 
   const [formData, setFormData] = useState({
     weather: true,
@@ -55,7 +76,7 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
     date: true,
     city: "",
     days: "5",
-    lang: usrLocale,
+    lang: useLocale(),
     unit: "C",
   });
 
@@ -66,12 +87,6 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
   // Tabs fold the secondary controls; default = display settings, the
   // most-touched cluster. Not persisted across visits.
   const [activeTab, setActiveTab] = useState<"display" | "unit" | "style">("display");
-
-  const TABS: { id: "display" | "unit" | "style"; label: string }[] = [
-    { id: "display", label: t("displaySettings") },
-    { id: "unit", label: t("unitSettings") },
-    { id: "style", label: t("widgetStyle") },
-  ];
 
   const dayCount = parseInt(formData.days) || 0;
 
@@ -100,7 +115,6 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
 
   return (
     <form className="flex flex-col gap-y-4" onSubmit={(e) => e.preventDefault()}>
-      {/* Header */}
       <div>
         <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
           {t("widgetCustomiser")}
@@ -108,13 +122,10 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
         <p className="mt-1 max-w-2xl text-xs text-faint">{t("widgetCustomiserHelp")}</p>
       </div>
 
-      {/* Two-column desktop · one row flow on mobile: left = city + tabbed
-          inputs, right = preview. Grid collapses under lg. */}
       <div className="flex flex-col gap-y-4 lg:grid lg:grid-cols-[minmax(0,4fr)_minmax(0,6fr)] lg:items-stretch lg:gap-x-8">
-        {/* LEFT · city section + tabbed inputs - h-full so it shares the
-            preview column's height through the grid row; the panel region
-            flexes to absorb the slack, so dragging the canvas handle grows
-            both columns together. */}
+        {/* h-full shares the preview column's height through the grid row; the
+            panel region flexes to absorb the slack, so dragging the canvas
+            handle grows both columns together. */}
         <section className="wctl-section flex flex-col gap-2.5 lg:h-full">
           <div className="flex flex-wrap items-center gap-2">
             <div className="min-w-56 flex-1">
@@ -141,30 +152,30 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
             )}
           </div>
 
-          {/* Tab strip · plain buttons switching the panels on click */}
           <div
-           
             className="inline-flex h-9 items-center gap-0.5 self-start rounded-lg border border-outline bg-surface p-0.5"
           >
-            {TABS.map((tab) => {
-              const isSelected = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                 
-                  id={`wctl-tab-${tab.id}`}
-                  type="button"
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex h-full items-center rounded-md px-3 text-xs transition-colors outline-none ${
-                    isSelected
-                      ? "bg-brand-wash font-semibold text-foreground ring-1 ring-brand-solid"
-                      : "text-muted hover:bg-fill hover:text-foreground transition-colors"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
+            {(
+              [
+                { id: "display", label: t("displaySettings") },
+                { id: "unit", label: t("unitSettings") },
+                { id: "style", label: t("widgetStyle") },
+              ] as const
+            ).map((tab) => (
+              <button
+                key={tab.id}
+                id={`wctl-tab-${tab.id}`}
+                type="button"
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex h-full items-center rounded-md px-3 text-xs transition-colors outline-none ${
+                  activeTab === tab.id
+                    ? "bg-brand-wash font-semibold text-foreground ring-1 ring-brand-solid"
+                    : "text-muted hover:bg-fill hover:text-foreground transition-colors"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
           </div>
 
           {/* Tab panels · all mounted, stacked in one grid cell so the
@@ -177,9 +188,7 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
               max(panels) ??the mobile height jumps are exactly that. Below
               lg the container is a plain auto grid = max(panels). */}
           <div className="grid lg:flex-1">
-            {/* Display panel */}
             <div
-             
               inert={activeTab !== "display"}
               className={`${STACKED_PANEL} ${
                 activeTab === "display"
@@ -187,40 +196,25 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
                   : "pointer-events-none invisible opacity-0"
               }`}
             >
-              {/* Row-based pane: one row per labeled cluster, stacked
-                  vertically ??clusters never flow/mix into wrap soup. The
-                  micro-label leads its row. */}
-              <div className={CLUSTER}>
-                <span className="wctl-micro">{t("displayedComponent")}</span>
+              <Cluster label={t("displayedComponent")}>
                 <div className="flex flex-wrap gap-1.5">
                   {[
                     { key: "weather" as const, label: t("presentWeather"), icon: "material-symbols:partly-cloudy-day-outline" },
                     { key: "forcast" as const, label: t("futureWeather"), icon: "material-symbols:calendar-month-outline" },
-                  ].map((item) => {
-                    const isChecked = Boolean(formData[item.key]);
-                    return (
-                      <button
-                        key={item.key}
-                        type="button"
-                        title={item.label}
-                        onClick={() => setFormData({ ...formData, [item.key]: !formData[item.key] })}
-                        className={`${CHIP} ${isChecked ? CHIP_ON : CHIP_OFF}`}
-                      >
-                        <Icon
-                          icon={item.icon}
-                          width="15"
-                          height="15"
-                          className={isChecked ? "text-brand-solid" : "text-faint"}
-                        />
-                        <span>{item.label}</span>
-                      </button>
-                    );
-                  })}
+                  ].map((item) => (
+                    <Chip
+                      key={item.key}
+                      selected={Boolean(formData[item.key])}
+                      icon={item.icon}
+                      label={item.label}
+                      title={item.label}
+                      onClick={() => setFormData({ ...formData, [item.key]: !formData[item.key] })}
+                    />
+                  ))}
                 </div>
-              </div>
+              </Cluster>
 
-              <div className={CLUSTER}>
-                <span className="wctl-micro">{t("dateDisplay")}</span>
+              <Cluster label={t("dateDisplay")}>
                 <div className="flex flex-wrap gap-1.5">
                   {[
                     // calendar-view-week = the weekday-name column, today = the
@@ -228,31 +222,20 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
                     // at a glance.
                     { key: "weekday" as const, label: t("showWeekday"), icon: "material-symbols:calendar-view-week" },
                     { key: "date" as const, label: t("showDate"), icon: "material-symbols:today" },
-                  ].map((item) => {
-                    const isChecked = formData[item.key];
-                    return (
-                      <button
-                        key={item.key}
-                        type="button"
-                        title={item.label}
-                        onClick={() => setFormData({ ...formData, [item.key]: !formData[item.key] })}
-                        className={`${CHIP} ${isChecked ? CHIP_ON : CHIP_OFF}`}
-                      >
-                        <Icon
-                          icon={item.icon}
-                          width="15"
-                          height="15"
-                          className={isChecked ? "text-brand-solid" : "text-faint"}
-                        />
-                        <span>{item.label}</span>
-                      </button>
-                    );
-                  })}
+                  ].map((item) => (
+                    <Chip
+                      key={item.key}
+                      selected={formData[item.key]}
+                      icon={item.icon}
+                      label={item.label}
+                      title={item.label}
+                      onClick={() => setFormData({ ...formData, [item.key]: !formData[item.key] })}
+                    />
+                  ))}
                 </div>
-              </div>
+              </Cluster>
 
-              <div className={CLUSTER}>
-                <span className="wctl-micro">{t("maxForecastPeriod")}</span>
+              <Cluster label={t("maxForecastPeriod")}>
                 {/* One control, three cells: ??/ value / + ??the input is the
                     center cell of this single control, never a box-in-a-box.
                     self-start: as a flex-col child the inline-flex would
@@ -303,13 +286,10 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
                   </button>
                 </div>
                 <p className="text-xs text-faint">{t("maxForecastPeriodHelp")}</p>
-              </div>
+              </Cluster>
             </div>
 
-            {/* Units panel · °C/°F now; the wind-speed unit cluster from the
-                other branch appends here as a second cluster. */}
             <div
-             
               inert={activeTab !== "unit"}
               className={`${STACKED_PANEL} ${
                 activeTab === "unit"
@@ -317,33 +297,21 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
                   : "pointer-events-none invisible opacity-0"
               }`}
             >
-              <div className={CLUSTER}>
-                <span className="wctl-micro">{t("unitSettings")}</span>
+              <Cluster label={t("unitSettings")}>
                 <div className="flex gap-1.5">
-                  {["C", "F"].map((k) => {
-                    const isSelected = formData.unit === k;
-                    return (
-                      <button
-                        key={k}
-                        type="button"
-                        onClick={() => setFormData({ ...formData, unit: k })}
-                        className={`${CHIP} ${isSelected ? CHIP_ON : CHIP_OFF}`}
-                      >
-                        <span>{k === "C" ? "°C" : "°F"}</span>
-                      </button>
-                    );
-                  })}
+                  {["C", "F"].map((k) => (
+                    <Chip
+                      key={k}
+                      selected={formData.unit === k}
+                      label={k === "C" ? "°C" : "°F"}
+                      onClick={() => setFormData({ ...formData, unit: k })}
+                    />
+                  ))}
                 </div>
-              </div>
+              </Cluster>
             </div>
 
-            {/* Styling panel · two full rows: the alignment cluster (label
-                row + chip row), then the style-chip row. On lg everything is
-                fully visible without horizontal scroll ??the chips wrap when
-                tight; below lg the style-chip row alone is the horizontal
-                scroller (chips shrink-0, snap + thin scrollbar kept). */}
             <div
-             
               inert={activeTab !== "style"}
               className={`${STACKED_PANEL} ${
                 activeTab === "style"
@@ -351,78 +319,62 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
                   : "pointer-events-none invisible opacity-0"
               }`}
             >
-              <div className={CLUSTER}>
-                  <span className="wctl-micro">{t("widgetAlignment")}</span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {[
-                      { id: "start", label: t("start"), icon: "material-symbols:vertical-align-top" },
-                      { id: "center", label: t("center"), icon: "material-symbols:vertical-align-center" },
-                      { id: "end", label: t("end"), icon: "material-symbols:vertical-align-bottom" },
-                    ].map((item) => {
-                      const isSelected = formData.align === item.id;
-                      return (
-                        <button
-                          key={item.id}
-                          type="button"
-                          title={`${t("widgetAlignment")}: ${item.label}`}
-                          onClick={() => setFormData({ ...formData, align: item.id })}
-                          className={`${CHIP} ${isSelected ? CHIP_ON : CHIP_OFF}`}
-                        >
-                          <Icon
-                            icon={item.icon}
-                            width="15"
-                            height="15"
-                            className={isSelected ? "text-brand-solid" : "text-faint"}
-                          />
-                          <span>{item.label}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
+              <Cluster label={t("widgetAlignment")}>
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    { id: "start", label: t("start"), icon: "material-symbols:vertical-align-top" },
+                    { id: "center", label: t("center"), icon: "material-symbols:vertical-align-center" },
+                    { id: "end", label: t("end"), icon: "material-symbols:vertical-align-bottom" },
+                  ].map((item) => (
+                    <Chip
+                      key={item.id}
+                      selected={formData.align === item.id}
+                      icon={item.icon}
+                      label={item.label}
+                      title={`${t("widgetAlignment")}: ${item.label}`}
+                      onClick={() => setFormData({ ...formData, align: item.id })}
+                    />
+                  ))}
                 </div>
+              </Cluster>
 
-                {/* Style-chip cluster · micro-label row above, same key the
-                    tab strip uses. lg: wrap container, no scroll; <lg: the
-                    only horizontal scroller in the bar (py-0.5 reserves room
-                    for the thin scrollbar so control rows stay aligned). */}
-                <div className={CLUSTER}>
-                  <span className="wctl-micro">{t("widgetStyle")}</span>
-                  <div
-                    className={`flex snap-x gap-1.5 ${THIN_SCROLLBAR} overflow-x-auto py-0.5 lg:flex-wrap lg:overflow-visible lg:py-0`}
-                  >
-                  {STYLE_OPTIONS.map((st) => {
-                    const isSelected = formData.style === st.id;
-                    return (
-                      <button
-                        key={st.id}
-                        type="button"
-                        onClick={(e) => {
-                          setFormData({ ...formData, style: st.id });
-                          e.currentTarget.scrollIntoView({
-                            behavior: "smooth",
-                            inline: "center",
-                            block: "nearest",
-                          });
-                        }}
-                        className={`${CHIP} snap-start justify-center ${isSelected ? CHIP_ON : CHIP_OFF}`}
-                      >
-                        <Icon
-                          icon={st.icon}
-                          width="15"
-                          height="15"
-                          className={isSelected ? "text-brand-solid" : "text-faint"}
-                        />
-                        <span>{st.label}</span>
-                      </button>
-                    );
-                    })}
-                  </div>
+              {/* py-0.5 reserves room for the thin scrollbar so control rows stay aligned */}
+              <Cluster label={t("widgetStyle")}>
+                <div
+                  className={`flex snap-x gap-1.5 [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-outline-strong [&::-webkit-scrollbar-track]:bg-transparent overflow-x-auto py-0.5 lg:flex-wrap lg:overflow-visible lg:py-0`}
+                >
+                  {(
+                    [
+                      { id: "precision", label: "Precision", icon: "material-symbols:border-all" },
+                      { id: "classic", label: "Classic", icon: "material-symbols:crop-portrait" },
+                      { id: "masthead", label: "Masthead", icon: "material-symbols:title" },
+                      { id: "range-bars", label: "Range Bars", icon: "material-symbols:linear-scale" },
+                      { id: "capsule", label: "Capsule", icon: "material-symbols:pill" },
+                      { id: "beacon", label: "Beacon", icon: "material-symbols:terminal" },
+                    ] as const
+                  ).map((st) => (
+                    <Chip
+                      key={st.id}
+                      selected={formData.style === st.id}
+                      icon={st.icon}
+                      label={st.label}
+                      className="snap-start justify-center"
+                      onClick={(e) => {
+                        setFormData({ ...formData, style: st.id });
+                        e.currentTarget.scrollIntoView({
+                          behavior: "smooth",
+                          inline: "center",
+                          block: "nearest",
+                        });
+                      }}
+                    />
+                  ))}
                 </div>
+              </Cluster>
             </div>
           </div>
         </section>
 
-        {/* RIGHT · live preview canvas */}
         <section className="wctl-section">
           <WidgetStylePreview
             style={formData.style}
@@ -438,7 +390,6 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
         </section>
       </div>
 
-      {/* URL footer */}
       <section className="wctl-section">
         <h2 className="sr-only">URL</h2>
         <div className="flex items-center gap-2">

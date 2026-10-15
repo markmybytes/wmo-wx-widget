@@ -1,16 +1,10 @@
 "use client";
 
 import { Icon } from "@iconify/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const LOGICAL_WIDTHS = { desktop: 1024, tablet: 720, mobile: 375 } as const;
-
-// Draggable stage-height bounds (visible CSS px); double-click resets.
-const MIN_HEIGHT = 240;
-const MAX_HEIGHT = 700;
-const clampVisH = (h: number) => Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, h));
 type ViewId = keyof typeof LOGICAL_WIDTHS;
-const VIEW_IDS = ["desktop", "tablet", "mobile"] as const;
 
 // Per-view default stage height (visible CSS px), like a real embed: wide
 // desktop embeds run taller, mobile embeds shorter. Tablet's default is
@@ -18,59 +12,21 @@ const VIEW_IDS = ["desktop", "tablet", "mobile"] as const;
 // designer-default. Drag persists into the current view's slot; double-click
 // resets that view to its default. 580 is enough to showcase the
 // responsiveness; stacked 5-row mobile content (~630px logical at factor 1)
-// scrolls slightly inside 520 ??accepted.
+// scrolls slightly inside 520 - owner-accepted.
+//
+// ponytail: this file is a deliberate MIRROR of the six Weather*/Forecast*
+// server components, not a shared render. They are async server components
+// (getTranslations + server-fetched data) and cannot mount in a client tree,
+// and the owner needs live state reactivity (days, unit, align, gates) that
+// server rendering can't give without a reload. When the styles next evolve
+// or break visually here, the fix is the planned refactor: lift translated
+// condition text into props, make the six pairs pure client-safe
+// presentational components, then delete this mirror and render the real
+// ones with sample data. Owner approved doing that later ("B now, A later").
 const VIEW_DEFAULT_HEIGHTS: Record<ViewId, number> = { desktop: 580, tablet: 580, mobile: 520 };
 
-const VIEW_ICONS: Record<ViewId, string> = {
-  desktop: "material-symbols:desktop-windows-outline",
-  tablet: "material-symbols:tablet-mac-outline",
-  mobile: "material-symbols:phone-iphone-outline",
-};
-
-const STYLES = ["precision", "classic", "masthead", "range-bars", "capsule", "beacon"] as const;
-type PreviewStyle = (typeof STYLES)[number];
-
-// Sample values hardcoded from a live WMO reference pull so the client-side
-// preview needs no runtime fetch. City: Geneva, Switzerland (WMO city id 193,
-// station "GENEVE-COINTRIN"). Icon URLs follow the feed's wxIconUrl scheme
-// (i{numeric code with the last two digits dropped}); forecast min/max use the
-// feed's own C and F strings, present °F is the feed's Celsius converted.
+// Present-weather pictogram; the per-day strip cycles three WMO codes by index.
 const PRESENT_ICON = "https://worldweather.wmo.int/images/i24.png";
-const ROW_ICONS = [
-  "https://worldweather.wmo.int/images/i24.png", // 2402 Sunny
-  "https://worldweather.wmo.int/images/i24.png", // 2402 Sunny
-  "https://worldweather.wmo.int/images/i22.png", // 2201 Sunny Periods
-  "https://worldweather.wmo.int/images/i20.png", // 2001 Overcast
-  "https://worldweather.wmo.int/images/i21.png", // 2101 Sunny Intervals
-  "https://worldweather.wmo.int/images/i22.png", // 2201 Sunny Periods
-  "https://worldweather.wmo.int/images/i22.png", // 2201 Sunny Periods
-  "https://worldweather.wmo.int/images/i22.png", // 2201 Sunny Periods
-  "https://worldweather.wmo.int/images/i22.png", // feed's last day, continued
-];
-
-// Condition copy per row, mirroring the codes above ??masthead/capsule render it.
-const ROW_CONDITIONS = [
-  "Sunny",
-  "Sunny",
-  "Sunny Periods",
-  "Overcast",
-  "Sunny Intervals",
-  "Sunny Periods",
-  "Sunny Periods",
-  "Sunny Periods",
-  "Sunny Periods",
-];
-
-const C_MINS = [9, 7, 10, 8, 8, 7, 9, 9, 9];
-const C_MAXS = [19, 20, 15, 13, 13, 15, 15, 16, 16];
-const F_MINS = [48, 45, 50, 46, 46, 45, 48, 48, 48];
-const F_MAXS = [66, 68, 59, 55, 55, 59, 59, 61, 61];
-
-const alignCls: Record<string, string> = {
-  center: "items-center",
-  end: "items-end",
-  start: "items-start",
-};
 
 const suppressDate = { suppressHydrationWarning: true } as const;
 
@@ -117,6 +73,12 @@ export default function WidgetStylePreview({
     return () => ro.disconnect();
   }, []);
 
+  // Math.random() sample values must not run during SSR/hydration (they would
+  // differ from the server's), so they only appear after mount; the pre-mount
+  // render is deterministic and matches on both sides.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const viewW = LOGICAL_WIDTHS[view];
   const factor = colW > 0 ? Math.min(1, colW / viewW) : 1;
   const visH = heights[view] ?? VIEW_DEFAULT_HEIGHTS[view];
@@ -133,7 +95,7 @@ export default function WidgetStylePreview({
 
   function onHandleMove(e: React.PointerEvent<HTMLDivElement>) {
     if (!drag.current) return;
-    const next = clampVisH(drag.current.h - (e.clientY - drag.current.y));
+    const next = Math.min(700, Math.max(240, drag.current.h - (e.clientY - drag.current.y)));
     setHeights((prev) => ({ ...prev, [view]: next }));
   }
 
@@ -142,36 +104,54 @@ export default function WidgetStylePreview({
     (e.target as HTMLElement).releasePointerCapture(e.pointerId);
   }
 
-  const look: PreviewStyle = (STYLES as readonly string[]).includes(style)
-    ? (style as PreviewStyle)
+  const look = (
+    ["precision", "classic", "masthead", "range-bars", "capsule", "beacon"] as readonly string[]
+  ).includes(style)
+    ? (style as "precision" | "classic" | "masthead" | "range-bars" | "capsule" | "beacon")
     : "precision";
 
   const isC = unit !== "F";
-  const tempVal = isC ? 11 : 51.8;
   const tempUnit = isC ? "°C" : "°F";
   const cityName = "Geneva";
   const condition = "Sunny";
-  const rh = 96;
-  const wind = "NNE 0.4 m/s";
-  const mins = isC ? C_MINS : F_MINS;
-  const maxs = isC ? C_MAXS : F_MAXS;
-
   const rowCount = Math.max(0, Math.min(9, days || 0));
-  const rows = Array.from({ length: rowCount }, (_, i) => {
-    const d = new Date(Date.now() + i * 86400000);
+
+  // Sample data: inline formulas + Math.random (owner-accepted), memoized per
+  // (days, unit, locale) so values never jitter on unrelated re-renders.
+  const { rows, tempVal, rh, wind } = useMemo(() => {
+    const rnd = () => (mounted ? Math.random() : 0.5);
+    const toF = (c: number) => Math.round((c * 9) / 5 + 32);
+    const rows = Array.from({ length: rowCount }, (_, i) => {
+      const lo = 8 + i * 2 + Math.round(rnd() * 4);
+      const hi = lo + 6 + Math.round(rnd() * 3);
+      const minNum = isC ? lo : toF(lo);
+      const maxNum = isC ? hi : toF(hi);
+      const d = new Date(Date.now() + i * 86400000);
+      return {
+        key: i,
+        weekday: d.toLocaleString(locale, { weekday: "short" }),
+        weekdayLong: d.toLocaleString(locale, { weekday: "long" }),
+        day: d.getDate(),
+        condition: ["Sunny", "Sunny Periods", "Overcast"][i % 3],
+        icon: [
+          "https://worldweather.wmo.int/images/i24.png",
+          "https://worldweather.wmo.int/images/i22.png",
+          "https://worldweather.wmo.int/images/i20.png",
+        ][i % 3],
+        min: `${minNum}${tempUnit}`,
+        max: `${maxNum}${tempUnit}`,
+        minNum,
+        maxNum,
+      };
+    });
+    const tempC = 10 + Math.round(rnd() * 6);
     return {
-      key: i,
-      weekday: d.toLocaleString(locale, { weekday: "short" }),
-      weekdayLong: d.toLocaleString(locale, { weekday: "long" }),
-      day: d.getDate(),
-      condition: ROW_CONDITIONS[i],
-      icon: ROW_ICONS[i],
-      min: `${mins[i]}${tempUnit}`,
-      max: `${maxs[i]}${tempUnit}`,
-      minNum: mins[i],
-      maxNum: maxs[i],
+      rows,
+      tempVal: isC ? tempC : Math.round(((tempC * 9) / 5 + 32) * 10) / 10,
+      rh: 60 + Math.round(rnd() * 35),
+      wind: `${["N", "NE", "E", "SE"][Math.floor(rnd() * 4)]} ${(0.4 + rnd() * 4).toFixed(1)} m/s`,
     };
-  });
+  }, [rowCount, isC, locale, mounted, tempUnit]);
 
   const forecastStrip = forecast && (
     <>
@@ -740,30 +720,29 @@ export default function WidgetStylePreview({
 
   return (
     <div className="flex flex-col gap-y-3">
-      {/* Pure Viewport Toolbar */}
       <div className="flex items-center justify-between gap-2">
-        <div
-          className="flex gap-1 rounded-lg border border-outline bg-fill-faint p-1"
-         
-        >
-          {VIEW_IDS.map((v) => {
-            const isSelected = view === v;
-            return (
-              <button
-                key={v}
-                type="button"
-                onClick={() => setView(v)}
-                className={`flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-medium capitalize transition-colors ${
-                  isSelected
-                    ? "bg-surface text-foreground shadow-xs ring-1 ring-outline"
-                    : "text-muted hover:text-foreground"
-                }`}
-              >
-                <Icon icon={VIEW_ICONS[v]} width="14" height="14" />
-                <span className="hidden sm:inline">{v}</span>
-              </button>
-            );
-          })}
+        <div className="flex gap-1 rounded-lg border border-outline bg-fill-faint p-1">
+          {(
+            [
+              ["desktop", "material-symbols:desktop-windows-outline"],
+              ["tablet", "material-symbols:tablet-mac-outline"],
+              ["mobile", "material-symbols:phone-iphone-outline"],
+            ] as const
+          ).map(([v, icon]) => (
+            <button
+              key={v}
+              type="button"
+              onClick={() => setView(v)}
+              className={`flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-medium capitalize transition-colors ${
+                view === v
+                  ? "bg-surface text-foreground shadow-xs ring-1 ring-outline"
+                  : "text-muted hover:text-foreground"
+              }`}
+            >
+              <Icon icon={icon} width="14" height="14" />
+              <span className="hidden sm:inline">{v}</span>
+            </button>
+          ))}
         </div>
 
         <span className="font-mono text-xs text-faint tabular-nums">
@@ -818,7 +797,9 @@ export default function WidgetStylePreview({
                   cards regardless of align. The align layer scrolls like the
                   real page does when content exceeds the viewport. */}
               <div
-                className={`flex h-full w-full overflow-y-auto ${alignCls[align] ?? alignCls.start}`}
+                className={`flex h-full w-full overflow-y-auto ${
+                  align === "center" ? "items-center" : align === "end" ? "items-end" : "items-start"
+                }`}
               >
                 <div className="flex w-full flex-col items-stretch gap-2 p-2.5 @min-[768px]:flex-row @min-[768px]:gap-x-2">
                   {present}
