@@ -3,32 +3,20 @@
 import { Icon } from "@iconify/react";
 import { useEffect, useRef, useState } from "react";
 
-/**
- * Mocked-data live preview of all six widget looks. The load-bearing trick:
- * Tailwind v4 container queries (`@container` + `@min-[640px]:`/`@min-[768px]:`)
- * — the widget's real components use `sm:`/`md:` viewport queries, which a
- * resized <div> can never trigger; container queries reflow at these SAME pixel
- * thresholds as the preview width changes (chips/slider, with horizontal
- * overflow for presets wider than the column).
- *
- * Data is fixed Hong Kong-flavoured sample weather — the preview demos the
- * settings, it is NOT the user's selected city (the embed URL still uses that).
- */
+const LOGICAL_HEIGHT = 420;
+const LOGICAL_WIDTHS = { desktop: 1024, tablet: 768, mobile: 375 } as const;
+type ViewId = keyof typeof LOGICAL_WIDTHS;
+const VIEW_IDS = ["desktop", "tablet", "mobile"] as const;
 
-const MIN_WIDTH = 320;
-const PREVIEW_HEIGHT = 420;
-
-// Presets: null width = 100% of the column.
-const PRESETS: Array<{ label: string; width: number | null }> = [
-  { label: "Full", width: null },
-  { label: "Tablet", width: 768 },
-  { label: "Mobile", width: 375 },
-];
+const VIEW_ICONS: Record<ViewId, string> = {
+  desktop: "material-symbols:desktop-windows-outline",
+  tablet: "material-symbols:tablet-mac-outline",
+  mobile: "material-symbols:phone-iphone-outline",
+};
 
 const STYLES = ["cards", "editorial", "bars", "swiss", "pills", "telemetry"] as const;
 type PreviewStyle = (typeof STYLES)[number];
 
-// Verified-live WMO pictograms (same host the real widget loads from).
 const PRESENT_ICON = "https://worldweather.wmo.int/images/i32.png";
 const ROW_ICONS = [
   "https://worldweather.wmo.int/images/i23.png",
@@ -36,8 +24,6 @@ const ROW_ICONS = [
   "https://worldweather.wmo.int/images/i32.png",
 ];
 
-// Nine distinct Hong-Kong-plausible days — the forecast day stepper must always
-// change the preview (1:1 with formData.days, no caps).
 const C_MINS = [21, 19, 24, 18, 22, 25, 27, 23, 20];
 const C_MAXS = [27, 25, 30, 26, 28, 29, 33, 28, 26];
 const F_MINS = [70, 66, 75, 64, 72, 77, 81, 73, 68];
@@ -48,6 +34,8 @@ const alignCls: Record<string, string> = {
   end: "@min-[768px]:items-end",
   start: "@min-[768px]:items-start",
 };
+
+const suppressDate = { suppressHydrationWarning: true } as const;
 
 export default function WidgetStylePreview({
   style,
@@ -70,27 +58,26 @@ export default function WidgetStylePreview({
   days: number;
   locale: string;
 }) {
-  const [width, setWidth] = useState<number | null>(null); // null = 100%
-  const [containerW, setContainerW] = useState(0);
-  const wrapRef = useRef<HTMLDivElement>(null);
+  const [view, setView] = useState<ViewId>("desktop");
+  const [colW, setColW] = useState(0);
+  const colRef = useRef<HTMLDivElement>(null);
 
-  // Track the preview column width so the slider max is the container itself.
   useEffect(() => {
-    const el = wrapRef.current;
+    const el = colRef.current;
     if (!el) return;
     const ro = new ResizeObserver((entries) => {
-      setContainerW(entries[0].contentRect.width);
+      setColW(entries[0].contentRect.width);
     });
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
 
-  // Effective px width; explicit widths may exceed the column (horizontal
-  // scroll) so the Tablet preset genuinely reflows even in a narrow column.
-  const effWidth = width === null ? containerW : width;
-  const sliderMax = Math.max(containerW, MIN_WIDTH, effWidth);
+  const viewW = LOGICAL_WIDTHS[view];
+  const factor = colW > 0 ? Math.min(1, colW / viewW) : 1;
 
-  const look: PreviewStyle = (STYLES as readonly string[]).includes(style) ? (style as PreviewStyle) : "swiss";
+  const look: PreviewStyle = (STYLES as readonly string[]).includes(style)
+    ? (style as PreviewStyle)
+    : "swiss";
 
   const isC = unit !== "F";
   const tempVal = isC ? 24 : 76;
@@ -128,17 +115,28 @@ export default function WidgetStylePreview({
             {(weekday || date) && (
               <div className="flex min-w-16 flex-col items-start font-mono @min-[640px]:items-center">
                 {weekday && (
-                  <span className="max-w-24 truncate text-xs font-semibold tracking-tight text-foreground @min-[640px]:text-[11px] @min-[640px]:text-muted @min-[640px]:uppercase">
+                  <span
+                    className="max-w-24 truncate text-xs font-semibold tracking-tight text-foreground @min-[640px]:text-[11px] @min-[640px]:text-muted @min-[640px]:uppercase"
+                    {...suppressDate}
+                  >
                     {r.weekday}
                   </span>
                 )}
                 {date && (
-                  <span className="text-[11px] text-faint @min-[640px]:text-xs">{r.day}</span>
+                  <span className="text-[11px] text-faint @min-[640px]:text-xs" {...suppressDate}>
+                    {r.day}
+                  </span>
                 )}
               </div>
             )}
             <div className="my-1 flex shrink-0 items-center justify-center">
-              <div className={dense ? "h-7 w-10 @min-[640px]:h-8 @min-[640px]:w-11" : "h-8 w-11 @min-[640px]:h-9.5 @min-[640px]:w-13"}>
+              <div
+                className={
+                  dense
+                    ? "h-7 w-10 @min-[640px]:h-8 @min-[640px]:w-11"
+                    : "h-8 w-11 @min-[640px]:h-9.5 @min-[640px]:w-13"
+                }
+              >
                 <img src={r.icon} alt="" className="size-full object-contain" />
               </div>
             </div>
@@ -181,7 +179,9 @@ export default function WidgetStylePreview({
               <span className="font-display text-4xl font-bold tracking-tight text-foreground @min-[640px]:text-5xl">
                 {tempVal}
               </span>
-              <span className="text-lg font-medium text-muted @min-[640px]:text-xl">{tempUnit}</span>
+              <span className="text-lg font-medium text-muted @min-[640px]:text-xl">
+                {tempUnit}
+              </span>
             </div>
             <div className="flex items-center gap-2.5 font-mono text-xs text-muted">
               <span className="flex items-center gap-1">
@@ -240,7 +240,9 @@ export default function WidgetStylePreview({
             <div className="min-w-0">
               <p className="flex items-baseline font-display text-5xl leading-none font-bold tracking-tight text-foreground tabular-nums @min-[640px]:text-6xl">
                 {tempVal}
-                <span className="ms-1 text-xl font-normal text-muted @min-[640px]:text-2xl">{tempUnit}</span>
+                <span className="ms-1 text-xl font-normal text-muted @min-[640px]:text-2xl">
+                  {tempUnit}
+                </span>
               </p>
               <p className="mt-2.5 truncate text-xs font-medium text-muted @min-[640px]:text-sm">
                 {condition}
@@ -300,7 +302,10 @@ export default function WidgetStylePreview({
         <article className="flex min-w-54 flex-1 flex-col justify-between rounded-2xl border border-outline bg-surface p-4 shadow-sm @min-[768px]:p-5">
           <div className="flex items-center justify-between gap-2">
             <div className="flex max-w-[65%] min-w-0 shrink-0 items-center gap-1.5 rounded-full border border-outline bg-fill-faint px-2.5 py-1">
-              <Icon icon="material-symbols:location-on-outline" className="size-3.5 shrink-0 text-brand" />
+              <Icon
+                icon="material-symbols:location-on-outline"
+                className="size-3.5 shrink-0 text-brand"
+              />
               <span className="truncate text-xs font-semibold text-foreground">{cityName}</span>
             </div>
             <span className="min-w-0 truncate rounded-full bg-fill px-2.5 py-1 text-[11px] font-medium text-muted">
@@ -312,7 +317,9 @@ export default function WidgetStylePreview({
               <span className="font-display text-4xl font-extrabold tracking-tight text-foreground @min-[640px]:text-5xl">
                 {tempVal}
               </span>
-              <span className="ml-0.5 text-xl font-bold text-brand @min-[640px]:text-2xl">{tempUnit}</span>
+              <span className="ml-0.5 text-xl font-bold text-brand @min-[640px]:text-2xl">
+                {tempUnit}
+              </span>
             </div>
             <div className="flex shrink-0 items-center justify-center rounded-2xl bg-fill/50 p-1.5">
               <img src={PRESENT_ICON} alt={condition} className="h-10 w-14 object-contain" />
@@ -372,64 +379,59 @@ export default function WidgetStylePreview({
 
   return (
     <div className="flex flex-col gap-y-3">
-      {/* Toolbar: presets + width slider + readout */}
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-        <div className="flex gap-1 rounded-lg border border-outline bg-fill-faint p-1" role="group">
-          {PRESETS.map((p) => (
-            <button
-              key={p.label}
-              type="button"
-              aria-pressed={width === p.width}
-              onClick={() => setWidth(p.width)}
-              className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
-                width === p.width
-                  ? "bg-surface text-foreground shadow-xs ring-1 ring-outline"
-                  : "text-muted hover:text-foreground"
-              }`}
-            >
-              {p.label}
-            </button>
-          ))}
+      {/* Pure Viewport Toolbar */}
+      <div className="flex items-center justify-between gap-2">
+        <div
+          className="flex gap-1 rounded-lg border border-outline bg-fill-faint p-1"
+          role="group"
+          aria-label="Preview viewport"
+        >
+          {VIEW_IDS.map((v) => {
+            const isSelected = view === v;
+            return (
+              <button
+                key={v}
+                type="button"
+                aria-pressed={isSelected}
+                onClick={() => setView(v)}
+                className={`flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-medium capitalize transition-colors ${
+                  isSelected
+                    ? "bg-surface text-foreground shadow-xs ring-1 ring-outline"
+                    : "text-muted hover:text-foreground"
+                }`}
+              >
+                <Icon icon={VIEW_ICONS[v]} width="14" height="14" />
+                <span className="hidden sm:inline">{v}</span>
+              </button>
+            );
+          })}
         </div>
 
-        <input
-          type="range"
-          aria-label="Preview width"
-          min={MIN_WIDTH}
-          max={sliderMax}
-          step="1"
-          value={Math.min(effWidth, sliderMax)}
-          disabled={containerW === 0}
-          onChange={(e) => {
-            setWidth(parseInt(e.target.value));
-          }}
-          className="h-1 min-w-32 flex-1 accent-brand-solid disabled:opacity-50"
-        />
-
-        <span className="min-w-14 text-end font-mono text-xs text-faint tabular-nums">
-          {width === null ? "100%" : `${Math.round(effWidth)}px`}
+        <span aria-hidden className="font-mono text-xs text-faint tabular-nums">
+          {viewW}px {factor < 1 ? `· ${Math.round(factor * 100)}%` : ""}
         </span>
       </div>
 
-      {/* Horizontal overflow lets presets wider than the column still reflow. */}
-      <div className="overflow-x-auto pb-1" ref={wrapRef}>
+      {/* Responsive Preview Frame */}
+      <div ref={colRef} className="w-full">
         <div
-          className="@container relative rounded-xl border border-outline bg-background"
-          style={{
-            height: PREVIEW_HEIGHT,
-            width: width === null ? "100%" : effWidth,
-          }}
+          className="mx-auto overflow-hidden rounded-xl border border-outline bg-background"
+          style={{ width: viewW * factor, height: LOGICAL_HEIGHT * factor }}
         >
-          {/* Widget page layout: stacked, side-by-side at the widget's md tier.
-              Alignment applies in the row tier like the real page. */}
           <div
-            className={`flex h-full flex-col items-stretch gap-2 overflow-y-auto p-2 @min-[768px]:flex-row @min-[768px]:gap-x-2 ${alignCls[align] ?? alignCls.start}`}
+            className={`@container flex h-full flex-col gap-2 overflow-y-auto p-2.5 @min-[768px]:flex-row @min-[768px]:gap-x-2 ${
+              alignCls[align] ?? alignCls.start
+            }`}
+            style={{
+              width: viewW,
+              height: LOGICAL_HEIGHT,
+              transform: `scale(${factor})`,
+              transformOrigin: "top left",
+            }}
           >
             {present}
             {forecastStrip}
-            {!weather && !forecast && (
-              <p className="m-auto font-mono text-xs text-faint">—</p>
-            )}
+            {!weather && !forecast && <p className="m-auto font-mono text-xs text-faint">—</p>}
           </div>
         </div>
       </div>

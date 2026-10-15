@@ -81,7 +81,11 @@
 
 @layer components {
   .wctl-section {
-    @apply rounded-2xl border border-outline bg-surface p-6;
+    @apply rounded-xl border border-outline bg-surface p-5;
+  }
+
+  .wctl-label {
+    @apply block text-xs font-medium text-muted;
   }
 
   .wctl-input {
@@ -90,14 +94,6 @@
 
   .wctl-check {
     @apply size-4 accent-brand-solid;
-  }
-
-  .wctl-heading {
-    @apply text-lg font-semibold text-foreground;
-  }
-
-  .wctl-legend {
-    @apply mb-2 text-sm font-medium text-muted;
   }
 
   .wctl-option {
