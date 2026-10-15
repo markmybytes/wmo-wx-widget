@@ -12,30 +12,42 @@ const MAX_DAYS = 9;
 type TabId = "style" | "unit" | "display" | "layout";
 
 const STYLE_OPTIONS = [
-  { id: "swiss", label: "Swiss", subtitle: "Clean & Modern", icon: "material-symbols:grid-view" },
+  // Icons/descriptions grounded in src/components/weather/Weather{Cards,Editorial,
+  // Bars,Swiss,Pills,Telemetry}.tsx — each names the style's actual visual character.
+  {
+    id: "swiss",
+    label: "Precision",
+    subtitle: "Hairline type grid",
+    icon: "material-symbols:border-all",
+  },
   {
     id: "cards",
-    label: "Cards",
-    subtitle: "Modular Blocks",
-    icon: "material-symbols:view-agenda-outline",
+    label: "Classic",
+    subtitle: "Centered classic card",
+    icon: "material-symbols:crop-portrait",
   },
   {
     id: "editorial",
-    label: "Editorial",
-    subtitle: "Typographic",
-    icon: "material-symbols:article-outline",
+    label: "Masthead",
+    subtitle: "Display-type hierarchy",
+    icon: "material-symbols:title",
   },
   {
     id: "bars",
-    label: "Bars",
-    subtitle: "Compact Row",
-    icon: "material-symbols:view-column-outline",
+    label: "Range Bars",
+    subtitle: "Per-day min→max range bars",
+    icon: "material-symbols:linear-scale",
   },
-  { id: "pills", label: "Pills", subtitle: "Rounded Caps", icon: "material-symbols:capsule" },
+  {
+    id: "pills",
+    label: "Capsule",
+    subtitle: "Rounded chip clusters",
+    icon: "material-symbols:capsule",
+  },
   {
     id: "telemetry",
-    label: "Telemetry",
-    subtitle: "Technical Data",
+    label: "Beacon",
+    subtitle: "Dense mono status board",
     icon: "material-symbols:terminal",
   },
 ] as const;
@@ -75,17 +87,15 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
     }
     setCityError(false);
 
-    const params = new URLSearchParams(
-      Object.fromEntries(
-        Object.entries(formData)
-          .filter(([k, v]) => v !== null && v !== "" && k !== "city" && k !== "lang")
-          .map(([k, v]) => [k, v.toString()]),
-      ),
-    );
-
     const localePrefix = formData.lang === routing.defaultLocale ? "" : `/${formData.lang}`;
     setOutUrl(
-      `${location.protocol}//${location.host}${localePrefix}/weather/${formData.city}?${params}`,
+      `${location.protocol}//${location.host}${localePrefix}/weather/${formData.city}?${new URLSearchParams(
+        Object.fromEntries(
+          Object.entries(formData)
+            .filter(([k, v]) => v !== "" && k !== "city" && k !== "lang")
+            .map(([k, v]) => [k, v.toString()]),
+        ),
+      )}`,
     );
   }
 
@@ -228,14 +238,12 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
               tab === "unit" ? "z-10 opacity-100" : "pointer-events-none invisible opacity-0"
             }`}
           >
-            <div>
-              <span className="wctl-label font-medium">{t("temperatureUnit")}</span>
-            </div>
+            <span className="wctl-label font-medium">{t("temperatureUnit")}</span>
 
             <div className="flex flex-wrap gap-2">
               {[
-                { value: "C", label: "°C Celsius", note: "Metric" },
-                { value: "F", label: "°F Fahrenheit", note: "Imperial" },
+                { value: "C", label: "°C" },
+                { value: "F", label: "°F" },
               ].map((u) => {
                 const isSelected = formData.unit === u.value;
                 return (
@@ -253,15 +261,13 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
                     <span className={isSelected ? "font-bold text-brand-solid" : "text-foreground"}>
                       {u.label}
                     </span>
-                    <span className="text-[10px] text-faint">({u.note})</span>
-                    {isSelected && (
-                      <Icon
-                        icon="material-symbols:check"
-                        width="14"
-                        height="14"
-                        className="text-brand-solid"
-                      />
-                    )}
+                    <div
+                      className={`ms-1 flex size-3.5 shrink-0 items-center justify-center rounded-full border transition-colors ${
+                        isSelected ? "border-brand-solid" : "border-outline-strong bg-surface"
+                      }`}
+                    >
+                      {isSelected && <div className="size-2 rounded-full bg-brand-solid" />}
+                    </div>
                   </button>
                 );
               })}
@@ -456,13 +462,13 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
               <span className="wctl-label font-medium">{t("widgetAlignment")}</span>
               <div className="mt-1.5 flex flex-wrap gap-2">
                 {[
-                  { id: "start", label: t("start"), icon: "material-symbols:format-align-left" },
+                  { id: "start", label: t("start"), icon: "material-symbols:vertical-align-top" },
                   {
                     id: "center",
                     label: t("center"),
-                    icon: "material-symbols:format-align-center",
+                    icon: "material-symbols:vertical-align-center",
                   },
-                  { id: "end", label: t("end"), icon: "material-symbols:format-align-right" },
+                  { id: "end", label: t("end"), icon: "material-symbols:vertical-align-bottom" },
                 ].map((item) => {
                   const isSelected = formData.align === item.id;
                   return (
@@ -496,9 +502,11 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
               <div className="mt-1.5 flex flex-wrap gap-2">
                 {[
                   {
+                    // weekday toggles the short weekday-name column in the preview
+                    // (and the real Forecast* widget), date toggles the day number.
                     key: "weekday",
                     label: t("showWeekday"),
-                    icon: "material-symbols:calendar-today-outline",
+                    icon: "bi:calendar-week",
                   },
                   { key: "date", label: t("showDate"), icon: "material-symbols:event-outline" },
                 ].map((item) => {

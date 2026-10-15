@@ -60,12 +60,6 @@ export default function CityPicker({
     setOpen(false);
   }
 
-  function handleClear() {
-    onChange("");
-    setQuery("");
-    inputRef.current?.focus();
-  }
-
   return (
     <div ref={rootRef} className="relative w-full">
       <div className="relative flex items-center">
@@ -98,7 +92,20 @@ export default function CityPicker({
             setActiveIndex(0);
             setOpen(true);
           }}
-          // ... rest of key handlers remain unchanged
+          onKeyDown={(e) => {
+            if (e.key === "ArrowDown" && visible.length > 0) {
+              e.preventDefault();
+              setActiveIndex((i) => Math.min(i + 1, visible.length - 1));
+            } else if (e.key === "ArrowUp") {
+              e.preventDefault();
+              setActiveIndex((i) => Math.max(i - 1, 0));
+            } else if (e.key === "Enter" && open && visible[activeIndex]) {
+              e.preventDefault();
+              handleSelect(visible[activeIndex]);
+            } else if (e.key === "Escape") {
+              setOpen(false);
+            }
+          }}
         />
 
         {selected || query ? (
@@ -106,7 +113,11 @@ export default function CityPicker({
             type="button"
             aria-label={t("clear")}
             className="absolute inset-e-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-faint hover:bg-fill hover:text-muted"
-            onClick={handleClear}
+            onClick={() => {
+              onChange("");
+              setQuery("");
+              inputRef.current?.focus();
+            }}
           >
             <Icon icon="material-symbols:close" width="16" height="16" />
           </button>

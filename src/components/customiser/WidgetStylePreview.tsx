@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 import { useEffect, useRef, useState } from "react";
 
 const LOGICAL_HEIGHT = 420;
-const LOGICAL_WIDTHS = { desktop: 1024, tablet: 768, mobile: 375 } as const;
+const LOGICAL_WIDTHS = { desktop: 1024, tablet: 720, mobile: 375 } as const;
 type ViewId = keyof typeof LOGICAL_WIDTHS;
 const VIEW_IDS = ["desktop", "tablet", "mobile"] as const;
 
@@ -17,17 +17,28 @@ const VIEW_ICONS: Record<ViewId, string> = {
 const STYLES = ["cards", "editorial", "bars", "swiss", "pills", "telemetry"] as const;
 type PreviewStyle = (typeof STYLES)[number];
 
-const PRESENT_ICON = "https://worldweather.wmo.int/images/i32.png";
+// Sample values hardcoded from a live WMO reference pull so the client-side
+// preview needs no runtime fetch. City: Geneva, Switzerland (WMO city id 193,
+// station "GENEVE-COINTRIN"). Icon URLs follow the feed's wxIconUrl scheme
+// (i{numeric code with the last two digits dropped}); forecast min/max use the
+// feed's own C and F strings, present °F is the feed's Celsius converted.
+const PRESENT_ICON = "https://worldweather.wmo.int/images/i24.png";
 const ROW_ICONS = [
-  "https://worldweather.wmo.int/images/i23.png",
-  "https://worldweather.wmo.int/images/i5.png",
-  "https://worldweather.wmo.int/images/i32.png",
+  "https://worldweather.wmo.int/images/i24.png", // 2402 Sunny
+  "https://worldweather.wmo.int/images/i24.png", // 2402 Sunny
+  "https://worldweather.wmo.int/images/i22.png", // 2201 Sunny Periods
+  "https://worldweather.wmo.int/images/i20.png", // 2001 Overcast
+  "https://worldweather.wmo.int/images/i21.png", // 2101 Sunny Intervals
+  "https://worldweather.wmo.int/images/i22.png", // 2201 Sunny Periods
+  "https://worldweather.wmo.int/images/i22.png", // 2201 Sunny Periods
+  "https://worldweather.wmo.int/images/i22.png", // 2201 Sunny Periods
+  "https://worldweather.wmo.int/images/i22.png", // feed's last day, continued
 ];
 
-const C_MINS = [21, 19, 24, 18, 22, 25, 27, 23, 20];
-const C_MAXS = [27, 25, 30, 26, 28, 29, 33, 28, 26];
-const F_MINS = [70, 66, 75, 64, 72, 77, 81, 73, 68];
-const F_MAXS = [81, 77, 86, 79, 82, 84, 91, 82, 79];
+const C_MINS = [9, 7, 10, 8, 8, 7, 9, 9, 9];
+const C_MAXS = [19, 20, 15, 13, 13, 15, 15, 16, 16];
+const F_MINS = [48, 45, 50, 46, 46, 45, 48, 48, 48];
+const F_MAXS = [66, 68, 59, 55, 55, 59, 59, 61, 61];
 
 const alignCls: Record<string, string> = {
   center: "@min-[768px]:items-center",
@@ -80,22 +91,21 @@ export default function WidgetStylePreview({
     : "swiss";
 
   const isC = unit !== "F";
-  const tempVal = isC ? 24 : 76;
+  const tempVal = isC ? 11 : 51.8;
   const tempUnit = isC ? "°C" : "°F";
-  const cityName = "Hong Kong";
-  const condition = "Cloudy";
-  const rh = 68;
-  const wind = "NE 3.6 m/s";
+  const cityName = "Geneva";
+  const condition = "Sunny";
+  const rh = 96;
+  const wind = "NNE 0.4 m/s";
 
   const rowCount = Math.max(0, Math.min(9, days || 0));
-  const now = Date.now();
   const rows = Array.from({ length: rowCount }, (_, i) => {
-    const d = new Date(now + i * 86400000);
+    const d = new Date(Date.now() + i * 86400000);
     return {
       key: i,
       weekday: d.toLocaleString(locale, { weekday: "short" }),
       day: d.getDate(),
-      icon: ROW_ICONS[i % 3],
+      icon: ROW_ICONS[i % ROW_ICONS.length],
       min: `${(isC ? C_MINS : F_MINS)[i]}${tempUnit}`,
       max: `${(isC ? C_MAXS : F_MAXS)[i]}${tempUnit}`,
     };
@@ -418,10 +428,11 @@ export default function WidgetStylePreview({
           className="mx-auto overflow-hidden rounded-xl border border-outline bg-background"
           style={{ width: viewW * factor, height: LOGICAL_HEIGHT * factor }}
         >
+          {/* The @container must be a distinct ancestor of the elements using its
+              variants: a container query never matches the container itself. Frame
+              is always authored at viewW; scale-to-fit is purely visual. */}
           <div
-            className={`@container flex h-full flex-col gap-2 overflow-y-auto p-2.5 @min-[768px]:flex-row @min-[768px]:gap-x-2 ${
-              alignCls[align] ?? alignCls.start
-            }`}
+            className="@container"
             style={{
               width: viewW,
               height: LOGICAL_HEIGHT,
@@ -429,9 +440,15 @@ export default function WidgetStylePreview({
               transformOrigin: "top left",
             }}
           >
-            {present}
-            {forecastStrip}
-            {!weather && !forecast && <p className="m-auto font-mono text-xs text-faint">—</p>}
+            <div
+              className={`flex h-full flex-col gap-2 overflow-y-auto p-2.5 @min-[768px]:flex-row @min-[768px]:gap-x-2 ${
+                alignCls[align] ?? alignCls.start
+              }`}
+            >
+              {present}
+              {forecastStrip}
+              {!weather && !forecast && <p className="m-auto font-mono text-xs text-faint">—</p>}
+            </div>
           </div>
         </div>
       </div>
