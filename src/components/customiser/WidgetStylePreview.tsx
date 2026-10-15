@@ -5,13 +5,21 @@ import { useEffect, useRef, useState } from "react";
 
 const LOGICAL_WIDTHS = { desktop: 1024, tablet: 720, mobile: 375 } as const;
 
-// Fixed visible height (CSS px), like a real fixed-height iframe embed: the
-// widget width is the variable viewport, the frame height never changes. Each
-// view derives a logical stage from the scale factor so the rendered box is
-// always exactly this tall — switching views rescales, never resizes.
-const TARGET_HEIGHT = 440;
+// Draggable stage-height bounds (visible CSS px); double-click resets.
+const MIN_HEIGHT = 240;
+const MAX_HEIGHT = 700;
+const clampVisH = (h: number) => Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, h));
 type ViewId = keyof typeof LOGICAL_WIDTHS;
 const VIEW_IDS = ["desktop", "tablet", "mobile"] as const;
+
+// Per-view default stage height (visible CSS px), like a real embed: wide
+// desktop embeds run taller, mobile embeds shorter. Tablet's default is
+// unassigned by the owner, so it borrows the desktop value (580) as the
+// designer-default. Drag persists into the current view's slot; double-click
+// resets that view to its default. 580 is enough to showcase the
+// responsiveness; stacked 5-row mobile content (~630px logical at factor 1)
+// scrolls slightly inside 520 ??accepted.
+const VIEW_DEFAULT_HEIGHTS: Record<ViewId, number> = { desktop: 580, tablet: 580, mobile: 520 };
 
 const VIEW_ICONS: Record<ViewId, string> = {
   desktop: "material-symbols:desktop-windows-outline",
@@ -40,7 +48,7 @@ const ROW_ICONS = [
   "https://worldweather.wmo.int/images/i22.png", // feed's last day, continued
 ];
 
-// Condition copy per row, mirroring the codes above — masthead/capsule render it.
+// Condition copy per row, mirroring the codes above ??masthead/capsule render it.
 const ROW_CONDITIONS = [
   "Sunny",
   "Sunny",
@@ -89,7 +97,15 @@ export default function WidgetStylePreview({
 }) {
   const [view, setView] = useState<ViewId>("desktop");
   const [colW, setColW] = useState(0);
+  // Per-view visible-height override; undefined = that view's default. Drag
+  // writes the current view's slot, double-click clears it back to default.
+  const [heights, setHeights] = useState<Record<ViewId, number | undefined>>({
+    desktop: undefined,
+    tablet: undefined,
+    mobile: undefined,
+  });
   const colRef = useRef<HTMLDivElement>(null);
+  const drag = useRef<{ y: number; h: number } | null>(null);
 
   useEffect(() => {
     const el = colRef.current;
@@ -103,9 +119,28 @@ export default function WidgetStylePreview({
 
   const viewW = LOGICAL_WIDTHS[view];
   const factor = colW > 0 ? Math.min(1, colW / viewW) : 1;
-  // Logical stage per view: TARGET_HEIGHT/factor scales back to exactly
-  // TARGET_HEIGHT visible px, so the box height is view-independent.
-  const stageH = TARGET_HEIGHT / factor;
+  const visH = heights[view] ?? VIEW_DEFAULT_HEIGHTS[view];
+  // Logical stage per view: visH/factor scales back to exactly visH visible
+  // px, so the box height is view-independent.
+  const stageH = visH / factor;
+
+  function onHandleDown(e: React.PointerEvent<HTMLDivElement>) {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    drag.current = { y: e.clientY, h: visH };
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  }
+
+  function onHandleMove(e: React.PointerEvent<HTMLDivElement>) {
+    if (!drag.current) return;
+    const next = clampVisH(drag.current.h - (e.clientY - drag.current.y));
+    setHeights((prev) => ({ ...prev, [view]: next }));
+  }
+
+  function onHandleUp(e: React.PointerEvent<HTMLDivElement>) {
+    drag.current = null;
+    (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+  }
 
   const look: PreviewStyle = (STYLES as readonly string[]).includes(style)
     ? (style as PreviewStyle)
@@ -164,7 +199,10 @@ export default function WidgetStylePreview({
                       </span>
                     )}
                     {date && (
-                      <span className="text-[11px] text-faint @min-[640px]:text-xs" {...suppressDate}>
+                      <span
+                        className="text-[11px] text-faint @min-[640px]:text-xs"
+                        {...suppressDate}
+                      >
                         {r.day}
                       </span>
                     )}
@@ -197,7 +235,7 @@ export default function WidgetStylePreview({
         </div>
       )}
 
-      {/* classic: bordered column list — long-weekday block / icon / mono temp
+      {/* classic: bordered column list ??long-weekday block / icon / mono temp
           cluster, columns collapse to a row at the wide tier (mirrors
           ForecastClassic) */}
       {look === "classic" && (
@@ -303,7 +341,7 @@ export default function WidgetStylePreview({
         <div className="flex flex-2 flex-col divide-y divide-outline/70 rounded-lg border border-outline bg-surface p-1 shadow-xs">
           {rows.map((r) => {
             // Zero-span fallback, clamped range, minimum pill width for
-            // degenerate days — same geometry as the real component.
+            // degenerate days ??same geometry as the real component.
             let left = 0;
             let width = 0;
             if (rowCount > 0) {
@@ -346,10 +384,7 @@ export default function WidgetStylePreview({
                     {`${r.minNum}°`}
                   </span>
 
-                  <div
-                    aria-hidden
-                    className="relative h-1.5 max-w-32 grow rounded-full bg-outline/80 @min-[640px]:max-w-44 dark:bg-fill"
-                  >
+                  <div className="relative h-1.5 max-w-32 grow rounded-full bg-outline/80 @min-[640px]:max-w-44 dark:bg-fill">
                     <div
                       className="absolute inset-y-0 rounded-full bg-gradient-to-r from-temp-low to-temp-high shadow-xs"
                       style={{ left: `${left}%`, width: `${width}%` }}
@@ -390,7 +425,10 @@ export default function WidgetStylePreview({
                       </span>
                     )}
                     {date && (
-                      <span className="font-mono text-xs font-bold text-foreground" {...suppressDate}>
+                      <span
+                        className="font-mono text-xs font-bold text-foreground"
+                        {...suppressDate}
+                      >
                         {r.day}
                       </span>
                     )}
@@ -668,7 +706,6 @@ export default function WidgetStylePreview({
             <span
               className="inline-block size-2 shrink-0 rounded-full"
               style={{ backgroundColor: "var(--color-emerald-400)" }}
-              aria-hidden
             />
             <span className="truncate font-mono text-xs font-bold tracking-tight text-foreground uppercase">
               {cityName}
@@ -707,8 +744,7 @@ export default function WidgetStylePreview({
       <div className="flex items-center justify-between gap-2">
         <div
           className="flex gap-1 rounded-lg border border-outline bg-fill-faint p-1"
-          role="group"
-          aria-label="Preview viewport"
+         
         >
           {VIEW_IDS.map((v) => {
             const isSelected = view === v;
@@ -716,7 +752,6 @@ export default function WidgetStylePreview({
               <button
                 key={v}
                 type="button"
-                aria-pressed={isSelected}
                 onClick={() => setView(v)}
                 className={`flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-medium capitalize transition-colors ${
                   isSelected
@@ -731,43 +766,67 @@ export default function WidgetStylePreview({
           })}
         </div>
 
-        <span aria-hidden className="font-mono text-xs text-faint tabular-nums">
-          {viewW}px {factor < 1 ? `· ${Math.round(factor * 100)}%` : ""}
+        <span className="font-mono text-xs text-faint tabular-nums">
+          {viewW}px{factor < 1 ? ` · ${Math.round(factor * 100)}%` : ""}
+          {visH !== VIEW_DEFAULT_HEIGHTS[view] ? ` · ${Math.round(visH)}px` : ""}
         </span>
       </div>
 
-      {/* Fixed-height preview stage — width rescales per view, height is
-          always exactly TARGET_HEIGHT (mirrors a real fixed-height embed). */}
+      {/* Fixed-width, draggable-height preview stage: width rescales per view;
+          the top edge is a drag handle (drag / double-click reset) and content
+          never resizes the frame. */}
       <div ref={colRef} className="w-full">
-        <div
-          className="mx-auto overflow-hidden rounded-xl border border-outline bg-background"
-          style={{ width: viewW * factor, height: TARGET_HEIGHT }}
-        >
-          {/* The @container must be a distinct ancestor of the elements using its
-              variants: a container query never matches the container itself.
-              Frame is always authored at viewW; scale-to-fit is purely visual. */}
+        <div className="mx-auto" style={{ width: viewW * factor }}>
           <div
-            className="@container"
-            style={{
-              width: viewW,
-              height: stageH,
-              transform: `scale(${factor})`,
-              transformOrigin: "top left",
-            }}
+            title="Drag to resize · double-click to reset"
+            onPointerDown={onHandleDown}
+            onPointerMove={onHandleMove}
+            onPointerUp={onHandleUp}
+            onPointerCancel={onHandleUp}
+            onDoubleClick={() => setHeights((prev) => ({ ...prev, [view]: undefined }))}
+            className="group flex h-6 w-full cursor-ns-resize touch-none items-center justify-center rounded-lg text-faint transition-colors hover:bg-fill hover:text-muted"
           >
-            {/* Mirrors the real widget page: alignment sits on the OUTER flex
-                wrapper (the outer <main> in weather/[id]/page.tsx), so its
-                leftover stage space is what start/center/end act on; the row
-                inside is w-full + items-stretch, matching heights of both
-                cards regardless of align. The align layer scrolls like the
-                real page does when content exceeds the viewport. */}
+            <Icon
+              icon="material-symbols:unfold-more"
+              width="16"
+              height="16"
+              className="opacity-0 transition-opacity group-hover:opacity-100"
+            />
+          </div>
+
+          <div
+            className="overflow-hidden rounded-xl border border-outline bg-background"
+            style={{ width: viewW * factor, height: visH }}
+          >
+            {/* The @container must be a distinct ancestor of the elements using
+                its variants: a container query never matches the container
+                itself. Frame is always authored at viewW; scale-to-fit is
+                purely visual. */}
             <div
-              className={`flex h-full w-full overflow-y-auto ${alignCls[align] ?? alignCls.start}`}
+              className="@container"
+              style={{
+                width: viewW,
+                height: stageH,
+                transform: `scale(${factor})`,
+                transformOrigin: "top left",
+              }}
             >
-              <div className="flex w-full flex-col items-stretch gap-2 p-2.5 @min-[768px]:flex-row @min-[768px]:gap-x-2">
-                {present}
-                {forecastStrip}
-                {!weather && !forecast && <p className="m-auto font-mono text-xs text-faint">—</p>}
+              {/* Mirrors the real widget page: alignment sits on the OUTER flex
+                  wrapper (the outer <main> in weather/[id]/page.tsx), so its
+                  leftover stage space is what start/center/end act on; the row
+                  inside is w-full + items-stretch, matching heights of both
+                  cards regardless of align. The align layer scrolls like the
+                  real page does when content exceeds the viewport. */}
+              <div
+                className={`flex h-full w-full overflow-y-auto ${alignCls[align] ?? alignCls.start}`}
+              >
+                <div className="flex w-full flex-col items-stretch gap-2 p-2.5 @min-[768px]:flex-row @min-[768px]:gap-x-2">
+                  {present}
+                  {forecastStrip}
+                  {!weather && !forecast && (
+                    <p className="m-auto font-mono text-xs text-faint">–</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>

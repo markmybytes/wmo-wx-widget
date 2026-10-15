@@ -88,6 +88,11 @@
     @apply block text-xs font-medium text-muted;
   }
 
+  /* 10px category label sitting above a control cluster in the builder bar. */
+  .wctl-micro {
+    @apply block text-[10px] font-medium uppercase leading-none tracking-wider text-muted;
+  }
+
   .wctl-input {
     @apply w-full rounded-lg border border-outline-strong bg-surface px-3 py-2 text-sm text-foreground transition-colors outline-none placeholder:text-faint focus:border-brand-ring focus:ring-4 focus:ring-brand-ring/10;
   }
