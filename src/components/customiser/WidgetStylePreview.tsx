@@ -3,8 +3,13 @@
 import { Icon } from "@iconify/react";
 import { useEffect, useRef, useState } from "react";
 
-const LOGICAL_HEIGHT = 420;
 const LOGICAL_WIDTHS = { desktop: 1024, tablet: 720, mobile: 375 } as const;
+
+// Fixed visible height (CSS px), like a real fixed-height iframe embed: the
+// widget width is the variable viewport, the frame height never changes. Each
+// view derives a logical stage from the scale factor so the rendered box is
+// always exactly this tall — switching views rescales, never resizes.
+const TARGET_HEIGHT = 440;
 type ViewId = keyof typeof LOGICAL_WIDTHS;
 const VIEW_IDS = ["desktop", "tablet", "mobile"] as const;
 
@@ -35,15 +40,28 @@ const ROW_ICONS = [
   "https://worldweather.wmo.int/images/i22.png", // feed's last day, continued
 ];
 
+// Condition copy per row, mirroring the codes above — masthead/capsule render it.
+const ROW_CONDITIONS = [
+  "Sunny",
+  "Sunny",
+  "Sunny Periods",
+  "Overcast",
+  "Sunny Intervals",
+  "Sunny Periods",
+  "Sunny Periods",
+  "Sunny Periods",
+  "Sunny Periods",
+];
+
 const C_MINS = [9, 7, 10, 8, 8, 7, 9, 9, 9];
 const C_MAXS = [19, 20, 15, 13, 13, 15, 15, 16, 16];
 const F_MINS = [48, 45, 50, 46, 46, 45, 48, 48, 48];
 const F_MAXS = [66, 68, 59, 55, 55, 59, 59, 61, 61];
 
 const alignCls: Record<string, string> = {
-  center: "@min-[768px]:items-center",
-  end: "@min-[768px]:items-end",
-  start: "@min-[768px]:items-start",
+  center: "items-center",
+  end: "items-end",
+  start: "items-start",
 };
 
 const suppressDate = { suppressHydrationWarning: true } as const;
@@ -85,6 +103,9 @@ export default function WidgetStylePreview({
 
   const viewW = LOGICAL_WIDTHS[view];
   const factor = colW > 0 ? Math.min(1, colW / viewW) : 1;
+  // Logical stage per view: TARGET_HEIGHT/factor scales back to exactly
+  // TARGET_HEIGHT visible px, so the box height is view-independent.
+  const stageH = TARGET_HEIGHT / factor;
 
   const look: PreviewStyle = (STYLES as readonly string[]).includes(style)
     ? (style as PreviewStyle)
@@ -97,6 +118,8 @@ export default function WidgetStylePreview({
   const condition = "Sunny";
   const rh = 96;
   const wind = "NNE 0.4 m/s";
+  const mins = isC ? C_MINS : F_MINS;
+  const maxs = isC ? C_MAXS : F_MAXS;
 
   const rowCount = Math.max(0, Math.min(9, days || 0));
   const rows = Array.from({ length: rowCount }, (_, i) => {
@@ -104,66 +127,357 @@ export default function WidgetStylePreview({
     return {
       key: i,
       weekday: d.toLocaleString(locale, { weekday: "short" }),
+      weekdayLong: d.toLocaleString(locale, { weekday: "long" }),
       day: d.getDate(),
-      icon: ROW_ICONS[i % ROW_ICONS.length],
-      min: `${(isC ? C_MINS : F_MINS)[i]}${tempUnit}`,
-      max: `${(isC ? C_MAXS : F_MAXS)[i]}${tempUnit}`,
+      condition: ROW_CONDITIONS[i],
+      icon: ROW_ICONS[i],
+      min: `${mins[i]}${tempUnit}`,
+      max: `${maxs[i]}${tempUnit}`,
+      minNum: mins[i],
+      maxNum: maxs[i],
     };
   });
 
   const forecastStrip = forecast && (
-    <div className="flex flex-2 flex-col gap-1.5 @min-[640px]:flex-row @min-[640px]:gap-0 @min-[640px]:divide-x @min-[640px]:divide-outline @min-[640px]:rounded-xl @min-[640px]:border @min-[640px]:border-outline @min-[640px]:bg-surface @min-[640px]:shadow-xs">
-      {rows.map((r) => {
-        const dense = rowCount >= 8;
-        return (
-          <div
-            key={r.key}
-            className={`flex w-full grow items-center justify-between rounded-xl border border-outline bg-surface p-2 shadow-xs @min-[640px]:flex-col @min-[640px]:justify-around @min-[640px]:rounded-none @min-[640px]:border-0 @min-[640px]:bg-transparent @min-[640px]:shadow-none ${
-              dense ? "@min-[640px]:p-1.5" : "@min-[640px]:p-2"
-            }`}
-          >
-            {(weekday || date) && (
-              <div className="flex min-w-16 flex-col items-start font-mono @min-[640px]:items-center">
-                {weekday && (
-                  <span
-                    className="max-w-24 truncate text-xs font-semibold tracking-tight text-foreground @min-[640px]:text-[11px] @min-[640px]:text-muted @min-[640px]:uppercase"
-                    {...suppressDate}
-                  >
-                    {r.weekday}
-                  </span>
-                )}
-                {date && (
-                  <span className="text-[11px] text-faint @min-[640px]:text-xs" {...suppressDate}>
-                    {r.day}
-                  </span>
-                )}
-              </div>
-            )}
-            <div className="my-1 flex shrink-0 items-center justify-center">
+    <>
+      {/* precision: hairline-divided calendar strip with thermometer metrics
+          (mirrors ForecastPrecision) */}
+      {look === "precision" && (
+        <div className="flex flex-2 flex-col gap-1.5 @min-[640px]:flex-row @min-[640px]:gap-0 @min-[640px]:divide-x @min-[640px]:divide-outline @min-[640px]:rounded-xl @min-[640px]:border @min-[640px]:border-outline @min-[640px]:bg-surface @min-[640px]:shadow-xs">
+          {rows.map((r) => {
+            const dense = rowCount >= 8;
+            return (
               <div
-                className={
-                  dense
-                    ? "h-7 w-10 @min-[640px]:h-8 @min-[640px]:w-11"
-                    : "h-8 w-11 @min-[640px]:h-9.5 @min-[640px]:w-13"
-                }
+                key={r.key}
+                className={`flex w-full grow items-center justify-between rounded-xl border border-outline bg-surface p-2 shadow-xs @min-[640px]:flex-col @min-[640px]:justify-around @min-[640px]:rounded-none @min-[640px]:border-0 @min-[640px]:bg-transparent @min-[640px]:shadow-none ${
+                  dense ? "@min-[640px]:p-1.5" : "@min-[640px]:p-2.5"
+                }`}
               >
-                <img src={r.icon} alt="" className="size-full object-contain" />
+                {(weekday || date) && (
+                  <div className="flex min-w-16 flex-col items-start font-mono @min-[640px]:items-center">
+                    {weekday && (
+                      <span
+                        className="max-w-24 truncate text-xs font-semibold tracking-tight text-foreground @min-[640px]:text-[11px] @min-[640px]:text-muted @min-[640px]:uppercase"
+                        {...suppressDate}
+                      >
+                        {r.weekday}
+                      </span>
+                    )}
+                    {date && (
+                      <span className="text-[11px] text-faint @min-[640px]:text-xs" {...suppressDate}>
+                        {r.day}
+                      </span>
+                    )}
+                  </div>
+                )}
+                <div className="my-1 flex shrink-0 items-center justify-center">
+                  <div
+                    className={
+                      dense
+                        ? "h-7 w-10 @min-[640px]:h-8 @min-[640px]:w-11"
+                        : "h-8 w-11 @min-[640px]:h-9.5 @min-[640px]:w-13"
+                    }
+                  >
+                    <img src={r.icon} alt="" className="size-full object-contain" />
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 font-mono @min-[640px]:flex-col @min-[640px]:gap-0.5">
+                  <div className="flex items-center gap-0.5 text-temp-low">
+                    <Icon icon="bi:thermometer-low" className="size-3 shrink-0" />
+                    <span className="text-xs font-medium opacity-85">{r.min}</span>
+                  </div>
+                  <div className="flex items-center gap-0.5 text-temp-high">
+                    <Icon icon="bi:thermometer-high" className="size-3 shrink-0" />
+                    <span className="text-xs font-semibold">{r.max}</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* classic: bordered column list — long-weekday block / icon / mono temp
+          cluster, columns collapse to a row at the wide tier (mirrors
+          ForecastClassic) */}
+      {look === "classic" && (
+        <div className="flex flex-2 flex-col items-center gap-y-1.5 rounded border border-outline bg-surface shadow-sm @min-[640px]:flex-row @min-[640px]:p-1">
+          {rows.map((r) => (
+            <div
+              key={r.key}
+              className="flex w-full grow items-center rounded border border-outline @min-[640px]:flex-col @min-[640px]:border-none"
+            >
+              <div className="flex min-w-3/10 flex-col items-center justify-center font-mono text-xs">
+                {weekday && (
+                  <span className="max-w-32 truncate text-muted" {...suppressDate}>
+                    {r.weekdayLong}
+                  </span>
+                )}
+                {date && <span {...suppressDate}>{r.day}</span>}
+              </div>
+
+              <div className="my-1 flex grow items-center justify-center">
+                <div className="h-9.5 w-12.5">
+                  <img src={r.icon} alt="" className="size-full" />
+                </div>
+              </div>
+
+              <div
+                className={`flex min-w-3/10 flex-col items-center justify-center gap-x-1 ${
+                  rowCount >= 7 ? "@min-[1024px]:flex-row" : "@min-[768px]:flex-row"
+                }`}
+              >
+                {rowCount < 8 ? (
+                  <>
+                    <div className="flex min-w-13 items-center justify-around text-temp-low">
+                      <Icon icon="bi:thermometer-low" className="size-3.5" />
+                      <span className="grow text-center font-mono text-sm">{r.min}</span>
+                    </div>
+                    <div className="flex min-w-13 items-center justify-around text-temp-high">
+                      <Icon icon="bi:thermometer-high" className="size-3.5" />
+                      <span className="grow text-center font-mono text-sm">{r.max}</span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex min-w-13 items-center justify-around text-temp-low @min-[1024px]:justify-end">
+                      <Icon icon="bi:thermometer-low" className="size-3.5 @min-[640px]:hidden" />
+                      <span className="grow text-center font-mono text-sm">{r.min}</span>
+                    </div>
+                    <div className="flex min-w-13 items-center justify-around text-temp-high @min-[1024px]:justify-start">
+                      <Icon icon="bi:thermometer-high" className="size-3.5 @min-[640px]:hidden" />
+                      <span className="grow text-center font-mono text-sm">{r.max}</span>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
-            <div className="flex items-center gap-2 font-mono @min-[640px]:flex-col @min-[640px]:gap-0.5">
-              <span className="flex items-center gap-0.5 text-temp-low">
-                <Icon icon="bi:thermometer-low" className="size-3 shrink-0" />
-                <span className="text-xs font-medium opacity-85">{r.min}</span>
-              </span>
-              <span className="flex items-center gap-0.5 text-temp-high">
-                <Icon icon="bi:thermometer-high" className="size-3 shrink-0" />
-                <span className="text-xs font-semibold">{r.max}</span>
-              </span>
+          ))}
+        </div>
+      )}
+
+      {/* masthead: hairline-divided typographic list rows with localized
+          condition copy at the strip tier (mirrors ForecastMasthead) */}
+      {look === "masthead" && (
+        <div className="flex flex-2 flex-col divide-y divide-outline/80 rounded-xl border border-outline bg-surface p-1 shadow-xs">
+          {rows.map((r) => (
+            <div key={r.key} className="flex items-center gap-x-3 px-2.5 py-2.5 @min-[640px]:px-3">
+              {(weekday || date) && (
+                <div className="flex w-12 shrink-0 flex-col font-mono text-xs @min-[640px]:w-16">
+                  {weekday && (
+                    <span
+                      className="truncate text-[11px] font-semibold tracking-wider text-muted uppercase"
+                      {...suppressDate}
+                    >
+                      {r.weekday}
+                    </span>
+                  )}
+                  {date && (
+                    <span className="text-xs font-medium text-foreground" {...suppressDate}>
+                      {r.day}
+                    </span>
+                  )}
+                </div>
+              )}
+
+              <img src={r.icon} alt="" className="h-9.5 w-12.5 shrink-0 object-contain" />
+
+              <p className="hidden min-w-0 grow truncate text-xs text-muted @min-[640px]:block @min-[640px]:ps-2">
+                {r.condition}
+              </p>
+
+              <div className="ms-auto flex shrink-0 items-baseline gap-x-1.5 font-mono text-xs @min-[640px]:text-sm">
+                <span className="text-muted">{`${r.minNum}°`}</span>
+                <span className="font-light text-outline-strong">/</span>
+                <span className="font-medium text-foreground">{r.max}</span>
+              </div>
             </div>
-          </div>
-        );
-      })}
-    </div>
+          ))}
+        </div>
+      )}
+
+      {/* range-bars: divided rows with mono readings and temperature-range
+          pills normalized across the visible period (mirrors
+          ForecastRangeBars) */}
+      {look === "range-bars" && (
+        <div className="flex flex-2 flex-col divide-y divide-outline/70 rounded-lg border border-outline bg-surface p-1 shadow-xs">
+          {rows.map((r) => {
+            // Zero-span fallback, clamped range, minimum pill width for
+            // degenerate days — same geometry as the real component.
+            let left = 0;
+            let width = 0;
+            if (rowCount > 0) {
+              const reads = rows.flatMap((x) => [x.minNum, x.maxNum]);
+              const gMin = Math.min(...reads);
+              const gMax = Math.max(...reads);
+              const span = gMax - gMin;
+              if (span === 0) {
+                left = 35;
+                width = 30;
+              } else {
+                const rawLeft = ((r.minNum - gMin) / span) * 100;
+                const rawWidth = ((r.maxNum - r.minNum) / span) * 100;
+                width = Math.min(100, Math.max(rawWidth, 7));
+                left = Math.min(Math.max(0, rawLeft), 100 - width);
+              }
+            }
+
+            return (
+              <div key={r.key} className="flex items-center gap-x-2 px-2.5 py-2">
+                {(weekday || date) && (
+                  <div className="flex w-10 shrink-0 flex-col items-center font-mono text-[11px] @min-[640px]:w-12">
+                    {weekday && (
+                      <span className="truncate text-muted" {...suppressDate}>
+                        {r.weekday}
+                      </span>
+                    )}
+                    {date && (
+                      <span className="font-medium text-foreground" {...suppressDate}>
+                        {r.day}
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                <img src={r.icon} alt="" className="h-7 w-9.5 shrink-0 object-contain" />
+
+                <div className="ms-auto flex w-full min-w-0 items-center gap-x-2 @min-[640px]:max-w-56">
+                  <span className="w-8 shrink-0 text-end font-mono text-[11px] text-muted tabular-nums @min-[640px]:w-9">
+                    {`${r.minNum}°`}
+                  </span>
+
+                  <div
+                    aria-hidden
+                    className="relative h-1.5 max-w-32 grow rounded-full bg-outline/80 @min-[640px]:max-w-44 dark:bg-fill"
+                  >
+                    <div
+                      className="absolute inset-y-0 rounded-full bg-gradient-to-r from-temp-low to-temp-high shadow-xs"
+                      style={{ left: `${left}%`, width: `${width}%` }}
+                    />
+                  </div>
+
+                  <span className="w-8 shrink-0 text-start font-mono text-[11px] font-medium text-foreground tabular-nums @min-[640px]:w-9">
+                    {`${r.maxNum}°`}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* capsule: rounded day chips converging to a unified pill tray at the
+          strip tier (mirrors ForecastCapsule) */}
+      {look === "capsule" && (
+        <div className="flex flex-2 flex-col gap-2 @min-[640px]:flex-row @min-[640px]:gap-1.5 @min-[640px]:rounded-2xl @min-[640px]:border @min-[640px]:border-outline @min-[640px]:bg-surface @min-[640px]:p-2 @min-[640px]:shadow-sm">
+          {rows.map((r) => {
+            const dense = rowCount >= 8;
+            return (
+              <div
+                key={r.key}
+                className={`flex w-full grow items-center justify-between rounded-xl border border-outline bg-surface p-2.5 shadow-xs @min-[640px]:flex-col @min-[640px]:justify-between @min-[640px]:border-0 @min-[640px]:bg-fill-faint/60 @min-[640px]:shadow-none @min-[640px]:hover:bg-fill-faint ${
+                  dense ? "@min-[640px]:px-1 @min-[640px]:py-2" : "@min-[640px]:p-2.5"
+                }`}
+              >
+                {(weekday || date) && (
+                  <div className="flex items-center gap-1 rounded-full bg-fill px-2 py-0.5 text-xs font-semibold text-foreground @min-[640px]:flex-col @min-[640px]:gap-0 @min-[640px]:bg-transparent @min-[640px]:px-1 @min-[640px]:py-0">
+                    {weekday && (
+                      <span
+                        className="max-w-20 truncate text-[11px] tracking-wide text-muted uppercase @min-[640px]:text-[10px]"
+                        {...suppressDate}
+                      >
+                        {r.weekday}
+                      </span>
+                    )}
+                    {date && (
+                      <span className="font-mono text-xs font-bold text-foreground" {...suppressDate}>
+                        {r.day}
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                <div className="my-1 flex shrink-0 items-center justify-center">
+                  <div
+                    className={
+                      dense
+                        ? "h-7 w-10 @min-[640px]:h-7.5 @min-[640px]:w-10.5"
+                        : "h-8 w-11 @min-[640px]:h-9 @min-[640px]:w-12.5"
+                    }
+                  >
+                    <img src={r.icon} alt="" className="size-full object-contain" />
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1.5 rounded-full border border-outline/60 bg-fill-faint px-2 py-0.5 font-mono text-xs @min-[640px]:flex-col @min-[640px]:gap-0 @min-[640px]:border-0 @min-[640px]:bg-transparent @min-[640px]:p-0">
+                  <span className="text-temp-low opacity-80">{r.min}</span>
+                  <span className="font-bold text-temp-high">{r.max}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* beacon: dense mono bordered grid with directional markers
+          (mirrors ForecastBeacon) */}
+      {look === "beacon" && (
+        <div className="flex flex-2 flex-col gap-1.5 @min-[640px]:flex-row @min-[640px]:gap-0 @min-[640px]:divide-x @min-[640px]:divide-outline @min-[640px]:rounded-lg @min-[640px]:border-2 @min-[640px]:border-outline-strong @min-[640px]:bg-surface @min-[640px]:shadow-xs">
+          {rows.map((r) => {
+            const dense = rowCount >= 8;
+            return (
+              <div
+                key={r.key}
+                className={`flex w-full grow items-center justify-between rounded-lg border border-outline bg-surface p-2 font-mono @min-[640px]:flex-col @min-[640px]:justify-between @min-[640px]:rounded-none @min-[640px]:border-0 @min-[640px]:bg-transparent ${
+                  dense ? "@min-[640px]:p-1" : "@min-[640px]:p-2"
+                }`}
+              >
+                {(weekday || date) && (
+                  <div className="flex min-w-14 flex-col items-start @min-[640px]:items-center">
+                    {weekday && (
+                      <span
+                        className="max-w-20 truncate text-[11px] font-bold tracking-tight text-foreground uppercase @min-[640px]:text-[10px]"
+                        {...suppressDate}
+                      >
+                        {r.weekday}
+                      </span>
+                    )}
+                    {date && (
+                      <span className="text-[10px] text-faint" {...suppressDate}>
+                        {r.day}
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                <div className="my-0.5 flex shrink-0 items-center justify-center">
+                  <div
+                    className={
+                      dense
+                        ? "h-6.5 w-9 @min-[640px]:h-7 @min-[640px]:w-10"
+                        : "h-7.5 w-10.5 @min-[640px]:h-8.5 @min-[640px]:w-12"
+                    }
+                  >
+                    <img src={r.icon} alt="" className="size-full object-contain" />
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 text-xs @min-[640px]:flex-col @min-[640px]:gap-0.5 @min-[640px]:text-[11px]">
+                  <span className="flex items-center font-medium text-temp-low">
+                    <Icon icon="bi:caret-down-fill" className="mr-0.5 size-3 shrink-0 opacity-70" />
+                    {r.min}
+                  </span>
+                  <span className="flex items-center font-semibold text-temp-high">
+                    <Icon icon="bi:caret-up-fill" className="mr-0.5 size-3 shrink-0 opacity-70" />
+                    {r.max}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </>
   );
 
   const present = weather && (
@@ -422,32 +736,39 @@ export default function WidgetStylePreview({
         </span>
       </div>
 
-      {/* Responsive Preview Frame */}
+      {/* Fixed-height preview stage — width rescales per view, height is
+          always exactly TARGET_HEIGHT (mirrors a real fixed-height embed). */}
       <div ref={colRef} className="w-full">
         <div
           className="mx-auto overflow-hidden rounded-xl border border-outline bg-background"
-          style={{ width: viewW * factor, height: LOGICAL_HEIGHT * factor }}
+          style={{ width: viewW * factor, height: TARGET_HEIGHT }}
         >
           {/* The @container must be a distinct ancestor of the elements using its
-              variants: a container query never matches the container itself. Frame
-              is always authored at viewW; scale-to-fit is purely visual. */}
+              variants: a container query never matches the container itself.
+              Frame is always authored at viewW; scale-to-fit is purely visual. */}
           <div
             className="@container"
             style={{
               width: viewW,
-              height: LOGICAL_HEIGHT,
+              height: stageH,
               transform: `scale(${factor})`,
               transformOrigin: "top left",
             }}
           >
+            {/* Mirrors the real widget page: alignment sits on the OUTER flex
+                wrapper (the outer <main> in weather/[id]/page.tsx), so its
+                leftover stage space is what start/center/end act on; the row
+                inside is w-full + items-stretch, matching heights of both
+                cards regardless of align. The align layer scrolls like the
+                real page does when content exceeds the viewport. */}
             <div
-              className={`flex h-full flex-col gap-2 overflow-y-auto p-2.5 @min-[768px]:flex-row @min-[768px]:gap-x-2 ${
-                alignCls[align] ?? alignCls.start
-              }`}
+              className={`flex h-full w-full overflow-y-auto ${alignCls[align] ?? alignCls.start}`}
             >
-              {present}
-              {forecastStrip}
-              {!weather && !forecast && <p className="m-auto font-mono text-xs text-faint">—</p>}
+              <div className="flex w-full flex-col items-stretch gap-2 p-2.5 @min-[768px]:flex-row @min-[768px]:gap-x-2">
+                {present}
+                {forecastStrip}
+                {!weather && !forecast && <p className="m-auto font-mono text-xs text-faint">—</p>}
+              </div>
             </div>
           </div>
         </div>

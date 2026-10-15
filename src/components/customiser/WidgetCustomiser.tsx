@@ -42,7 +42,7 @@ const STYLE_OPTIONS = [
     id: "capsule",
     label: "Capsule",
     subtitle: "Rounded chip clusters",
-    icon: "material-symbols:capsule",
+    icon: "material-symbols:pill",
   },
   {
     id: "beacon",
