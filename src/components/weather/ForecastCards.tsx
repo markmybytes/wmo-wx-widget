@@ -31,13 +31,13 @@ export default async function ForecastCards({
   }
 
   return (
-    <div className="flex flex-2 flex-col items-center gap-y-1.5 rounded border-outline bg-surface shadow-sm sm:flex-row sm:border sm:p-1">
+    <div className="flex flex-2 flex-col items-center gap-y-1.5 rounded border-outline sm:flex-row sm:border sm:bg-surface sm:p-1 sm:shadow-sm">
       {weather.forecasts.map((fc) => {
         const date = new Date(fc.date);
 
         return (
           <div
-            className="flex w-full grow items-center rounded border border-outline sm:flex-col sm:border-none"
+            className="flex w-full grow items-center rounded border border-outline bg-surface shadow-sm sm:flex-col sm:border-none sm:bg-transparent sm:shadow-none"
             key={fc.date}
           >
             <div className="flex min-w-3/10 flex-col items-center justify-center font-mono text-xs">
