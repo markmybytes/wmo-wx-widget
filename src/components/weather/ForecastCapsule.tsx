@@ -3,10 +3,10 @@ import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
-/** `pills` variant: Glass Pill & Soft Tech Dashboard.
+/** `capsule` variant: Glass Pill & Soft Tech Dashboard.
  *  Rounded capsule rows at mobile (<sm), converging to a unified pill tray at sm+.
  *  Features rounded day chips and pill-styled temperature ranges. */
-export default async function ForecastPills({
+export default async function ForecastCapsule({
   locale,
   weather,
   showWeekday,

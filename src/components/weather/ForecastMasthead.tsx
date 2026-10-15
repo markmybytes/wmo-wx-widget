@@ -3,9 +3,9 @@ import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
-/** `editorial` variant: editorial publication style — hairline-divided rows with room for
+/** `masthead` variant: editorial publication style — hairline-divided rows with room for
  *  localized condition text from `sm:` up. */
-export default async function ForecastEditorial({
+export default async function ForecastMasthead({
   locale,
   weather,
   showWeekday,

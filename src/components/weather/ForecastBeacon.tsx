@@ -4,10 +4,10 @@ import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
-/** `telemetry` variant: Compact Telemetry & Tactical Cockpit.
+/** `beacon` variant: Compact Telemetry & Tactical Cockpit.
  *  High-density forecast grid with directional markers (▼ / ▲), monospaced coordinates,
  *  and streamlined padding for space-constrained embed contexts. */
-export default async function ForecastTelemetry({
+export default async function ForecastBeacon({
   locale,
   weather,
   showWeekday,

@@ -12,40 +12,40 @@ const MAX_DAYS = 9;
 type TabId = "style" | "unit" | "display" | "layout";
 
 const STYLE_OPTIONS = [
-  // Icons/descriptions grounded in src/components/weather/Weather{Cards,Editorial,
-  // Bars,Swiss,Pills,Telemetry}.tsx — each names the style's actual visual character.
+  // Icons/descriptions grounded in src/components/weather/Weather{Classic,Masthead,
+  // RangeBars,Precision,Capsule,Beacon}.tsx — each names the style's actual visual character.
   {
-    id: "swiss",
+    id: "precision",
     label: "Precision",
     subtitle: "Hairline type grid",
     icon: "material-symbols:border-all",
   },
   {
-    id: "cards",
+    id: "classic",
     label: "Classic",
     subtitle: "Centered classic card",
     icon: "material-symbols:crop-portrait",
   },
   {
-    id: "editorial",
+    id: "masthead",
     label: "Masthead",
     subtitle: "Display-type hierarchy",
     icon: "material-symbols:title",
   },
   {
-    id: "bars",
+    id: "range-bars",
     label: "Range Bars",
     subtitle: "Per-day min→max range bars",
     icon: "material-symbols:linear-scale",
   },
   {
-    id: "pills",
+    id: "capsule",
     label: "Capsule",
     subtitle: "Rounded chip clusters",
     icon: "material-symbols:capsule",
   },
   {
-    id: "telemetry",
+    id: "beacon",
     label: "Beacon",
     subtitle: "Dense mono status board",
     icon: "material-symbols:terminal",
@@ -60,7 +60,7 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
     weather: true,
     forcast: true,
     align: "start",
-    style: "swiss",
+    style: "precision",
     weekday: true,
     date: true,
     city: "",

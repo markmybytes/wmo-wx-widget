@@ -4,15 +4,15 @@ import { WxIcon } from "./WxIcon";
 import { translateWxdesc } from "@/lib/wxdesc";
 import { getTranslations } from "next-intl/server";
 
-/** `cards` variant. Spacing and sizing are frozen by decision, not accident - the
+/** `classic` variant. Spacing and sizing are frozen by decision, not accident - the
  *  original's per-device proportions were validated. Only colour and font changed. */
-export default async function WeatherCards({
+export default async function WeatherClassic({
   city,
   weather,
 }: {
   city: City;
   weather: PresentWeather;
-  style?: "cards" | "list"; // ignored; kept so both variants share one call site
+  style?: "classic" | "list"; // ignored; kept so both variants share one call site
 }) {
   const t = await getTranslations("weather");
 

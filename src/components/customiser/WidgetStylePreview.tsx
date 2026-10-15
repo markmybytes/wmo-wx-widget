@@ -14,7 +14,7 @@ const VIEW_ICONS: Record<ViewId, string> = {
   mobile: "material-symbols:phone-iphone-outline",
 };
 
-const STYLES = ["cards", "editorial", "bars", "swiss", "pills", "telemetry"] as const;
+const STYLES = ["precision", "classic", "masthead", "range-bars", "capsule", "beacon"] as const;
 type PreviewStyle = (typeof STYLES)[number];
 
 // Sample values hardcoded from a live WMO reference pull so the client-side
@@ -88,7 +88,7 @@ export default function WidgetStylePreview({
 
   const look: PreviewStyle = (STYLES as readonly string[]).includes(style)
     ? (style as PreviewStyle)
-    : "swiss";
+    : "precision";
 
   const isC = unit !== "F";
   const tempVal = isC ? 11 : 51.8;
@@ -168,7 +168,7 @@ export default function WidgetStylePreview({
 
   const present = weather && (
     <>
-      {look === "swiss" && (
+      {look === "precision" && (
         <article className="flex min-w-54 flex-1 flex-col justify-between rounded-xl border border-outline bg-surface p-3.5 shadow-xs transition-colors @min-[768px]:p-4">
           <div className="flex items-start justify-between gap-2 border-b border-outline pb-2.5">
             <div className="min-w-0 flex-1">
@@ -207,7 +207,7 @@ export default function WidgetStylePreview({
         </article>
       )}
 
-      {look === "cards" && (
+      {look === "classic" && (
         <div className="flex min-w-54 flex-1 flex-col items-center justify-around gap-y-1.5 rounded border border-outline bg-surface p-1 shadow-sm @min-[768px]:justify-center">
           <p className="flex items-center justify-center gap-x-1 text-xs text-muted @min-[640px]:text-sm">
             <Icon icon="material-symbols:location-on-outline" />
@@ -241,7 +241,7 @@ export default function WidgetStylePreview({
         </div>
       )}
 
-      {look === "editorial" && (
+      {look === "masthead" && (
         <div className="flex min-w-54 flex-1 flex-col gap-y-5 rounded-xl border border-outline bg-surface p-4 shadow-xs @min-[640px]:p-5 @min-[768px]:justify-center @min-[768px]:gap-y-6">
           <p className="truncate text-[11px] font-semibold tracking-[0.18em] text-faint uppercase">
             {cityName}
@@ -275,7 +275,7 @@ export default function WidgetStylePreview({
         </div>
       )}
 
-      {look === "bars" && (
+      {look === "range-bars" && (
         <div className="flex min-w-54 flex-1 flex-col justify-between gap-y-2.5 rounded-lg border border-outline bg-surface p-3 shadow-xs">
           <div className="flex min-w-0 items-center gap-x-1 text-xs text-muted">
             <Icon icon="material-symbols:location-on-outline" className="size-3.5 shrink-0" />
@@ -308,7 +308,7 @@ export default function WidgetStylePreview({
         </div>
       )}
 
-      {look === "pills" && (
+      {look === "capsule" && (
         <article className="flex min-w-54 flex-1 flex-col justify-between rounded-2xl border border-outline bg-surface p-4 shadow-sm @min-[768px]:p-5">
           <div className="flex items-center justify-between gap-2">
             <div className="flex max-w-[65%] min-w-0 shrink-0 items-center gap-1.5 rounded-full border border-outline bg-fill-faint px-2.5 py-1">
@@ -348,7 +348,7 @@ export default function WidgetStylePreview({
         </article>
       )}
 
-      {look === "telemetry" && (
+      {look === "beacon" && (
         <article className="flex min-w-50 flex-1 flex-col justify-between rounded-lg border-2 border-outline-strong bg-surface p-3 shadow-xs">
           <div className="flex items-center gap-1.5 border-b border-outline pb-2">
             <span

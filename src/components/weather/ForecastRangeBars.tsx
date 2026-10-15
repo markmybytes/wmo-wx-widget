@@ -3,9 +3,9 @@ import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
-/** `bars` variant: compact forecast rows with Apple-style temperature
+/** `range-bars` variant: compact forecast rows with Apple-style temperature
  *  range bars normalized across the visible forecast period. */
-export default async function ForecastBars({
+export default async function ForecastRangeBars({
   locale,
   weather,
   showWeekday,

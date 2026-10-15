@@ -2,36 +2,36 @@ import { TempUnit } from "@/lib/wmo";
 import type { AppLocale } from "@/i18n/routing";
 import { getCachedCity, getCachedForecasts, getCachedPresent } from "@/lib/wmo-cached";
 import { Metadata } from "next";
-import WeatherCards from "@/components/weather/WeatherCards";
-import WeatherEditorial from "@/components/weather/WeatherEditorial";
-import WeatherBars from "@/components/weather/WeatherBars";
-import WeatherSwiss from "@/components/weather/WeatherSwiss";
-import WeatherPills from "@/components/weather/WeatherPills";
-import WeatherTelemetry from "@/components/weather/WeatherTelemetry";
+import WeatherClassic from "@/components/weather/WeatherClassic";
+import WeatherMasthead from "@/components/weather/WeatherMasthead";
+import WeatherRangeBars from "@/components/weather/WeatherRangeBars";
+import WeatherPrecision from "@/components/weather/WeatherPrecision";
+import WeatherCapsule from "@/components/weather/WeatherCapsule";
+import WeatherBeacon from "@/components/weather/WeatherBeacon";
 import { getLocale, getTranslations } from "next-intl/server";
-import ForecastCards from "@/components/weather/ForecastCards";
-import ForecastEditorial from "@/components/weather/ForecastEditorial";
-import ForecastBars from "@/components/weather/ForecastBars";
-import ForecastSwiss from "@/components/weather/ForecastSwiss";
-import ForecastPills from "@/components/weather/ForecastPills";
-import ForecastTelemetry from "@/components/weather/ForecastTelemetry";
+import ForecastClassic from "@/components/weather/ForecastClassic";
+import ForecastMasthead from "@/components/weather/ForecastMasthead";
+import ForecastRangeBars from "@/components/weather/ForecastRangeBars";
+import ForecastPrecision from "@/components/weather/ForecastPrecision";
+import ForecastCapsule from "@/components/weather/ForecastCapsule";
+import ForecastBeacon from "@/components/weather/ForecastBeacon";
 import { notFound } from "next/navigation";
 
-type WidgetStyle = "cards" | "editorial" | "bars" | "swiss" | "pills" | "telemetry";
+type WidgetStyle = "classic" | "masthead" | "range-bars" | "precision" | "capsule" | "beacon";
 
-// Swiss precision is the default style: clean 2-band hierarchy, balanced contrast,
+// Precision is the default style: clean 2-band hierarchy, balanced contrast,
 // and optimal vertical footprint across narrow and wide viewport embeds.
-const DEFAULT_STYLE: WidgetStyle = "swiss";
+const DEFAULT_STYLE: WidgetStyle = "precision";
 
 // Allowlist of recognized styles. No backwards-compatibility aliases;
-// missing or unrecognized style params opt into default "swiss".
+// missing or unrecognized style params opt into default "precision".
 const VALID_STYLES: Record<string, WidgetStyle> = {
-  cards: "cards",
-  editorial: "editorial",
-  bars: "bars",
-  swiss: "swiss",
-  pills: "pills",
-  telemetry: "telemetry",
+  classic: "classic",
+  masthead: "masthead",
+  "range-bars": "range-bars",
+  precision: "precision",
+  capsule: "capsule",
+  beacon: "beacon",
 };
 
 function str2bool(s: string): boolean {
@@ -108,38 +108,38 @@ export default async function Page(props: {
     >
       <div className="flex w-full flex-col items-stretch gap-2 p-2 md:flex-row md:gap-x-2">
         {weather ? (
-          style === "cards" ? (
-            <WeatherCards
+          style === "classic" ? (
+            <WeatherClassic
               city={city}
               weather={await getCachedPresent(params.id, locale, unit)}
               style={style}
             />
-          ) : style === "editorial" ? (
-            <WeatherEditorial
+          ) : style === "masthead" ? (
+            <WeatherMasthead
               city={city}
               weather={await getCachedPresent(params.id, locale, unit)}
               style={style}
             />
-          ) : style === "bars" ? (
-            <WeatherBars
+          ) : style === "range-bars" ? (
+            <WeatherRangeBars
               city={city}
               weather={await getCachedPresent(params.id, locale, unit)}
               style={style}
             />
-          ) : style === "pills" ? (
-            <WeatherPills
+          ) : style === "capsule" ? (
+            <WeatherCapsule
               city={city}
               weather={await getCachedPresent(params.id, locale, unit)}
               style={style}
             />
-          ) : style === "telemetry" ? (
-            <WeatherTelemetry
+          ) : style === "beacon" ? (
+            <WeatherBeacon
               city={city}
               weather={await getCachedPresent(params.id, locale, unit)}
               style={style}
             />
           ) : (
-            <WeatherSwiss
+            <WeatherPrecision
               city={city}
               weather={await getCachedPresent(params.id, locale, unit)}
               style={style}
@@ -148,40 +148,40 @@ export default async function Page(props: {
         ) : null}
 
         {forecast ? (
-          style === "cards" ? (
-            <ForecastCards
+          style === "classic" ? (
+            <ForecastClassic
               locale={locale}
               weather={await getCachedForecasts(params.id, locale, unit, days)}
               style={style}
               showWeekday={showWeekday}
               showDate={showDate}
             />
-          ) : style === "editorial" ? (
-            <ForecastEditorial
+          ) : style === "masthead" ? (
+            <ForecastMasthead
               locale={locale}
               weather={await getCachedForecasts(params.id, locale, unit, days)}
               style={style}
               showWeekday={showWeekday}
               showDate={showDate}
             />
-          ) : style === "bars" ? (
-            <ForecastBars
+          ) : style === "range-bars" ? (
+            <ForecastRangeBars
               locale={locale}
               weather={await getCachedForecasts(params.id, locale, unit, days)}
               style={style}
               showWeekday={showWeekday}
               showDate={showDate}
             />
-          ) : style === "pills" ? (
-            <ForecastPills
+          ) : style === "capsule" ? (
+            <ForecastCapsule
               locale={locale}
               weather={await getCachedForecasts(params.id, locale, unit, days)}
               style={style}
               showWeekday={showWeekday}
               showDate={showDate}
             />
-          ) : style === "telemetry" ? (
-            <ForecastTelemetry
+          ) : style === "beacon" ? (
+            <ForecastBeacon
               locale={locale}
               weather={await getCachedForecasts(params.id, locale, unit, days)}
               style={style}
@@ -189,7 +189,7 @@ export default async function Page(props: {
               showDate={showDate}
             />
           ) : (
-            <ForecastSwiss
+            <ForecastPrecision
               locale={locale}
               weather={await getCachedForecasts(params.id, locale, unit, days)}
               style={style}

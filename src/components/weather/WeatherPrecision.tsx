@@ -3,10 +3,10 @@ import { City, PresentWeather } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
-/** `swiss` variant: Editorial Swiss Precision.
+/** `precision` variant: Editorial Swiss Precision.
  *  Crisp typographic hierarchy, structured hairline dividers, and high-contrast data rows.
  *  Compact two-band layout optimized for tight vertical embedding. */
-export default async function WeatherSwiss({
+export default async function WeatherPrecision({
   city,
   weather,
 }: {

@@ -4,10 +4,10 @@ import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
-/** `swiss` variant: Editorial Swiss Precision.
+/** `precision` variant: Editorial Swiss Precision.
  *  Architectural rows at narrow viewports (<sm) transitioning to a continuous,
  *  divided calendar strip at sm+. Hairline borders, precise tabular metrics. */
-export default async function ForecastSwiss({
+export default async function ForecastPrecision({
   locale,
   weather,
   showWeekday,

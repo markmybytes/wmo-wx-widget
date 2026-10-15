@@ -3,9 +3,9 @@ import { City, PresentWeather } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
-/** `editorial` variant: light editorial publication style — refined uppercase
+/** `masthead` variant: light editorial publication style — refined uppercase
  *  masthead, prominent display-face hero reading, and a delicate hairline rule. */
-export default async function WeatherEditorial({
+export default async function WeatherMasthead({
   city,
   weather,
 }: {

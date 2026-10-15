@@ -3,10 +3,10 @@ import { City, PresentWeather } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
-/** `pills` variant: Glass Pill & Soft Tech Dashboard.
+/** `capsule` variant: Glass Pill & Soft Tech Dashboard.
  *  Rounded pill geometry, nested soft capsule chips, and modern floating metrics.
  *  Fluid, friendly, and ultra-crisp across narrow ~300px sidebars and wide containers. */
-export default async function WeatherPills({
+export default async function WeatherCapsule({
   city,
   weather,
 }: {

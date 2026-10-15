@@ -3,9 +3,9 @@ import { City, PresentWeather } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
-/** `bars` variant: compact minimal — tight spacing, high data density,
+/** `range-bars` variant: compact minimal — tight spacing, high data density,
  *  disciplined typography without decorative clutter. */
-export default async function WeatherBars({
+export default async function WeatherRangeBars({
   city,
   weather,
 }: {

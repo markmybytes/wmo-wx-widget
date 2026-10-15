@@ -3,10 +3,10 @@ import { City, PresentWeather, TempUnit } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
-/** `telemetry` variant: Compact Telemetry & Tactical Cockpit.
+/** `beacon` variant: Compact Telemetry & Tactical Cockpit.
  *  High-density, space-efficient telemetry block engineered for tight embed columns (~260–300px).
  *  Monospace accents, status beacons, and zero wasted margins. */
-export default async function WeatherTelemetry({
+export default async function WeatherBeacon({
   city,
   weather,
 }: {

@@ -4,9 +4,9 @@ import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
 import { getTranslations } from "next-intl/server";
 
-/** `cards` variant. Spacing and the day-count-driven `flength` branching are frozen by
+/** `classic` variant. Spacing and the day-count-driven `flength` branching are frozen by
  *  decision ??the original's per-device sizing was validated. Only colour and font changed. */
-export default async function ForecastCards({
+export default async function ForecastClassic({
   locale,
   weather,
   showWeekday,
@@ -14,7 +14,7 @@ export default async function ForecastCards({
 }: {
   locale: AppLocale;
   weather: FutureWeather;
-  style?: "cards" | "list"; // ignored; kept so both variants share one call site
+  style?: "classic" | "list"; // ignored; kept so both variants share one call site
   showWeekday: boolean;
   showDate: boolean;
 }) {
