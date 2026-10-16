@@ -46,7 +46,9 @@ export default function WeatherPrecision({
             {weather.temp.val !== null ? weather.temp.val : "--"}
           </span>
           {weather.temp.val !== null && (
-            <span className="text-lg font-medium text-muted @min-[theme(--breakpoint-sm)]:text-xl">{weather.temp.unit}</span>
+            <span className="text-lg font-medium text-muted @min-[theme(--breakpoint-sm)]:text-xl">
+              {weather.temp.unit}
+            </span>
           )}
         </div>
 

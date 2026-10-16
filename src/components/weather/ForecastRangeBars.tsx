@@ -71,11 +71,11 @@ export default function ForecastRangeBars({
             {(showWeekday || showDate) && (
               <div className="flex w-10 shrink-0 flex-col items-center font-mono text-[11px] @min-[theme(--breakpoint-sm)]:w-12">
                 {showWeekday && (
-                  <span className="truncate text-muted">
-                    {utcWeekday(fc.date, locale)}
-                  </span>
+                  <span className="truncate text-muted">{utcWeekday(fc.date, locale)}</span>
                 )}
-                {showDate && <span className="font-medium text-foreground">{utcDayNumber(fc.date)}</span>}
+                {showDate && (
+                  <span className="font-medium text-foreground">{utcDayNumber(fc.date)}</span>
+                )}
               </div>
             )}
 

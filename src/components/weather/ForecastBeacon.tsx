@@ -54,14 +54,20 @@ export default function ForecastBeacon({
                     {utcWeekday(fc.date, locale)}
                   </span>
                 )}
-                {showDate && <span className="text-[10px] text-faint">{utcDayNumber(fc.date)}</span>}
+                {showDate && (
+                  <span className="text-[10px] text-faint">{utcDayNumber(fc.date)}</span>
+                )}
               </div>
             )}
 
             {/* Pictogram */}
             <div className="my-0.5 flex shrink-0 items-center justify-center">
               <div
-                className={isDense ? "h-6.5 w-9 @min-[theme(--breakpoint-sm)]:h-7 @min-[theme(--breakpoint-sm)]:w-10" : "h-7.5 w-10.5 @min-[theme(--breakpoint-sm)]:h-8.5 @min-[theme(--breakpoint-sm)]:w-12"}
+                className={
+                  isDense
+                    ? "h-6.5 w-9 @min-[theme(--breakpoint-sm)]:h-7 @min-[theme(--breakpoint-sm)]:w-10"
+                    : "h-7.5 w-10.5 @min-[theme(--breakpoint-sm)]:h-8.5 @min-[theme(--breakpoint-sm)]:w-12"
+                }
               >
                 <WxIcon
                   icon={fc.icon}

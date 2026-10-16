@@ -17,7 +17,7 @@ export default function WeatherMasthead({
   const t = useTranslations("weather");
 
   return (
-    <div className="flex min-w-54 flex-1 flex-col justify-between gap-y-5 rounded-xl border border-outline bg-surface p-4 shadow-xs @min-[theme(--breakpoint-sm)]:p-5 @min-[theme(--breakpoint-md)]:justify-center @min-[theme(--breakpoint-md)]:gap-y-6">
+    <div className="flex min-w-54 flex-1 flex-col justify-between gap-y-5 rounded-xl border border-outline bg-surface p-4 shadow-xs @min-[theme(--breakpoint-md)]:justify-center @min-[theme(--breakpoint-md)]:gap-y-6 @min-[theme(--breakpoint-sm)]:p-5">
       <p className="truncate font-sans text-[11px] font-semibold tracking-[0.18em] text-faint uppercase">
         {city.name}
       </p>

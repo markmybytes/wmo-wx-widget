@@ -45,7 +45,9 @@ export default function WeatherCapsule({
             {tempVal ?? "--"}
           </span>
           {tempVal !== null && (
-            <span className="ml-0.5 text-xl font-bold text-brand @min-[theme(--breakpoint-sm)]:text-2xl">{tempUnit}</span>
+            <span className="ml-0.5 text-xl font-bold text-brand @min-[theme(--breakpoint-sm)]:text-2xl">
+              {tempUnit}
+            </span>
           )}
         </div>
 

@@ -42,7 +42,9 @@ export default function ForecastCapsule({
           <div
             key={fc.date}
             className={`flex w-full grow items-center justify-between rounded-xl border border-outline bg-surface p-2.5 shadow-xs @min-[theme(--breakpoint-sm)]:flex-col @min-[theme(--breakpoint-sm)]:justify-between @min-[theme(--breakpoint-sm)]:rounded-xl @min-[theme(--breakpoint-sm)]:border-0 @min-[theme(--breakpoint-sm)]:bg-fill-faint/60 @min-[theme(--breakpoint-sm)]:p-2 @min-[theme(--breakpoint-sm)]:shadow-none hover:@min-[theme(--breakpoint-sm)]:bg-fill-faint ${
-              isDense ? "@min-[theme(--breakpoint-sm)]:px-1 @min-[theme(--breakpoint-sm)]:py-2" : "@min-[theme(--breakpoint-sm)]:p-2.5"
+              isDense
+                ? "@min-[theme(--breakpoint-sm)]:px-1 @min-[theme(--breakpoint-sm)]:py-2"
+                : "@min-[theme(--breakpoint-sm)]:p-2.5"
             }`}
           >
             {/* Day / Date pill chip */}
@@ -64,7 +66,11 @@ export default function ForecastCapsule({
             {/* Pictogram */}
             <div className="my-1 flex shrink-0 items-center justify-center">
               <div
-                className={isDense ? "h-7 w-10 @min-[theme(--breakpoint-sm)]:h-7.5 @min-[theme(--breakpoint-sm)]:w-10.5" : "h-8 w-11 @min-[theme(--breakpoint-sm)]:h-9 @min-[theme(--breakpoint-sm)]:w-12.5"}
+                className={
+                  isDense
+                    ? "h-7 w-10 @min-[theme(--breakpoint-sm)]:h-7.5 @min-[theme(--breakpoint-sm)]:w-10.5"
+                    : "h-8 w-11 @min-[theme(--breakpoint-sm)]:h-9 @min-[theme(--breakpoint-sm)]:w-12.5"
+                }
               >
                 <WxIcon
                   icon={fc.icon}
