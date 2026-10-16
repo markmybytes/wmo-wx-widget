@@ -18,8 +18,8 @@
     "end": "下",
     "maxForecastPeriod": "最多预测日数",
     "maxForecastPeriodHelp": "最多预测数量（以天为单位）。然而，实际预测数量将取决于数据来源。",
-    "generate": "产生",
-    "emptyCityValidation": "请先选择城市。",
+
+    "urlHint": "请先选择城市，链接会自动更新。",
     "displayedComponent": "显示",
     "presentWeather": "天气实况",
     "futureWeather": "天气预报",

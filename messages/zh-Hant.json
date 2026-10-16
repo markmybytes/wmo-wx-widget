@@ -5,11 +5,11 @@
     "city": "城市",
     "displayedComponent": "顯示",
     "displaySettings": "顯示",
-    "emptyCityValidation": "請先選擇城市。",
+    "urlHint": "請先選擇城市，連結會自動更新。",
     "end": "下",
     "fahrenheit": "華氏度",
     "futureWeather": "天氣預報",
-    "generate": "產生",
+
     "language": "語言",
     "maxForecastPeriod": "最多預測日數",
     "maxForecastPeriodHelp": "最多預測數量（以天為單位）。然而，實際預測數量將取決於數據來源。",

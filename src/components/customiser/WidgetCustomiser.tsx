@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 import { routing } from "@/i18n/routing";
 import { WindUnit } from "@/lib/wmo";
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import CityPicker, { type CityOption } from "./CityPicker";
 import WidgetStylePreview from "./WidgetStylePreview";
 
@@ -83,8 +83,6 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
   });
 
   const [copied, setCopied] = useState(false);
-  const [cityError, setCityError] = useState(false);
-  const [outUrl, setOutUrl] = useState("");
 
   // Tabs fold the secondary controls; default = display settings, the
   // most-touched cluster. Not persisted across visits.
@@ -92,28 +90,20 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
 
   const dayCount = parseInt(formData.days) || 0;
 
-  function handleGenerate() {
-    if (!formData.city) {
-      setOutUrl("");
-      setCityError(true);
-      const cityEl = document.getElementById("city");
-      cityEl?.scrollIntoView({ behavior: "smooth", block: "center" });
-      cityEl?.focus();
-      return;
-    }
-    setCityError(false);
+  const outUrl = useMemo(() => {
+    if (!formData.city || typeof location === "undefined") {
+      return ""
+    };
 
     const localePrefix = formData.lang === routing.defaultLocale ? "" : `/${formData.lang}`;
-    setOutUrl(
-      `${location.protocol}//${location.host}${localePrefix}/weather/${formData.city}?${new URLSearchParams(
-        Object.fromEntries(
-          Object.entries(formData)
-            .filter(([k, v]) => v !== "" && k !== "city" && k !== "lang")
-            .map(([k, v]) => [k, v.toString()]),
-        ),
-      )}`,
-    );
-  }
+    return `${location.protocol}//${location.host}${localePrefix}/weather/${formData.city}?${new URLSearchParams(
+      Object.fromEntries(
+        Object.entries(formData)
+          .filter(([k, v]) => v !== "" && k !== "city" && k !== "lang")
+          .map(([k, v]) => [k, v.toString()]),
+      ),
+    )}`;
+  }, [formData]);
 
   return (
     <form className="flex flex-col gap-y-4" onSubmit={(e) => e.preventDefault()}>
@@ -138,20 +128,9 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
                 labelId="wctl-city-label"
                 options={cityOptions}
                 value={formData.city}
-                hasError={cityError}
-                onChange={(city) => {
-                  setFormData({ ...formData, city });
-                  if (city) setCityError(false);
-                }}
+                onChange={(city) => setFormData({ ...formData, city })}
               />
             </div>
-
-            {cityError && (
-              <span className="flex shrink-0 items-center gap-1 text-xs font-semibold text-danger">
-                <Icon icon="material-symbols:error-outline" width="15" height="15" />
-                {t("emptyCityValidation")}
-              </span>
-            )}
           </div>
 
           <div className="flex h-9 items-center gap-0.5 rounded-lg border border-outline bg-surface p-0.5">
@@ -427,23 +406,14 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
       <section className="wctl-section">
         <h2 className="sr-only">URL</h2>
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            className="inline-flex h-9 shrink-0 items-center justify-center gap-x-1.5 rounded-lg bg-brand-solid px-4 text-xs font-semibold text-on-brand shadow-sm transition-all hover:bg-brand-hover active:scale-[0.99]"
-            onClick={handleGenerate}
-          >
-            <Icon icon="material-symbols:link" width="16" height="16" />
-            <span>{t("generate")}</span>
-          </button>
-
           <div className="relative flex-1">
             <input
               type="text"
               value={outUrl}
-              placeholder="Click Generate to produce embed URL..."
-              className="wctl-input h-9 pe-16 font-mono text-xs text-foreground disabled:cursor-not-allowed disabled:bg-fill-faint"
+              placeholder={t("urlHint")}
+              className="wctl-input h-9 pe-16 font-mono text-xs text-foreground"
               readOnly
-              disabled={!outUrl}
+              suppressHydrationWarning
             />
 
             <div className="absolute inset-y-0 inset-e-1 flex items-center gap-0.5">

@@ -4,10 +4,10 @@
     "center": "Środek",
     "city": "Miasto",
     "displaySettings": "Wyświetlanie",
-    "emptyCityValidation": "Najpierw wybierz miasto.",
+    "urlHint": "Najpierw wybierz miasto — link osadzania zaktualizuje się automatycznie.",
     "end": "Dół",
     "fahrenheit": "Fahrenheit",
-    "generate": "Generuj",
+
     "language": "Język",
     "maxForecastPeriod": "Maksymalny okres prognozy",
     "maxForecastPeriodHelp": "Maksymalna liczba prognoz w dniach. Rzeczywista liczba zależy jednak od źródła danych.",
