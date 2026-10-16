@@ -1,4 +1,4 @@
-import { TempUnit } from "@/lib/wmo";
+import { TempUnit, WindUnit } from "@/lib/wmo";
 import type { AppLocale } from "@/i18n/routing";
 import { getCachedCity, getCachedForecasts, getCachedPresent } from "@/lib/wmo-cached";
 import { Metadata } from "next";
@@ -46,6 +46,7 @@ const alignClass: Record<string, string> = {
 
 function parseWidgetParams(sp: { [key: string]: string } | undefined): {
   unit: TempUnit;
+  wind: WindUnit;
   days: number;
   align: "start" | "center" | "end";
   style: WidgetStyle;
@@ -56,6 +57,8 @@ function parseWidgetParams(sp: { [key: string]: string } | undefined): {
 } {
   return {
     unit: TempUnit[sp?.unit?.toUpperCase() as keyof typeof TempUnit] || TempUnit["C"],
+    // WindUnit enum keys are lowercase (ms/kmh/mph/kn); the URL tokens mirror them.
+    wind: WindUnit[sp?.wind?.toLowerCase() as keyof typeof WindUnit] || WindUnit["ms"],
     days: parseInt(sp?.days ?? "5"),
     align: sp?.align === "center" || sp?.align === "end" ? sp.align : "start",
     style: (sp?.style && VALID_STYLES[sp.style]) || DEFAULT_STYLE,
@@ -92,7 +95,7 @@ export default async function Page(props: {
 
   const locale = (await getLocale()) as AppLocale;
 
-  const { unit, days, align, style, showWeekday, showDate, weather, forecast } =
+  const { unit, wind, days, align, style, showWeekday, showDate, weather, forecast } =
     parseWidgetParams(searchParams);
 
   const city = await getCachedCity(params.id, locale);
@@ -111,37 +114,37 @@ export default async function Page(props: {
           style === "classic" ? (
             <WeatherClassic
               city={city}
-              weather={await getCachedPresent(params.id, locale, unit)}
+              weather={await getCachedPresent(params.id, locale, unit, wind)}
               style={style}
             />
           ) : style === "masthead" ? (
             <WeatherMasthead
               city={city}
-              weather={await getCachedPresent(params.id, locale, unit)}
+              weather={await getCachedPresent(params.id, locale, unit, wind)}
               style={style}
             />
           ) : style === "range-bars" ? (
             <WeatherRangeBars
               city={city}
-              weather={await getCachedPresent(params.id, locale, unit)}
+              weather={await getCachedPresent(params.id, locale, unit, wind)}
               style={style}
             />
           ) : style === "capsule" ? (
             <WeatherCapsule
               city={city}
-              weather={await getCachedPresent(params.id, locale, unit)}
+              weather={await getCachedPresent(params.id, locale, unit, wind)}
               style={style}
             />
           ) : style === "beacon" ? (
             <WeatherBeacon
               city={city}
-              weather={await getCachedPresent(params.id, locale, unit)}
+              weather={await getCachedPresent(params.id, locale, unit, wind)}
               style={style}
             />
           ) : (
             <WeatherPrecision
               city={city}
-              weather={await getCachedPresent(params.id, locale, unit)}
+              weather={await getCachedPresent(params.id, locale, unit, wind)}
               style={style}
             />
           )

@@ -54,7 +54,9 @@ export default function WeatherClassic({
             </span>
             <span className="flex items-center gap-x-1">
               <Icon icon="material-symbols:air" />
-              {weather.wind ? `${weather.wind.direction} ${weather.wind.speed ?? "--"} m/s` : "--"}
+              {weather.wind
+                ? `${weather.wind.direction} ${weather.wind.speed ?? "--"} ${weather.wind.unit}`
+                : "--"}
             </span>
           </div>
         </div>

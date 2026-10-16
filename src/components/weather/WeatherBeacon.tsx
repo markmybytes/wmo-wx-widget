@@ -93,7 +93,7 @@ export default function WeatherBeacon({
           <Icon icon="material-symbols:air" className="size-3 shrink-0 text-faint" />
           <span className="truncate font-medium text-foreground">
             {weather.wind && weather.wind.speed !== null
-              ? `${weather.wind.direction} ${weather.wind.speed} m/s`
+              ? `${weather.wind.direction} ${weather.wind.speed} ${weather.wind.unit}`
               : "--"}
           </span>
         </div>

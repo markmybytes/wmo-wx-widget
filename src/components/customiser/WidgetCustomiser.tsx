@@ -2,6 +2,7 @@
 
 import { Icon } from "@iconify/react";
 import { routing } from "@/i18n/routing";
+import { WindUnit } from "@/lib/wmo";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import CityPicker, { type CityOption } from "./CityPicker";
@@ -78,6 +79,7 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
     days: "5",
     lang: useLocale(),
     unit: "C",
+    wind: "ms",
   });
 
   const [copied, setCopied] = useState(false);
@@ -309,6 +311,19 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
                   ))}
                 </div>
               </Cluster>
+
+              <Cluster label={t("windSpeedUnit")}>
+                <div className="flex gap-1.5">
+                  {(["ms", "kmh", "mph", "kn"] as const).map((k) => (
+                    <Chip
+                      key={k}
+                      selected={formData.wind === k}
+                      label={WindUnit[k]}
+                      onClick={() => setFormData({ ...formData, wind: k })}
+                    />
+                  ))}
+                </div>
+              </Cluster>
             </div>
 
             <div
@@ -379,6 +394,7 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
           <WidgetStylePreview
             style={formData.style}
             unit={formData.unit}
+            wind={formData.wind}
             align={formData.align}
             weekday={formData.weekday}
             date={formData.date}

@@ -55,7 +55,7 @@ export default function WeatherMasthead({
           <Icon icon="material-symbols:air" className="size-3.5 shrink-0 text-faint" />
           <span className="truncate">
             {weather.wind && weather.wind.speed !== null
-              ? `${weather.wind.direction} ${weather.wind.speed} m/s`
+              ? `${weather.wind.direction} ${weather.wind.speed} ${weather.wind.unit}`
               : "--"}
           </span>
         </span>
