@@ -33,8 +33,8 @@ function Chip({
       onClick={onClick}
       className={`flex h-9 shrink-0 items-center gap-1.5 rounded-lg border px-2.5 text-xs transition-colors outline-none ${
         selected
-          ? "border-brand-solid bg-brand-wash font-semibold text-foreground ring-1 ring-brand-solid"
-          : "border-outline bg-surface text-muted hover:border-outline-strong hover:text-foreground"
+          ? "border-brand-solid bg-brand-solid text-on-brand"
+          : "border-outline bg-surface text-muted hover:border-outline-strong hover:bg-fill hover:text-foreground"
       }${className ? ` ${className}` : ""}`}
     >
       {icon && (
@@ -42,7 +42,7 @@ function Chip({
           icon={icon}
           width="15"
           height="15"
-          className={selected ? "text-brand-solid" : "text-faint"}
+          className={selected ? "text-on-brand" : "text-faint"}
         />
       )}
       <span>{label}</span>
@@ -169,8 +169,8 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex h-full items-center rounded-md px-3 text-xs transition-colors outline-none ${
                   activeTab === tab.id
-                    ? "bg-brand-wash font-semibold text-foreground ring-1 ring-brand-solid"
-                    : "text-muted hover:bg-fill hover:text-foreground transition-colors"
+                    ? "bg-fill font-medium text-foreground"
+                    : "text-muted hover:bg-fill hover:text-foreground"
                 }`}
               >
                 {tab.label}
