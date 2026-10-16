@@ -2,11 +2,12 @@ import { Icon } from "@iconify/react";
 import { FutureWeather } from "@/lib/wmo";
 import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
-import { getTranslations } from "next-intl/server";
+import { utcWeekday, utcDayNumber } from "@/lib/date";
+import { useTranslations } from "next-intl";
 
-/** `cards` variant. Spacing and the day-count-driven `flength` branching are frozen by
+/** `classic` variant. Spacing and the day-count-driven `flength` branching are frozen by
  *  decision ??the original's per-device sizing was validated. Only colour and font changed. */
-export default async function ForecastCards({
+export default function ForecastClassic({
   locale,
   weather,
   showWeekday,
@@ -14,15 +15,14 @@ export default async function ForecastCards({
 }: {
   locale: AppLocale;
   weather: FutureWeather;
-  style?: "cards" | "list"; // ignored; kept so both variants share one call site
+  style?: "classic" | "list"; // ignored; kept so both variants share one call site
   showWeekday: boolean;
   showDate: boolean;
 }) {
+  const t = useTranslations("common");
   const flength = weather.forecasts.length;
 
   if (flength == 0) {
-    const t = await getTranslations("common");
-
     return (
       <div className="flex min-h-20 flex-2 items-center justify-center rounded border border-outline bg-surface shadow-sm">
         <span className="font-mono text-xs text-muted">{t("noForecastAvailable")}</span>
@@ -31,24 +31,20 @@ export default async function ForecastCards({
   }
 
   return (
-    <div className="flex flex-2 flex-col items-center gap-y-1.5 rounded border-outline sm:flex-row sm:border sm:bg-surface sm:p-1 sm:shadow-sm">
+    <div className="flex flex-2 flex-col items-center gap-y-1.5 rounded border-outline @min-[theme(--breakpoint-sm)]:flex-row @min-[theme(--breakpoint-sm)]:border @min-[theme(--breakpoint-sm)]:bg-surface @min-[theme(--breakpoint-sm)]:p-1 @min-[theme(--breakpoint-sm)]:shadow-sm">
       {weather.forecasts.map((fc) => {
-        const date = new Date(fc.date);
-
         return (
           <div
-            className="flex w-full grow items-center rounded border border-outline bg-surface shadow-sm sm:flex-col sm:border-none sm:bg-transparent sm:shadow-none"
+            className="flex w-full grow items-center rounded border border-outline bg-surface shadow-sm @min-[theme(--breakpoint-sm)]:flex-col @min-[theme(--breakpoint-sm)]:border-none @min-[theme(--breakpoint-sm)]:bg-transparent @min-[theme(--breakpoint-sm)]:shadow-none"
             key={fc.date}
           >
             <div className="flex min-w-3/10 flex-col items-center justify-center font-mono text-xs">
               {showWeekday && (
                 <span className="max-w-32 truncate text-muted">
-                  {date.toLocaleString(locale, {
-                    weekday: "long",
-                  })}
+                  {utcWeekday(fc.date, locale, "long")}
                 </span>
               )}
-              {showDate && <span>{date.getDate()}</span>}
+              {showDate && <span>{utcDayNumber(fc.date)}</span>}
             </div>
 
             <div className="my-1 flex grow items-center justify-center">
@@ -59,7 +55,7 @@ export default async function ForecastCards({
 
             <div
               className={`flex min-w-3/10 flex-col items-center justify-center gap-x-1 ${
-                flength >= 7 ? "xl:flex-row" : "lg:flex-row"
+                flength >= 7 ? "@min-[theme(--breakpoint-xl)]:flex-row" : "@min-[theme(--breakpoint-lg)]:flex-row"
               }`}
             >
               {flength < 8 ? (
@@ -79,14 +75,14 @@ export default async function ForecastCards({
                 </>
               ) : (
                 <>
-                  <div className="flex min-w-13 items-center justify-around text-temp-low xl:justify-end">
-                    <Icon icon="bi:thermometer-low" className="size-3.5 sm:hidden" />
+                  <div className="flex min-w-13 items-center justify-around text-temp-low @min-[theme(--breakpoint-xl)]:justify-end">
+                    <Icon icon="bi:thermometer-low" className="size-3.5 @min-[theme(--breakpoint-sm)]:hidden" />
                     <span className="grow text-center font-mono text-sm">
                       {`${fc.temp.min.val ?? "--"}${fc.temp.min.unit}`}
                     </span>
                   </div>
-                  <div className="flex min-w-13 items-center justify-around text-temp-high xl:justify-start">
-                    <Icon icon="bi:thermometer-high" className="size-3.5 sm:hidden" />
+                  <div className="flex min-w-13 items-center justify-around text-temp-high @min-[theme(--breakpoint-xl)]:justify-start">
+                    <Icon icon="bi:thermometer-high" className="size-3.5 @min-[theme(--breakpoint-sm)]:hidden" />
                     <span className="grow text-center font-mono text-sm">
                       {`${fc.temp.max.val ?? "--"}${fc.temp.max.unit}`}
                     </span>

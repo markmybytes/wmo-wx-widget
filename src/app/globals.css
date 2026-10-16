@@ -13,7 +13,7 @@
   --color-fill: var(--color-zinc-100);
   --color-fill-faint: var(--color-zinc-50);
 
-  /* `background` is the page behind the cards, `surface` the cards themselves. */
+  /* `background` is the page behind the widget, `surface` the widgets themselves. */
   --color-background: #ffffff;
   --color-surface: #ffffff;
 
@@ -29,7 +29,7 @@
   --color-danger: var(--color-red-600);
   --color-success: var(--color-green-600);
 
-  /* A data pair marking the cards min/max reading, not UI roles. */
+  /* A data pair marking the widget min/max reading, not UI roles. */
   --color-temp-low: var(--color-sky-700);
   --color-temp-high: #dc2626;
 
@@ -81,27 +81,20 @@
 
 @layer components {
   .wctl-section {
-    @apply rounded-2xl border border-outline bg-surface p-6;
+    @apply rounded-xl border border-outline bg-surface p-5;
+  }
+
+  .wctl-label {
+    @apply block text-xs font-medium text-muted;
+  }
+
+  /* 10px category label sitting above a control cluster in the builder bar. */
+  .wctl-micro {
+    @apply block text-[10px] font-medium uppercase leading-none tracking-wider text-muted;
   }
 
   .wctl-input {
     @apply w-full rounded-lg border border-outline-strong bg-surface px-3 py-2 text-sm text-foreground transition-colors outline-none placeholder:text-faint focus:border-brand-ring focus:ring-4 focus:ring-brand-ring/10;
-  }
-
-  .wctl-check {
-    @apply size-4 accent-brand-solid;
-  }
-
-  .wctl-heading {
-    @apply text-lg font-semibold text-foreground;
-  }
-
-  .wctl-legend {
-    @apply mb-2 text-sm font-medium text-muted;
-  }
-
-  .wctl-option {
-    @apply flex items-center gap-x-2 text-sm text-muted;
   }
 }
 
