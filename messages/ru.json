@@ -24,7 +24,7 @@
     "displayedComponent": "Отображаемый компонент",
     "presentWeather": "Текущая погода",
     "futureWeather": "Прогноз погоды",
-    "unitSettings": "Единица температуры",
+    "unitSettings": "Настройки единиц",
     "windSpeedUnit": "Единица скорости ветра",
     "cityPlaceholder": "Начните вводить название города…",
     "cityNoResults": "Нет подходящих городов",
