@@ -11,13 +11,11 @@ export default function CityPicker({
   options,
   value,
   onChange,
-  hasError = false,
 }: {
   labelId: string;
   options: CityOption[];
   value: string;
   onChange: (value: string) => void;
-  hasError?: boolean;
 }) {
   const t = useTranslations("common");
   const [query, setQuery] = useState("");
@@ -65,9 +63,7 @@ export default function CityPicker({
       <div className="relative flex items-center">
         <Icon
           icon="material-symbols:search"
-          className={`pointer-events-none absolute inset-s-3 top-1/2 -translate-y-1/2 transition-colors ${
-            hasError ? "text-danger" : "text-faint"
-          }`}
+          className="pointer-events-none absolute inset-s-3 top-1/2 -translate-y-1/2 text-faint"
           width="18"
           height="18"
         />
@@ -81,9 +77,7 @@ export default function CityPicker({
           aria-controls="city-listbox"
           aria-labelledby={labelId}
           autoComplete="off"
-          className={`wctl-input h-9 ps-9 pe-9 text-xs transition-all ${
-            hasError ? "border-danger focus:border-danger focus:ring-danger/10" : ""
-          }`}
+          className="wctl-input h-9 ps-9 pe-9 text-xs"
           placeholder={t("cityPlaceholder")}
           value={query !== "" ? query : (selected?.label ?? "")}
           onFocus={() => setOpen(true)}

@@ -4,10 +4,10 @@
     "center": "Zentriert",
     "city": "Stadt",
     "displaySettings": "Anzeige",
-    "emptyCityValidation": "Bitte wählen Sie zuerst eine Stadt aus.",
+    "urlHint": "Ort auswählen – die Einbettungs-URL aktualisiert sich automatisch.",
     "end": "Unten",
     "fahrenheit": "Fahrenheit",
-    "generate": "Erzeugen",
+
     "language": "Sprache",
     "maxForecastPeriod": "Maximaler Vorhersagezeitraum",
     "maxForecastPeriodHelp": "Die maximale Vorhersageanzahl in Tagen. Die tatsächliche Anzahl hängt jedoch von der Datenquelle ab.",

@@ -18,8 +18,8 @@
     "end": "End",
     "maxForecastPeriod": "Max Forecast Period",
     "maxForecastPeriodHelp": "The maximum number of forecast days. The actual amount depends on the data source.",
-    "generate": "Generate",
-    "emptyCityValidation": "Please select a city first.",
+
+    "urlHint": "Pick a city first — the embed URL updates automatically.",
     "displayedComponent": "Display",
     "presentWeather": "Present Weather",
     "futureWeather": "Forecast",
