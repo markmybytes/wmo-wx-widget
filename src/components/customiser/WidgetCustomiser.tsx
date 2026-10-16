@@ -154,7 +154,7 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
             )}
           </div>
 
-          <div className="inline-flex h-9 items-center gap-0.5 self-start rounded-lg border border-outline bg-surface p-0.5">
+          <div className="flex h-9 items-center gap-0.5 rounded-lg border border-outline bg-surface p-0.5">
             {(
               [
                 { id: "display", label: t("displaySettings") },
@@ -167,7 +167,7 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
                 id={`wctl-tab-${tab.id}`}
                 type="button"
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex h-full items-center rounded-md px-3 text-xs transition-colors outline-none ${
+                className={`flex h-full flex-1 items-center justify-center rounded-md px-3 text-xs transition-colors outline-none ${
                   activeTab === tab.id
                     ? "bg-fill font-medium text-foreground"
                     : "text-muted hover:bg-fill hover:text-foreground"
