@@ -309,7 +309,7 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
                   : "pointer-events-none invisible opacity-0"
               }`}
             >
-              <Cluster label={t("unitSettings")}>
+              <Cluster label={t("temperatureUnit")}>
                 <div className="flex gap-1.5">
                   {["C", "F"].map((k) => (
                     <Chip
