@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { City, PresentWeather } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
+import { translateWxdesc } from "@/lib/wxdesc";
 import { useTranslations } from "next-intl";
 
 /** `capsule` variant: Glass Pill & Soft Tech Dashboard.
@@ -17,7 +18,7 @@ export default function WeatherCapsule({
   const t = useTranslations("weather");
   const tempVal = weather.temp.val;
   const tempUnit = weather.temp.unit;
-  const condText = weather.weather ? t(weather.weather) : "";
+  const condText = weather.weather ? translateWxdesc(t, weather.weather) : "";
 
   return (
     <article className="flex min-w-54 flex-1 flex-col justify-between rounded-2xl border border-outline bg-surface p-4 shadow-sm @min-[theme(--breakpoint-md)]:p-5">

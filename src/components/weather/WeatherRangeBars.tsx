@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { City, PresentWeather } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
+import { translateWxdesc } from "@/lib/wxdesc";
 import { useTranslations } from "next-intl";
 
 /** `range-bars` variant: compact minimal — tight spacing, high data density,
@@ -32,7 +33,7 @@ export default function WeatherRangeBars({
           </p>
           {weather.weather && (
             <p className="mt-1.5 truncate rounded bg-fill px-1.5 py-0.5 text-[11px] font-medium text-foreground">
-              {t(weather.weather)}
+              {translateWxdesc(t, weather.weather)}
             </p>
           )}
         </div>
@@ -41,7 +42,7 @@ export default function WeatherRangeBars({
           <WxIcon
             icon={weather.icon}
             className="size-full object-contain"
-            alt={weather.weather ? t(weather.weather) : ""}
+            alt={weather.weather ? translateWxdesc(t, weather.weather) : ""}
           />
         </div>
       </div>

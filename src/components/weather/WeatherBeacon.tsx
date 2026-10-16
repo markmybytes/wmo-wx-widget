@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { City, PresentWeather, TempUnit } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
+import { translateWxdesc } from "@/lib/wxdesc";
 import { useTranslations } from "next-intl";
 
 /** `beacon` variant: Compact Telemetry & Tactical Cockpit.
@@ -17,7 +18,7 @@ export default function WeatherBeacon({
   const t = useTranslations("weather");
   const tempVal = weather.temp.val;
   const tempUnit = weather.temp.unit;
-  const condText = weather.weather ? t(weather.weather) : "";
+  const condText = weather.weather ? translateWxdesc(t, weather.weather) : "";
 
   // Temperature bands anchored to human thermal physiology (air temp as PET-free
   // proxy; humidity/radiation not modelled):

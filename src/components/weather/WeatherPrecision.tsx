@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { City, PresentWeather } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
+import { translateWxdesc } from "@/lib/wxdesc";
 import { useTranslations } from "next-intl";
 
 /** `precision` variant: Editorial Swiss Precision.
@@ -15,7 +16,7 @@ export default function WeatherPrecision({
   style?: string; // ignored; kept so all variants share one call site
 }) {
   const t = useTranslations("weather");
-  const condText = weather.weather ? t(weather.weather) : "";
+  const condText = weather.weather ? translateWxdesc(t, weather.weather) : "";
 
   return (
     <article className="flex min-w-54 flex-1 flex-col justify-between rounded-xl border border-outline bg-surface p-3.5 shadow-xs transition-colors @min-[theme(--breakpoint-md)]:p-4">

@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { City, PresentWeather } from "@/lib/wmo";
 import { WxIcon } from "./WxIcon";
+import { translateWxdesc } from "@/lib/wxdesc";
 import { useTranslations } from "next-intl";
 
 /** `masthead` variant: light editorial publication style — refined uppercase
@@ -32,7 +33,7 @@ export default function WeatherMasthead({
             )}
           </p>
           <p className="mt-2.5 truncate text-xs font-medium text-muted @min-[theme(--breakpoint-sm)]:text-sm">
-            {weather.weather ? t(weather.weather) : ""}
+            {weather.weather ? translateWxdesc(t, weather.weather) : ""}
           </p>
         </div>
 
@@ -40,7 +41,7 @@ export default function WeatherMasthead({
           <WxIcon
             icon={weather.icon}
             className="size-full object-contain"
-            alt={weather.weather ? t(weather.weather) : ""}
+            alt={weather.weather ? translateWxdesc(t, weather.weather) : ""}
           />
         </div>
       </div>

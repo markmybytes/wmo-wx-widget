@@ -1,6 +1,7 @@
 import { FutureWeather } from "@/lib/wmo";
 import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
+import { translateWxdesc } from "@/lib/wxdesc";
 import { utcWeekday, utcDayNumber } from "@/lib/date";
 import { useTranslations } from "next-intl";
 
@@ -50,11 +51,11 @@ export default function ForecastMasthead({
             <WxIcon
               icon={fc.icon}
               className="h-9.5 w-12.5 shrink-0 object-contain"
-              alt={fc.weather ? t(fc.weather) : ""}
+              alt={fc.weather ? translateWxdesc(t, fc.weather) : ""}
             />
 
             <p className="hidden min-w-0 grow truncate text-xs text-muted @min-[theme(--breakpoint-sm)]:block @min-[theme(--breakpoint-sm)]:ps-2">
-              {fc.weather ? t(fc.weather) : ""}
+              {fc.weather ? translateWxdesc(t, fc.weather) : ""}
             </p>
 
             {/* Min-first temperature order */}

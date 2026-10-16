@@ -1,6 +1,7 @@
 import { FutureWeather } from "@/lib/wmo";
 import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
+import { translateWxdesc } from "@/lib/wxdesc";
 import { utcWeekday, utcDayNumber } from "@/lib/date";
 import { useTranslations } from "next-intl";
 
@@ -81,7 +82,7 @@ export default function ForecastRangeBars({
             <WxIcon
               icon={fc.icon}
               className="h-7 w-9.5 shrink-0 object-contain"
-              alt={fc.weather ? t(fc.weather) : ""}
+              alt={fc.weather ? translateWxdesc(t, fc.weather) : ""}
             />
 
             {/* Min-first temperature cluster capped at max-w-32/@min-[theme(--breakpoint-sm)]:max-w-44 */}
