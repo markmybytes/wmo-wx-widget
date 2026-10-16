@@ -92,8 +92,8 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
 
   const outUrl = useMemo(() => {
     if (!formData.city || typeof location === "undefined") {
-      return ""
-    };
+      return "";
+    }
 
     const localePrefix = formData.lang === routing.defaultLocale ? "" : `/${formData.lang}`;
     return `${location.protocol}//${location.host}${localePrefix}/weather/${formData.city}?${new URLSearchParams(
