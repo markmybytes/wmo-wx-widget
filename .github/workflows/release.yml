@@ -1,4 +1,4 @@
-name: Publish Image
+name: Release
 
 on:
   push:
@@ -6,11 +6,11 @@ on:
       - 'v*'
 
 concurrency:
-  group: publish-image-${{ github.ref }}
+  group: release-${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 jobs:
@@ -44,3 +44,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --generate-notes --verify-tag
+          --title "$GITHUB_REF_NAME"
