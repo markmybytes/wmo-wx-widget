@@ -296,15 +296,24 @@ function toDisplayTemp(celsius: number | "", unit: TempUnit): number | null {
 }
 
 /**
- * Maps a parsed `{cityId}_{locale}.xml` response to the forecast domain object.
- * Pure — no network — so the mapping itself is independently testable.
+ * Fetches the forecast data for a specified city.
  *
- * @param json - The parsed WMO forecast response.
+ * @param cityId - The ID of the city.
+ * @param locale - The locale code.
  * @param unit - The temperature unit (Celsius or Fahrenheit).
  * @param days - The number of days for the forecast.
- * @returns The forecast data.
+ * @returns A promise that resolves to the forecast data.
  */
-function mapForecasts(json: WmoForecastResponse, unit: TempUnit, days: number): FutureWeather {
+export async function forecasts(
+  cityId: number,
+  locale: AppLocale,
+  unit: TempUnit,
+  days: number,
+): Promise<FutureWeather> {
+  const apiLocale = wmoCode[locale];
+  const json = await getJson<WmoForecastResponse>(
+    `${wmoUrl}/${apiLocale}/json/${cityId}_${apiLocale}.xml`,
+  );
   const { forecast } = json.city;
 
   return {
@@ -325,21 +334,23 @@ function mapForecasts(json: WmoForecastResponse, unit: TempUnit, days: number): 
 }
 
 /**
- * Maps a parsed `present.xml` response to the present-weather domain object for
- * one city. Pure — no network — so the mapping itself is independently testable.
+ * Fetches the present weather data for a specified city. Throws a RangeError
+ * when the feed carries no entry for the city.
  *
- * @param json - The parsed WMO present-weather response.
  * @param cityId - The ID of the city.
+ * @param locale - The locale code.
  * @param unit - The temperature unit (Celsius or Fahrenheit).
  * @param windUnit - The wind speed unit (m/s, km/h, mph or kn).
- * @returns The present weather data.
+ * @returns A promise that resolves to the present weather data.
  */
-function mapPresent(
-  json: WmoPresentWxResponse,
+export async function present(
   cityId: number,
+  locale: AppLocale,
   unit: TempUnit,
   windUnit: WindUnit,
-): PresentWeather {
+): Promise<PresentWeather> {
+  const json = await getJson<WmoPresentWxResponse>(`${wmoUrl}/${wmoCode[locale]}/json/present.xml`);
+
   const wx = Object.values(json.present).find((v) => v.cityId == cityId);
 
   if (!wx) {
@@ -371,13 +382,17 @@ function mapPresent(
 }
 
 /**
- * Maps a parsed `Country_{locale}.xml` response to the country domain objects.
- * Pure — no network — so the mapping itself is independently testable.
+ * Fetches the data of list of countries.
  *
- * @param json - The parsed WMO country response.
- * @returns An array of countries.
+ * @param locale - The locale code.
+ * @returns A promise that resolves to an array of countries.
  */
-function mapCountries(json: WmoCountryResponse): Array<Country> {
+export async function countries(locale: AppLocale): Promise<Array<Country>> {
+  const apiLocale = wmoCode[locale];
+  const json = await getJson<WmoCountryResponse>(
+    `${wmoUrl}/${apiLocale}/json/Country_${apiLocale}.xml`,
+  );
+
   const countries: Array<Country> = [];
   for (const [k, country] of Object.entries(json.member)) {
     if (k == "lang") {
@@ -404,64 +419,6 @@ function mapCountries(json: WmoCountryResponse): Array<Country> {
     });
   }
   return countries;
-}
-
-/**
- * Fetches the forecast data for a specified city.
- *
- * @param cityId - The ID of the city.
- * @param locale - The locale code.
- * @param unit - The temperature unit (Celsius or Fahrenheit).
- * @param days - The number of days for the forecast.
- * @returns A promise that resolves to the forecast data.
- */
-export async function forecasts(
-  cityId: number,
-  locale: AppLocale,
-  unit: TempUnit,
-  days: number,
-): Promise<FutureWeather> {
-  const apiLocale = wmoCode[locale];
-  const json = await getJson<WmoForecastResponse>(
-    `${wmoUrl}/${apiLocale}/json/${cityId}_${apiLocale}.xml`,
-  );
-
-  return mapForecasts(json, unit, days);
-}
-
-/**
- * Fetches the present weather data for a specified city.
- *
- * @param cityId - The ID of the city.
- * @param locale - The locale code.
- * @param unit - The temperature unit (Celsius or Fahrenheit).
- * @param windUnit - The wind speed unit (m/s, km/h, mph or kn).
- * @returns A promise that resolves to the present weather data.
- */
-export async function present(
-  cityId: number,
-  locale: AppLocale,
-  unit: TempUnit,
-  windUnit: WindUnit,
-): Promise<PresentWeather> {
-  const json = await getJson<WmoPresentWxResponse>(`${wmoUrl}/${wmoCode[locale]}/json/present.xml`);
-
-  return mapPresent(json, cityId, unit, windUnit);
-}
-
-/**
- * Fetches the data of list of countries.
- *
- * @param locale - The locale code.
- * @returns A promise that resolves to an array of countries.
- */
-export async function countries(locale: AppLocale): Promise<Array<Country>> {
-  const apiLocale = wmoCode[locale];
-  const json = await getJson<WmoCountryResponse>(
-    `${wmoUrl}/${apiLocale}/json/Country_${apiLocale}.xml`,
-  );
-
-  return mapCountries(json);
 }
 
 /**
