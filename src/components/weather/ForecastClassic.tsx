@@ -55,7 +55,9 @@ export default function ForecastClassic({
 
             <div
               className={`flex min-w-3/10 flex-col items-center justify-center gap-x-1 ${
-                flength >= 7 ? "@min-[theme(--breakpoint-xl)]:flex-row" : "@min-[theme(--breakpoint-lg)]:flex-row"
+                flength >= 7
+                  ? "@min-[theme(--breakpoint-xl)]:flex-row"
+                  : "@min-[theme(--breakpoint-lg)]:flex-row"
               }`}
             >
               {flength < 8 ? (
@@ -76,13 +78,19 @@ export default function ForecastClassic({
               ) : (
                 <>
                   <div className="flex min-w-13 items-center justify-around text-temp-low @min-[theme(--breakpoint-xl)]:justify-end">
-                    <Icon icon="bi:thermometer-low" className="size-3.5 @min-[theme(--breakpoint-sm)]:hidden" />
+                    <Icon
+                      icon="bi:thermometer-low"
+                      className="size-3.5 @min-[theme(--breakpoint-sm)]:hidden"
+                    />
                     <span className="grow text-center font-mono text-sm">
                       {`${fc.temp.min.val ?? "--"}${fc.temp.min.unit}`}
                     </span>
                   </div>
                   <div className="flex min-w-13 items-center justify-around text-temp-high @min-[theme(--breakpoint-xl)]:justify-start">
-                    <Icon icon="bi:thermometer-high" className="size-3.5 @min-[theme(--breakpoint-sm)]:hidden" />
+                    <Icon
+                      icon="bi:thermometer-high"
+                      className="size-3.5 @min-[theme(--breakpoint-sm)]:hidden"
+                    />
                     <span className="grow text-center font-mono text-sm">
                       {`${fc.temp.max.val ?? "--"}${fc.temp.max.unit}`}
                     </span>

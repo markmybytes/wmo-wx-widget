@@ -45,7 +45,9 @@ export default function WeatherCapsule({
             {tempVal ?? "--"}
           </span>
           {tempVal !== null && (
-            <span className="ml-0.5 text-xl font-bold text-brand @min-[theme(--breakpoint-sm)]:text-2xl">{tempUnit}</span>
+            <span className="ml-0.5 text-xl font-bold text-brand @min-[theme(--breakpoint-sm)]:text-2xl">
+              {tempUnit}
+            </span>
           )}
         </div>
 
@@ -67,7 +69,7 @@ export default function WeatherCapsule({
           <Icon icon="material-symbols:air" className="size-3.5 shrink-0 text-muted" />
           <span className="truncate font-mono text-xs font-medium text-foreground">
             {weather.wind && weather.wind.speed !== null
-              ? `${weather.wind.direction} ${weather.wind.speed} m/s`
+              ? `${weather.wind.direction} ${weather.wind.speed} ${weather.wind.unit}`
               : "--"}
           </span>
         </div>

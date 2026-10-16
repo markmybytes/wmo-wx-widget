@@ -43,7 +43,9 @@ export default function ForecastPrecision({
           <div
             key={fc.date}
             className={`flex w-full grow items-center justify-between rounded-xl border border-outline bg-surface p-2 shadow-xs @min-[theme(--breakpoint-sm)]:flex-col @min-[theme(--breakpoint-sm)]:justify-around @min-[theme(--breakpoint-sm)]:rounded-none @min-[theme(--breakpoint-sm)]:border-0 @min-[theme(--breakpoint-sm)]:bg-transparent @min-[theme(--breakpoint-sm)]:shadow-none ${
-              isDense ? "@min-[theme(--breakpoint-sm)]:p-1.5" : "@min-[theme(--breakpoint-sm)]:p-2.5"
+              isDense
+                ? "@min-[theme(--breakpoint-sm)]:p-1.5"
+                : "@min-[theme(--breakpoint-sm)]:p-2.5"
             }`}
           >
             {/* Date / Day */}
@@ -55,14 +57,22 @@ export default function ForecastPrecision({
                   </span>
                 )}
                 {showDate && (
-                  <span className="text-[11px] text-faint @min-[theme(--breakpoint-sm)]:text-xs">{utcDayNumber(fc.date)}</span>
+                  <span className="text-[11px] text-faint @min-[theme(--breakpoint-sm)]:text-xs">
+                    {utcDayNumber(fc.date)}
+                  </span>
                 )}
               </div>
             )}
 
             {/* Weather Pictogram */}
             <div className="my-1 flex shrink-0 items-center justify-center">
-              <div className={isDense ? "h-7 w-10 @min-[theme(--breakpoint-sm)]:h-8 @min-[theme(--breakpoint-sm)]:w-11" : "h-8 w-11 @min-[theme(--breakpoint-sm)]:h-9.5 @min-[theme(--breakpoint-sm)]:w-13"}>
+              <div
+                className={
+                  isDense
+                    ? "h-7 w-10 @min-[theme(--breakpoint-sm)]:h-8 @min-[theme(--breakpoint-sm)]:w-11"
+                    : "h-8 w-11 @min-[theme(--breakpoint-sm)]:h-9.5 @min-[theme(--breakpoint-sm)]:w-13"
+                }
+              >
                 <WxIcon
                   icon={fc.icon}
                   className="size-full object-contain"

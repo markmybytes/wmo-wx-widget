@@ -2,7 +2,7 @@
 
 import { Icon } from "@iconify/react";
 import { useEffect, useRef, useState } from "react";
-import { TempUnit } from "@/lib/wmo";
+import { TempUnit, WindUnit, windByUnit } from "@/lib/wmo";
 import type { AppLocale } from "@/i18n/routing";
 import WeatherPrecision from "@/components/weather/WeatherPrecision";
 import WeatherClassic from "@/components/weather/WeatherClassic";
@@ -38,6 +38,7 @@ const SAMPLE_ISSUE_AT = new Date("2024-01-01T00:00:00.000Z");
 export default function WidgetStylePreview({
   style,
   unit,
+  wind,
   align,
   weekday,
   date,
@@ -48,6 +49,7 @@ export default function WidgetStylePreview({
 }: {
   style: string;
   unit: string;
+  wind: string;
   align: string;
   weekday: boolean;
   date: boolean;
@@ -80,6 +82,7 @@ export default function WidgetStylePreview({
   const { Present, Forecast } = LOOKS[style as keyof typeof LOOKS] ?? LOOKS.precision;
 
   const tUnit = unit === "F" ? TempUnit.F : TempUnit.C;
+  const tWind = WindUnit[wind?.toLowerCase() as keyof typeof WindUnit] || WindUnit.ms;
 
   return (
     <div className="flex flex-col gap-y-3">
@@ -168,7 +171,11 @@ export default function WidgetStylePreview({
                         rh: 77,
                         weather: "Sunny",
                         icon: "https://worldweather.wmo.int/images/i24.png",
-                        wind: { direction: "NE", speed: 2.4 },
+                        wind: {
+                          direction: "NE",
+                          speed: windByUnit(2.4, tWind) as number,
+                          unit: tWind,
+                        },
                         sun: { rise: null, set: null },
                       }}
                     />

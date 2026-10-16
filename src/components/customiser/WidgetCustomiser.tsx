@@ -2,6 +2,7 @@
 
 import { Icon } from "@iconify/react";
 import { routing } from "@/i18n/routing";
+import { WindUnit } from "@/lib/wmo";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import CityPicker, { type CityOption } from "./CityPicker";
@@ -78,6 +79,7 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
     days: "5",
     lang: useLocale(),
     unit: "C",
+    wind: "ms",
   });
 
   const [copied, setCopied] = useState(false);
@@ -152,9 +154,7 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
             )}
           </div>
 
-          <div
-            className="inline-flex h-9 items-center gap-0.5 self-start rounded-lg border border-outline bg-surface p-0.5"
-          >
+          <div className="inline-flex h-9 items-center gap-0.5 self-start rounded-lg border border-outline bg-surface p-0.5">
             {(
               [
                 { id: "display", label: t("displaySettings") },
@@ -199,8 +199,16 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
               <Cluster label={t("displayedComponent")}>
                 <div className="flex flex-wrap gap-1.5">
                   {[
-                    { key: "weather" as const, label: t("presentWeather"), icon: "material-symbols:partly-cloudy-day-outline" },
-                    { key: "forcast" as const, label: t("futureWeather"), icon: "material-symbols:calendar-month-outline" },
+                    {
+                      key: "weather" as const,
+                      label: t("presentWeather"),
+                      icon: "material-symbols:partly-cloudy-day-outline",
+                    },
+                    {
+                      key: "forcast" as const,
+                      label: t("futureWeather"),
+                      icon: "material-symbols:calendar-month-outline",
+                    },
                   ].map((item) => (
                     <Chip
                       key={item.key}
@@ -220,7 +228,11 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
                     // calendar-view-week = the weekday-name column, today = the
                     // date number ??shapes chosen so the two can't be confused
                     // at a glance.
-                    { key: "weekday" as const, label: t("showWeekday"), icon: "material-symbols:calendar-view-week" },
+                    {
+                      key: "weekday" as const,
+                      label: t("showWeekday"),
+                      icon: "material-symbols:calendar-view-week",
+                    },
                     { key: "date" as const, label: t("showDate"), icon: "material-symbols:today" },
                   ].map((item) => (
                     <Chip
@@ -309,6 +321,19 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
                   ))}
                 </div>
               </Cluster>
+
+              <Cluster label={t("windSpeedUnit")}>
+                <div className="flex gap-1.5">
+                  {(["ms", "kmh", "mph", "kn"] as const).map((k) => (
+                    <Chip
+                      key={k}
+                      selected={formData.wind === k}
+                      label={WindUnit[k]}
+                      onClick={() => setFormData({ ...formData, wind: k })}
+                    />
+                  ))}
+                </div>
+              </Cluster>
             </div>
 
             <div
@@ -323,7 +348,11 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
                 <div className="flex flex-wrap gap-1.5">
                   {[
                     { id: "start", label: t("start"), icon: "material-symbols:vertical-align-top" },
-                    { id: "center", label: t("center"), icon: "material-symbols:vertical-align-center" },
+                    {
+                      id: "center",
+                      label: t("center"),
+                      icon: "material-symbols:vertical-align-center",
+                    },
                     { id: "end", label: t("end"), icon: "material-symbols:vertical-align-bottom" },
                   ].map((item) => (
                     <Chip
@@ -341,14 +370,18 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
               {/* py-0.5 reserves room for the thin scrollbar so control rows stay aligned */}
               <Cluster label={t("widgetStyle")}>
                 <div
-                  className={`flex snap-x gap-1.5 [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-outline-strong [&::-webkit-scrollbar-track]:bg-transparent overflow-x-auto py-0.5 lg:flex-wrap lg:overflow-visible lg:py-0`}
+                  className={`flex snap-x [scrollbar-width:thin] gap-1.5 overflow-x-auto py-0.5 lg:flex-wrap lg:overflow-visible lg:py-0 [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-outline-strong [&::-webkit-scrollbar-track]:bg-transparent`}
                 >
                   {(
                     [
                       { id: "precision", label: "Precision", icon: "material-symbols:border-all" },
                       { id: "classic", label: "Classic", icon: "material-symbols:crop-portrait" },
                       { id: "masthead", label: "Masthead", icon: "material-symbols:title" },
-                      { id: "range-bars", label: "Range Bars", icon: "material-symbols:linear-scale" },
+                      {
+                        id: "range-bars",
+                        label: "Range Bars",
+                        icon: "material-symbols:linear-scale",
+                      },
                       { id: "capsule", label: "Capsule", icon: "material-symbols:pill" },
                       { id: "beacon", label: "Beacon", icon: "material-symbols:terminal" },
                     ] as const
@@ -379,6 +412,7 @@ export default function WidgetCustomiser({ cityOptions }: { cityOptions: CityOpt
           <WidgetStylePreview
             style={formData.style}
             unit={formData.unit}
+            wind={formData.wind}
             align={formData.align}
             weekday={formData.weekday}
             date={formData.date}

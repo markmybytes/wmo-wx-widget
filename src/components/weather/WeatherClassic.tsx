@@ -26,7 +26,7 @@ export default function WeatherClassic({
       </div>
 
       <div className="flex items-center justify-around gap-2 @min-[theme(--breakpoint-md)]:flex-col">
-        <div className="flex items-center gap-x-0.5 @min-[theme(--breakpoint-sm)]:gap-x-1.5 @min-[theme(--breakpoint-md)]:w-full">
+        <div className="flex items-center gap-x-0.5 @min-[theme(--breakpoint-md)]:w-full @min-[theme(--breakpoint-sm)]:gap-x-1.5">
           <div className="w-1/2">
             <div className="h-10 w-13.75 justify-self-end @min-[theme(--breakpoint-sm)]:h-12.5 @min-[theme(--breakpoint-sm)]:w-17.5">
               <WxIcon icon={weather.icon} className="size-full" alt={weather.weather ?? ""} />
@@ -54,7 +54,9 @@ export default function WeatherClassic({
             </span>
             <span className="flex items-center gap-x-1">
               <Icon icon="material-symbols:air" />
-              {weather.wind ? `${weather.wind.direction} ${weather.wind.speed ?? "--"} m/s` : "--"}
+              {weather.wind
+                ? `${weather.wind.direction} ${weather.wind.speed ?? "--"} ${weather.wind.unit}`
+                : "--"}
             </span>
           </div>
         </div>

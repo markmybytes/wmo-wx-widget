@@ -34,7 +34,10 @@ export default function ForecastMasthead({
     <div className="flex flex-2 flex-col divide-y divide-outline/80 rounded-xl border border-outline bg-surface p-1 shadow-xs">
       {weather.forecasts.map((fc) => {
         return (
-          <div key={fc.date} className="flex items-center gap-x-3 px-2.5 py-2.5 @min-[theme(--breakpoint-sm)]:px-3">
+          <div
+            key={fc.date}
+            className="flex items-center gap-x-3 px-2.5 py-2.5 @min-[theme(--breakpoint-sm)]:px-3"
+          >
             {(showWeekday || showDate) && (
               <div className="flex w-12 shrink-0 flex-col font-mono text-xs @min-[theme(--breakpoint-sm)]:w-16">
                 {showWeekday && (
@@ -43,7 +46,9 @@ export default function ForecastMasthead({
                   </span>
                 )}
                 {showDate && (
-                  <span className="text-xs font-medium text-foreground">{utcDayNumber(fc.date)}</span>
+                  <span className="text-xs font-medium text-foreground">
+                    {utcDayNumber(fc.date)}
+                  </span>
                 )}
               </div>
             )}

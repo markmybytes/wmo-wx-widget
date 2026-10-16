@@ -90,7 +90,7 @@
 
   /* 10px category label sitting above a control cluster in the builder bar. */
   .wctl-micro {
-    @apply block text-[10px] font-medium uppercase leading-none tracking-wider text-muted;
+    @apply block text-[10px] leading-none font-medium tracking-wider text-muted uppercase;
   }
 
   .wctl-input {

@@ -66,7 +66,9 @@ export default function WeatherBeacon({
       <div className="my-2 flex items-center justify-between gap-2">
         <div className="flex min-w-0 flex-1 flex-col">
           <div className="flex items-baseline font-mono font-bold text-foreground">
-            <span className="text-3xl tracking-tighter @min-[theme(--breakpoint-sm)]:text-4xl">{tempVal ?? "--"}</span>
+            <span className="text-3xl tracking-tighter @min-[theme(--breakpoint-sm)]:text-4xl">
+              {tempVal ?? "--"}
+            </span>
             {tempVal !== null && (
               <span className="ml-1 text-sm font-semibold text-muted">{tempUnit}</span>
             )}
@@ -93,7 +95,7 @@ export default function WeatherBeacon({
           <Icon icon="material-symbols:air" className="size-3 shrink-0 text-faint" />
           <span className="truncate font-medium text-foreground">
             {weather.wind && weather.wind.speed !== null
-              ? `${weather.wind.direction} ${weather.wind.speed} m/s`
+              ? `${weather.wind.direction} ${weather.wind.speed} ${weather.wind.unit}`
               : "--"}
           </span>
         </div>

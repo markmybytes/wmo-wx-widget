@@ -46,7 +46,9 @@ export default function WeatherPrecision({
             {weather.temp.val !== null ? weather.temp.val : "--"}
           </span>
           {weather.temp.val !== null && (
-            <span className="text-lg font-medium text-muted @min-[theme(--breakpoint-sm)]:text-xl">{weather.temp.unit}</span>
+            <span className="text-lg font-medium text-muted @min-[theme(--breakpoint-sm)]:text-xl">
+              {weather.temp.unit}
+            </span>
           )}
         </div>
 
@@ -62,7 +64,7 @@ export default function WeatherPrecision({
             <Icon icon="material-symbols:air" className="size-3.5 shrink-0 text-faint" />
             <span className="truncate font-medium text-foreground">
               {weather.wind && weather.wind.speed !== null
-                ? `${weather.wind.direction} ${weather.wind.speed} m/s`
+                ? `${weather.wind.direction} ${weather.wind.speed} ${weather.wind.unit}`
                 : "--"}
             </span>
           </span>

@@ -5,6 +5,31 @@ export enum TempUnit {
   F = "°F",
 }
 
+export enum WindUnit {
+  ms = "m/s",
+  kmh = "km/h",
+  mph = "mph",
+  kn = "kn",
+}
+
+/** Converts a m/s wind reading to the requested display unit, rounded to 1 dp. Null passes through. */
+export function windByUnit(ms: number | null | undefined, unit: WindUnit): number | null {
+  if (ms === null || ms === undefined) {
+    return null;
+  }
+
+  switch (unit) {
+    case WindUnit.kmh:
+      return Math.round(ms * 3.6 * 10) / 10;
+    case WindUnit.mph:
+      return Math.round(ms * 2.23694 * 10) / 10;
+    case WindUnit.kn:
+      return Math.round(ms * 1.94384 * 10) / 10;
+    case WindUnit.ms:
+      return Math.round(ms * 10) / 10;
+  }
+}
+
 export interface City {
   id: number;
   name: string;
@@ -58,6 +83,7 @@ export interface PresentWeather {
   wind: {
     direction: string;
     speed: number;
+    unit: WindUnit;
   } | null;
   sun: {
     rise: Date | null;
@@ -305,9 +331,15 @@ function mapForecasts(json: WmoForecastResponse, unit: TempUnit, days: number): 
  * @param json - The parsed WMO present-weather response.
  * @param cityId - The ID of the city.
  * @param unit - The temperature unit (Celsius or Fahrenheit).
+ * @param windUnit - The wind speed unit (m/s, km/h, mph or kn).
  * @returns The present weather data.
  */
-function mapPresent(json: WmoPresentWxResponse, cityId: number, unit: TempUnit): PresentWeather {
+function mapPresent(
+  json: WmoPresentWxResponse,
+  cityId: number,
+  unit: TempUnit,
+  windUnit: WindUnit,
+): PresentWeather {
   const wx = Object.values(json.present).find((v) => v.cityId == cityId);
 
   if (!wx) {
@@ -327,7 +359,8 @@ function mapPresent(json: WmoPresentWxResponse, cityId: number, unit: TempUnit):
       wx.wd !== "" && wx.ws !== ""
         ? {
             direction: wx.wd,
-            speed: Math.round(parseFloat(wx.ws) * 10) / 10,
+            speed: windByUnit(parseFloat(wx.ws), windUnit) as number,
+            unit: windUnit,
           }
         : null,
     sun: {
@@ -402,16 +435,18 @@ export async function forecasts(
  * @param cityId - The ID of the city.
  * @param locale - The locale code.
  * @param unit - The temperature unit (Celsius or Fahrenheit).
+ * @param windUnit - The wind speed unit (m/s, km/h, mph or kn).
  * @returns A promise that resolves to the present weather data.
  */
 export async function present(
   cityId: number,
   locale: AppLocale,
   unit: TempUnit,
+  windUnit: WindUnit,
 ): Promise<PresentWeather> {
   const json = await getJson<WmoPresentWxResponse>(`${wmoUrl}/${wmoCode[locale]}/json/present.xml`);
 
-  return mapPresent(json, cityId, unit);
+  return mapPresent(json, cityId, unit, windUnit);
 }
 
 /**
