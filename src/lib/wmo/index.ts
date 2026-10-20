@@ -161,7 +161,7 @@ export function createWmoClient({
     /**
      * Present weather for a city.
      *
-     * Drawn from the locale-wide current-conditions feed (15-minute TTL).
+     * Drawn from the locale-wide current-conditions feed.
      *
      * @param cityId - The WMO city ID.
      * @param locale - App locale; selects the WMO language feed.
@@ -208,7 +208,7 @@ export function createWmoClient({
     /**
      * Multi-day weather forecast for a city.
      *
-     * Drawn from the city's forecast feed (1-hour TTL). Truncated to `days`
+     * Drawn from the city's forecast feed. Truncated to `days`
      * entries, at least one.
      *
      * The city ID is not validated here. The upstream feed answers unknown
@@ -247,7 +247,7 @@ export function createWmoClient({
     /**
      * WMO member directory for a locale.
      *
-     * Drawn from the country feed (24-hour TTL). Each entry carries its
+     * Drawn from the country feed. Each entry carries its
      * member cities and organisation info.
      *
      * @param locale - App locale; selects the WMO language feed.
