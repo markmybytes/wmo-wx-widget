@@ -105,7 +105,7 @@ export default async function Page(props: {
 
   return (
     <main
-      className={`@container flex min-h-svh bg-background motion-safe:animate-fade-up ${
+      className={`@container flex min-h-svh bg-background ${
         alignClass[align] ?? alignClass["start"]
       }`}
     >
