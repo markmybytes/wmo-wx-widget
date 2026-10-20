@@ -79,15 +79,32 @@ export interface PresentWeather {
 /**
  * Builds a WMO client.
  *
- * @param opts.cache - Optional raw-payload cache. TTLs and cache keys are the
- * lib's business; the adapter only stores.
+ * Caching contract: expired payloads refetch synchronously (stale is never
+ * served), concurrent misses share one load, failures throw and are never cached.
+ *
+ * @param opts.cache - Optional raw-payload cache. TTLs and cache keys are the lib's business; the adapter only stores.
+ * @param opts.cacheTtl - Per-feed-kind TTL overrides, in milliseconds. Omitted
+ * keys fall back to the defaults: `present` 900_000, `forecasts` 3_600_000,
+ * `countries` 86_400_000. `countries` covers both `countries()` and `city()`
+ * (same feed). Values pass through unvalidated, so 0 or negatives are the
+ * caller's own doing. A no-op without `cache`, which bypasses caching entirely.
  */
 export function createWmoClient({
   cache,
+  cacheTtl: {
+    present: presentTtl = 900_000,
+    forecasts: forecastsTtl = 3_600_000,
+    countries: countriesTtl = 86_400_000,
+  } = {},
 }: {
   cache?: {
     get(key: string): Promise<unknown | undefined>;
     set(key: string, value: unknown, ttlMs: number): Promise<void>;
+  };
+  cacheTtl?: {
+    present?: number;
+    forecasts?: number;
+    countries?: number;
   };
 } = {}) {
   /** In-flight loads per key, so concurrent misses for one key fetch once. */
@@ -122,7 +139,7 @@ export function createWmoClient({
   }
 
   function countries(locale: AppLocale): Promise<Array<Country>> {
-    return withCache(`feed:${locale}`, 86_400_000, async () => {
+    return withCache(`countries:${locale}`, countriesTtl, async () => {
       const apiLocale = wmoCode[locale];
       const json = await getJson<WmoCountryResponse>(
         `${wmoUrl}/${apiLocale}/json/Country_${apiLocale}.xml`,
@@ -171,7 +188,7 @@ export function createWmoClient({
      * @throws {RangeError} When the feed carries no entry for the city.
      */
     present: async (cityId: number, locale: AppLocale, unit: TempUnit, windUnit: WindUnit) => {
-      const raw = await withCache(`present:${locale}`, 900_000, () =>
+      const raw = await withCache(`present:${locale}`, presentTtl, () =>
         getJson<WmoPresentWxResponse>(`${wmoUrl}/${wmoCode[locale]}/json/present.xml`),
       );
 
@@ -222,7 +239,7 @@ export function createWmoClient({
      */
     forecasts: async (cityId: number, locale: AppLocale, unit: TempUnit, days: number) => {
       const apiLocale = wmoCode[locale];
-      const raw = await withCache(`forecast:${cityId}:${locale}`, 3_600_000, () =>
+      const raw = await withCache(`forecast:${cityId}:${locale}`, forecastsTtl, () =>
         getJson<WmoForecastResponse>(`${wmoUrl}/${apiLocale}/json/${cityId}_${apiLocale}.xml`),
       );
 
