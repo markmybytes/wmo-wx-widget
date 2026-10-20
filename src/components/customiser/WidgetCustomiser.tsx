@@ -2,7 +2,7 @@
 
 import { Icon } from "@iconify/react";
 import { routing } from "@/i18n/routing";
-import { WindUnit } from "@/lib/wmo";
+import { WindUnit } from "@/lib/wmo/units";
 import { useLocale, useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import CityPicker, { type CityOption } from "./CityPicker";

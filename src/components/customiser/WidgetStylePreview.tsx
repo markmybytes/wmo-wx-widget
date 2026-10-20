@@ -2,7 +2,7 @@
 
 import { Icon } from "@iconify/react";
 import { useEffect, useRef, useState } from "react";
-import { TempUnit, WindUnit, windByUnit } from "@/lib/wmo";
+import { TempUnit, WindUnit, windByUnit } from "@/lib/wmo/units";
 import type { AppLocale } from "@/i18n/routing";
 import WeatherPrecision from "@/components/weather/WeatherPrecision";
 import WeatherClassic from "@/components/weather/WeatherClassic";

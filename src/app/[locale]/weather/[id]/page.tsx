@@ -1,6 +1,6 @@
-import { TempUnit, WindUnit } from "@/lib/wmo";
+import { TempUnit, WindUnit } from "@/lib/wmo/units";
 import type { AppLocale } from "@/i18n/routing";
-import { getCachedCity, getCachedForecasts, getCachedPresent } from "@/lib/wmo-cached";
+import { wmo } from "@/lib/wmo-cached";
 import { Metadata } from "next";
 import WeatherClassic from "@/components/weather/WeatherClassic";
 import WeatherMasthead from "@/components/weather/WeatherMasthead";
@@ -80,7 +80,7 @@ export async function generateMetadata(props: {
   return {
     title: [
       t("titleForecast", {
-        location: (await getCachedCity(params.id, locale))?.name || "N/A",
+        location: (await wmo.city(params.id, locale))?.name || "N/A",
       }),
       process.env.appTitle,
     ].join(" | "),
@@ -98,7 +98,7 @@ export default async function Page(props: {
   const { unit, wind, days, align, style, showWeekday, showDate, weather, forecast } =
     parseWidgetParams(searchParams);
 
-  const city = await getCachedCity(params.id, locale);
+  const city = await wmo.city(params.id, locale);
   if (city === null) {
     return notFound();
   }
@@ -114,37 +114,37 @@ export default async function Page(props: {
           style === "classic" ? (
             <WeatherClassic
               city={city}
-              weather={await getCachedPresent(params.id, locale, unit, wind)}
+              weather={await wmo.present(params.id, locale, unit, wind)}
               style={style}
             />
           ) : style === "masthead" ? (
             <WeatherMasthead
               city={city}
-              weather={await getCachedPresent(params.id, locale, unit, wind)}
+              weather={await wmo.present(params.id, locale, unit, wind)}
               style={style}
             />
           ) : style === "range-bars" ? (
             <WeatherRangeBars
               city={city}
-              weather={await getCachedPresent(params.id, locale, unit, wind)}
+              weather={await wmo.present(params.id, locale, unit, wind)}
               style={style}
             />
           ) : style === "capsule" ? (
             <WeatherCapsule
               city={city}
-              weather={await getCachedPresent(params.id, locale, unit, wind)}
+              weather={await wmo.present(params.id, locale, unit, wind)}
               style={style}
             />
           ) : style === "beacon" ? (
             <WeatherBeacon
               city={city}
-              weather={await getCachedPresent(params.id, locale, unit, wind)}
+              weather={await wmo.present(params.id, locale, unit, wind)}
               style={style}
             />
           ) : (
             <WeatherPrecision
               city={city}
-              weather={await getCachedPresent(params.id, locale, unit, wind)}
+              weather={await wmo.present(params.id, locale, unit, wind)}
               style={style}
             />
           )
@@ -154,7 +154,7 @@ export default async function Page(props: {
           style === "classic" ? (
             <ForecastClassic
               locale={locale}
-              weather={await getCachedForecasts(params.id, locale, unit, days)}
+              weather={await wmo.forecasts(params.id, locale, unit, days)}
               style={style}
               showWeekday={showWeekday}
               showDate={showDate}
@@ -162,7 +162,7 @@ export default async function Page(props: {
           ) : style === "masthead" ? (
             <ForecastMasthead
               locale={locale}
-              weather={await getCachedForecasts(params.id, locale, unit, days)}
+              weather={await wmo.forecasts(params.id, locale, unit, days)}
               style={style}
               showWeekday={showWeekday}
               showDate={showDate}
@@ -170,7 +170,7 @@ export default async function Page(props: {
           ) : style === "range-bars" ? (
             <ForecastRangeBars
               locale={locale}
-              weather={await getCachedForecasts(params.id, locale, unit, days)}
+              weather={await wmo.forecasts(params.id, locale, unit, days)}
               style={style}
               showWeekday={showWeekday}
               showDate={showDate}
@@ -178,7 +178,7 @@ export default async function Page(props: {
           ) : style === "capsule" ? (
             <ForecastCapsule
               locale={locale}
-              weather={await getCachedForecasts(params.id, locale, unit, days)}
+              weather={await wmo.forecasts(params.id, locale, unit, days)}
               style={style}
               showWeekday={showWeekday}
               showDate={showDate}
@@ -186,7 +186,7 @@ export default async function Page(props: {
           ) : style === "beacon" ? (
             <ForecastBeacon
               locale={locale}
-              weather={await getCachedForecasts(params.id, locale, unit, days)}
+              weather={await wmo.forecasts(params.id, locale, unit, days)}
               style={style}
               showWeekday={showWeekday}
               showDate={showDate}
@@ -194,7 +194,7 @@ export default async function Page(props: {
           ) : (
             <ForecastPrecision
               locale={locale}
-              weather={await getCachedForecasts(params.id, locale, unit, days)}
+              weather={await wmo.forecasts(params.id, locale, unit, days)}
               style={style}
               showWeekday={showWeekday}
               showDate={showDate}

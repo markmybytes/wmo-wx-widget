@@ -1,21 +1,21 @@
-import { unstable_cache } from "next/cache";
-import type { AppLocale } from "@/i18n/routing";
-import { city, countries, forecasts, present } from "@/lib/wmo";
+/**
+ * App-side WMO cache wiring: an in-memory `cacheable` store behind the pure
+ * client's `WmoCacheAdapter` seam. The lib owns the keys and TTLs.
+ */
+import { Cacheable, KeyvCacheableMemory } from "cacheable";
 
-/** Next-runtime caching boundary for the pure `@/lib/wmo` module. */
+import { createWmoClient } from "@/lib/wmo";
 
-export const getCachedCountries = unstable_cache(countries, ["wmo-countries"], {
-  revalidate: 86400,
-});
+const cache = new Cacheable({ primary: new KeyvCacheableMemory({ useClone: false }) });
 
-export const getCachedCity = unstable_cache(
-  async (cityId: number, locale: AppLocale) => (await city(cityId, locale)) ?? null,
-  ["wmo-city"],
-  { revalidate: 86400 },
-);
-
-export const getCachedPresent = unstable_cache(present, ["wmo-present"], { revalidate: 900 });
-
-export const getCachedForecasts = unstable_cache(forecasts, ["wmo-forecasts"], {
-  revalidate: 3600,
+export const wmo = createWmoClient({
+  cache: {
+    async get(key) {
+      // cacheable resolves undefined on miss/expiry; null is normalised too so it can never masquerade as a hit.
+      return (await cache.get(key)) ?? undefined;
+    },
+    async set(key, value, ttlMs) {
+      await cache.set(key, value, { ttl: ttlMs });
+    },
+  },
 });

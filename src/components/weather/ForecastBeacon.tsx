@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { FutureWeather } from "@/lib/wmo";
+import type { FutureWeather } from "@/lib/wmo";
 import type { AppLocale } from "@/i18n/routing";
 import { WxIcon } from "./WxIcon";
 import { utcWeekday, utcDayNumber } from "@/lib/date";
