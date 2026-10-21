@@ -78,6 +78,9 @@ export default function WidgetStylePreview({
   const viewW = LOGICAL_WIDTHS[view];
   const factor = colW > 0 ? Math.min(1, colW / viewW) : 1;
   const visH = height ?? DEFAULT_HEIGHT;
+  // colW starts 0, so factor is 1 until the ResizeObserver's first callback
+  // (which lands after first paint) — the stage would flash full-size then
+  // snap. Keep it an invisible full-column placeholder until measured.
 
   const { Present, Forecast } = LOOKS[style as keyof typeof LOOKS] ?? LOOKS.precision;
 
@@ -119,8 +122,14 @@ export default function WidgetStylePreview({
 
       {/* Stage: width authored per view and scaled to fit; bottom edge
           drags height (drag / double-click reset); content never resizes it. */}
-      <div ref={colRef} className="w-full">
-        <div className="mx-auto" style={{ width: viewW * factor }}>
+      <div ref={colRef} className="w-full overflow-hidden">
+        <div
+          className="mx-auto"
+          style={{
+            width: colW > 0 ? viewW * factor : "100%",
+            visibility: colW > 0 ? "visible" : "hidden",
+          }}
+        >
           <div
             className="overflow-hidden rounded-xl border border-outline bg-background"
             style={{ width: viewW * factor, height: visH }}
