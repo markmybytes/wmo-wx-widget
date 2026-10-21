@@ -9,7 +9,7 @@ export default async function Home() {
   const rtl = (await getLocale()) === "ar";
 
   return (
-    <div className="motion-safe:animate-fade-up">
+    <div>
       <div
         aria-hidden
         className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-outline pb-3 font-mono text-[11px] tracking-[0.14em] text-muted sm:text-xs"
